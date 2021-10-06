@@ -1,0 +1,9 @@
+-cp src
+--python out/flashlight.py
+
+app.TorchApp
+
+-D analyzer-optimize
+-D dce=std
+-D source-header=
+# -D loop-unroll-max-cost=100
