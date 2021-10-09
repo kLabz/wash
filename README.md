@@ -81,3 +81,5 @@ Needed Haxe changes to get a better output (which is needed for micropython):
 * [x] Array access without overhead
 * [x] Do not generate `__slots__` (until supported by micropython)
 * [ ] Skip generating empty classes/interfaces (should be fine with dce enabled?)
+
+See https://github.com/kLabz/haxe/tree/feature/micropython-utils
