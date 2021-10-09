@@ -1,17 +1,14 @@
-package wasp;
+package wasp.app;
+
+import python.Bytes;
 
 @:dce @:remove
 interface IApplication {
 	public var NAME(default, null):String;
-	public var ICON(default, null):String; // Bytes?
+	public var ICON(default, null):Bytes;
 
 	public function foreground():Void;
 	public function background():Void;
-}
-
-@:dce @:remove
-interface IWatchFace extends IApplication {
-	public function preview():Void;
 }
 
 // TODO: macro magic to check for signature instead?

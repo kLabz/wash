@@ -1,15 +1,17 @@
 package app;
 
+import python.Bytes;
 import python.Syntax.bytes;
 
-import wasp.IApplication;
 import wasp.EventMask;
-import wasp.Wasp;
+import wasp.Manager;
+import wasp.Watch;
+import wasp.app.IApplication;
 
 @:native('TorchApp')
-class TorchApp implements IApplication {
+class Torch implements IApplication {
 	public var NAME(default, null):String = "Torch";
-	public var ICON(default, null):String = bytes(
+	public var ICON(default, null):Bytes = bytes(
 		'\\x02',
 		'`@',
 		'?\\xff\\xff\\xff\\xff\\xff\\xff\\xff&\\xc6\\x0c@\\xd4B?\\n',
@@ -38,19 +40,19 @@ class TorchApp implements IApplication {
 	}
 
 	public function foreground():Void {
-		brightness = Wasp.system.brightness;
+		brightness = Manager.brightness;
 		draw();
-		Wasp.system.request_tick(1000);
-		Wasp.system.request_event(EventMask.TOUCH | EventMask.BUTTON);
+		Manager.request_tick(1000);
+		Manager.request_event(EventMask.TOUCH | EventMask.BUTTON);
 	}
 
 	public function background():Void {
 		activated = false;
-		Wasp.system.brightness = brightness;
+		Manager.brightness = brightness;
 	}
 
 	function tick(_:Int):Void {
-		Wasp.system.keep_awake();
+		Manager.keep_awake();
 	}
 
 	function touch(_):Void {
@@ -66,18 +68,18 @@ class TorchApp implements IApplication {
 
 	function draw():Void {
 		if (activated) {
-			Wasp.watch.drawable.fill(0xffff);
+			Watch.drawable.fill(0xffff);
 			drawTorch(0, 0);
-			Wasp.system.brightness = 3;
+			Manager.brightness = 3;
 		} else {
-			Wasp.watch.drawable.fill();
-			drawTorch(Wasp.system.theme('mid'), 0xffff);
-			Wasp.system.brightness = brightness;
+			Watch.drawable.fill();
+			drawTorch(Manager.theme('mid'), 0xffff);
+			Manager.brightness = brightness;
 		}
 	}
 
 	function drawTorch(torch:Int, light:Int):Void {
-		var draw = Wasp.watch.drawable;
+		var draw = Watch.drawable;
 		var x = 108;
 
 		draw.fill(torch, x, 107, 24, 9);

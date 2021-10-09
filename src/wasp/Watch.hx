@@ -1,30 +1,53 @@
 /*
-	Using real wasp-os for now. Needed (extern) fields:
+	Using real wasp-os (for now?). Needed (extern) fields:
 
 	os.uname()
 	button
-	display.poweron()
-	display.poweroff()
-	display.mute()
-	display.touch.sleep()
-	display.touch.wake()
-	display.touch.get_event()
-	display.touch.reset_touch_data()
+	touch.sleep()
+	touch.wake()
+	touch.get_event()
+	touch.reset_touch_data()
 	backlight.set()
-	battery.charging()
 	rtc.update
 	rtc.uptime
 	rtc.time
 	rtc.get_uptime_ms
 	free
-	drawable.reset()
 	vibrator.pulse()
 	print_exception
 	schedule
-	nop
 */
 package wasp;
 
+import wasp.driver.Draw565;
+import wasp.driver.ST7789;
+
+import wasp.util.TimeTuple;
+
+@:native('wasp.watch')
 extern class Watch {
-	var drawable:Draw565;
+	static var drawable:Draw565;
+	static var display:ST7789;
+	static var vibrator:Vibrator;
+	static var rtc:RTC;
+	static var battery:Battery;
+
+	static function connected():Bool;
+	static function nop():Void;
+}
+
+// TODO: move to own module, add missing methods
+extern class Vibrator {
+	function pulse():Void;
+}
+
+// TODO: move to own module, add missing methods
+extern class RTC {
+	function get_localtime():TimeTuple;
+}
+
+// TODO: move to own module, add missing methods
+extern class Battery {
+	function charging():Bool;
+	function level():Int;
 }

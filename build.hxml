@@ -1,9 +1,16 @@
 -cp src
---python out/flashlight.py
 
-app.TorchApp
+# --python out/flashlight.py
+# app.Torch
+
+--python out/launcher.py
+wasp.app.Launcher
+wasp.widgets.Clock
+app.Torch
 
 -D analyzer-optimize
 -D dce=std
 -D source-header=
 # -D loop-unroll-max-cost=100
+
+-D python.unsafe_array_access
