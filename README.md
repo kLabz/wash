@@ -79,3 +79,5 @@ Needed Haxe changes to get a better output (which is needed for micropython):
 * [x] Bytes literal
 * [x] `//` operator
 * [x] Array access without overhead
+* [x] Do not generate `__slots__` (until supported by micropython)
+* [ ] Skip generating empty classes/interfaces (should be fine with dce enabled?)

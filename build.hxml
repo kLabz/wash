@@ -3,14 +3,22 @@
 # --python out/flashlight.py
 # app.Torch
 
---python out/launcher.py
+--python out/wasp.py
+
+# Temp inclusion of everything that has been ported
+# Will be handled differently when wasp entrypoint is entirely written in Haxe
 wasp.app.Launcher
+wasp.widgets.BatteryMeter
 wasp.widgets.Clock
+wasp.widgets.NotificationBar
+wasp.widgets.ScrollIndicator
+wasp.widgets.StatusBar
 app.Torch
 
 -D analyzer-optimize
--D dce=std
 -D source-header=
+-D dce=std
 # -D loop-unroll-max-cost=100
 
 -D python.unsafe_array_access
+-D python.no_slots
