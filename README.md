@@ -11,7 +11,7 @@ This is **hugely** WIP material.
 	* [-] wasp.watch
 	* [-] wasp.system
 	* [ ] steplogger
-* [-] Port widgets to Haxe
+* [x] Port widgets to Haxe
 	* [x] ScrollIndicator
 	* [x] Clock
 	* [x] StatusBar
@@ -24,7 +24,7 @@ This is **hugely** WIP material.
 	* [x] Slider
 	* [x] Spinner
 	* [x] Stopwatch
-	* [ ] ConfirmationView
+	* [x] ConfirmationView
 * [ ] Port wasp.Manager to Haxe
 * [-] Port other apps to Haxe:
 	* [-] system apps
