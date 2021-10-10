@@ -20,7 +20,7 @@ This is **hugely** WIP material.
 	* [x] Button
 	* [x] ToggleButton
 	* [x] Checkbox
-	* [ ] GfxButton
+	* [x] GfxButton
 	* [ ] Slider
 	* [ ] Spinner
 	* [ ] Stopwatch

@@ -12,6 +12,7 @@ wasp.widgets.BatteryMeter
 wasp.widgets.Button
 wasp.widgets.Checkbox
 wasp.widgets.Clock
+wasp.widgets.GfxButton
 wasp.widgets.NotificationBar
 wasp.widgets.ScrollIndicator
 wasp.widgets.StatusBar
