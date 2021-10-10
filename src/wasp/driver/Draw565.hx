@@ -18,6 +18,6 @@ extern class Draw565 {
 	// TODO: wrap()
 	function line(x0:Int, y0:Int, x1:Int, y1:Int, ?width:Int, ?color:Int):Void;
 	// TODO: polar
-	// TODO: lighten
-	// TODO: darken
+	function lighten(color:Int, ?step:Int):Int;
+	function darken(color:Int, ?step:Int):Int;
 }
