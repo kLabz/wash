@@ -23,7 +23,7 @@ This is **hugely** WIP material.
 	* [x] GfxButton
 	* [x] Slider
 	* [x] Spinner
-	* [ ] Stopwatch
+	* [x] Stopwatch
 	* [ ] ConfirmationView
 * [ ] Port wasp.Manager to Haxe
 * [-] Port other apps to Haxe:

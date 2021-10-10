@@ -44,6 +44,7 @@ extern class Vibrator {
 // TODO: move to own module, add missing methods
 extern class RTC {
 	function get_localtime():TimeTuple;
+	function get_uptime_ms():Int; // TODO: check if Int or Float
 }
 
 // TODO: move to own module, add missing methods

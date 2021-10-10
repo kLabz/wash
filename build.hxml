@@ -18,6 +18,7 @@ wasp.widgets.ScrollIndicator
 wasp.widgets.Slider
 wasp.widgets.Spinner
 wasp.widgets.StatusBar
+wasp.widgets.StopWatch
 wasp.widgets.ToggleButton
 app.Torch
 
