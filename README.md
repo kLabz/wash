@@ -21,7 +21,7 @@ This is **hugely** WIP material.
 	* [x] ToggleButton
 	* [x] Checkbox
 	* [x] GfxButton
-	* [ ] Slider
+	* [x] Slider
 	* [ ] Spinner
 	* [ ] Stopwatch
 	* [ ] ConfirmationView

@@ -15,6 +15,7 @@ wasp.widgets.Clock
 wasp.widgets.GfxButton
 wasp.widgets.NotificationBar
 wasp.widgets.ScrollIndicator
+wasp.widgets.Slider
 wasp.widgets.StatusBar
 wasp.widgets.ToggleButton
 app.Torch
