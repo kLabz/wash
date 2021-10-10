@@ -23,7 +23,7 @@ class StatusBar implements IWidget {
 		notif.draw();
 	}
 
-	function update():Null<TimeTuple> {
+	public function update():Null<TimeTuple> {
 		var now = clock.update();
 
 		if (now != null) {

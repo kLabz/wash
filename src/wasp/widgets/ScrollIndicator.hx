@@ -19,7 +19,7 @@ class ScrollIndicator {
 		update();
 	}
 
-	function update():Void {
+	public function update():Void {
 		var color = Manager.theme('scroll-indicator');
 
 		if (up) Watch.drawable.blit(UpArrow, pos.x, pos.y, color);

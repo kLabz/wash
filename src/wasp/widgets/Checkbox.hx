@@ -39,7 +39,7 @@ class Checkbox implements IWidget {
 		return false;
 	}
 
-	function update():Void {
+	public function update():Void {
 		var draw = Watch.drawable;
 		var c1:Int = 0;
 		var c2:Int = 0;

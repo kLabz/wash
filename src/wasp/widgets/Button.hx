@@ -9,9 +9,7 @@ import wasp.event.TouchEvent;
 class Button implements IWidget {
 	var data:ButtonData;
 
-	public function new(
-		x:Int, y:Int, w:Int, h:Int, label:String
-	) {
+	public function new(x:Int, y:Int, w:Int, h:Int, label:String) {
 		data = ButtonData.make(x, y, w, h, label);
 	}
 
@@ -32,7 +30,7 @@ class Button implements IWidget {
 		return data.x >= x1 && data.x < x2 && data.y >= y1 && data.y < y2;
 	}
 
-	function update(bg:Int, frame:Int, txt:Int):Void {
+	public function update(bg:Int, frame:Int, txt:Int):Void {
 		var draw = Watch.drawable;
 
 		draw.fill(bg, data.x, data.y, data.w, data.h);
