@@ -22,7 +22,7 @@ This is **hugely** WIP material.
 	* [x] Checkbox
 	* [x] GfxButton
 	* [x] Slider
-	* [ ] Spinner
+	* [x] Spinner
 	* [ ] Stopwatch
 	* [ ] ConfirmationView
 * [ ] Port wasp.Manager to Haxe
