@@ -18,7 +18,7 @@ This is **hugely** WIP material.
 	* [x] BatteryMeter
 	* [x] NotificationBar
 	* [x] Button
-	* [ ] ToggleButton
+	* [x] ToggleButton
 	* [ ] Checkbox
 	* [ ] GfxButton
 	* [ ] Slider

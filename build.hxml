@@ -14,6 +14,7 @@ wasp.widgets.Clock
 wasp.widgets.NotificationBar
 wasp.widgets.ScrollIndicator
 wasp.widgets.StatusBar
+wasp.widgets.ToggleButton
 app.Torch
 
 -D analyzer-optimize
