@@ -10,6 +10,7 @@
 wasp.app.Launcher
 wasp.widgets.BatteryMeter
 wasp.widgets.Button
+wasp.widgets.Checkbox
 wasp.widgets.Clock
 wasp.widgets.NotificationBar
 wasp.widgets.ScrollIndicator

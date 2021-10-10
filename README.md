@@ -19,7 +19,7 @@ This is **hugely** WIP material.
 	* [x] NotificationBar
 	* [x] Button
 	* [x] ToggleButton
-	* [ ] Checkbox
+	* [x] Checkbox
 	* [ ] GfxButton
 	* [ ] Slider
 	* [ ] Spinner
