@@ -25,7 +25,9 @@ This is **hugely** WIP material.
 	* [x] Spinner
 	* [x] Stopwatch
 	* [x] ConfirmationView
-* [ ] Port wasp.Manager to Haxe
+* [-] Port wasp.Manager to Haxe
+	* [x] MVP wasp.py generated via Haxe, running apps in simulator
+	* [ ] Notifications handling
 * [-] Port other apps to Haxe:
 	* [-] system apps
 		* [x] launcher
@@ -46,20 +48,19 @@ This is **hugely** WIP material.
 		* [ ] timer
 		* [ ] weather
 	* [ ] watchfaces
-		* [ ] klabz watchface
+		* [ ] battri watchface (klabz)
 		* [ ] clock
 		* [ ] dual_clock
 		* [ ] chrono
 		* [ ] fibonacci_clock (disabled)
 		* [ ] word_clock (disabled)
 
-* [ ] Transpile everything as `wasp.py`
+* [x] Transpile everything as `wasp.py`
 * [ ] Integrate comments from wasp-os into Haxe versions
-* [ ] Remove haxe things from wasp-os, use generated `wasp.py`
 
 * [ ] Port steplogger to Haxe
 * [ ] Port gadgetbridge integration to Haxe
-* [ ] Port missing widgets
+* [x] Port missing widgets
 * [ ] Port missing apps
 
 => Start using hxwasp o/
@@ -68,9 +69,10 @@ This is **hugely** WIP material.
 
 * [ ] Include images as bytes with a compile-time macro
 	* [x] Generate bytes literal from Haxe
+	* [ ] Generate bytes literal from image files at compile time
 	* [ ] Load images from aseprite file(s) directly
-	* [ ] Rework theming
-	* [ ] Apply theme in generated images
+	* [ ] Rework theming (started in wasp-os fork)
+	* [x] Apply theme in generated images
 
 ### Haxe changes
 
@@ -80,6 +82,9 @@ Needed Haxe changes to get a better output (which is needed for micropython):
 * [x] `//` operator
 * [x] Array access without overhead
 * [x] Do not generate `__slots__` (until supported by micropython)
-* [ ] Skip generating empty classes/interfaces (should be fine with dce enabled?)
+* [x] `NativeArrayTools.nativeSort()`
+* [ ] Add `@micropython.native` runtime metadata
+* [ ] Skip all the unneeded code when doing `try / catch (e:SomeException)`
+* [ ] Skip generating empty classes/interfaces
 
 See https://github.com/kLabz/haxe/tree/feature/micropython-utils
