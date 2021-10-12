@@ -12,9 +12,9 @@ class ToggleButton extends Button {
 
 	override public function draw():Void {
 		update(
-			Watch.drawable.darken(Manager.theme(state ? 'ui' : 'mid')),
-			Manager.theme('mid'),
-			Manager.theme('bright')
+			Watch.drawable.darken(state ? Wasp.system.theme.ui : Wasp.system.theme.mid),
+			Wasp.system.theme.mid,
+			Wasp.system.theme.bright
 		);
 	}
 

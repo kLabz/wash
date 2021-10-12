@@ -2,6 +2,9 @@ package wasp.app;
 
 import python.Bytes;
 
+import wasp.Watch.Button;
+import wasp.event.TouchEvent;
+
 @:dce @:remove
 interface IApplication {
 	public var NAME(default, null):String;
@@ -9,14 +12,10 @@ interface IApplication {
 
 	public function foreground():Void;
 	public function background():Void;
+	public function sleep():Bool;
+	public function wake():Void;
+	public function tick(ticks:Int):Void; // Float?
+	public function touch(event:TouchEvent):Void;
+	public function swipe(event:TouchEvent):Bool;
+	public function press(eventType:EventType, state:Bool):Bool;
 }
-
-// TODO: macro magic to check for signature instead?
-// class Application {
-// 	public function sleep():Void {}
-// 	public function wake():Void {}
-// 	public function tick(ticks:Int):Void {} // Float?
-// 	public function touch(event:Any):Void {} // TODO: types
-// 	public function swipe(event:Any):Void {} // TODO: types
-// 	public function press(button:Any, state:Any):Void {} // TODO: types
-// }

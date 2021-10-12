@@ -20,7 +20,7 @@ class ConfirmationView {
 
 		// TODO: check if mute is needed
 		Watch.display.mute(true);
-		draw.set_color(Manager.theme('bright'));
+		draw.set_color(Wasp.system.theme.bright);
 		draw.set_font(Fonts.sans24);
 		draw.fill();
 		draw.string(message, 0, 60);

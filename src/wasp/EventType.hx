@@ -7,6 +7,8 @@ package wasp;
 	is simply a regular object which acts as a namespace.
 */
 enum abstract EventType(Int) to Int {
+    var NONE = 0;
+
     var DOWN = 1;
     var UP = 2;
     var LEFT = 3;

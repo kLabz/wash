@@ -35,9 +35,9 @@ class Slider implements IWidget {
 	public function draw():Void {
 		var draw = Watch.drawable;
 
-		if (color == null) color = Manager.theme('ui');
+		if (color == null) color = Wasp.system.theme.ui;
 		if (lowLight == null)
-			lowLight = draw.lighten(color, Manager.theme('contrast'));
+			lowLight = draw.lighten(color, Wasp.system.theme.contrast);
 
 		var knobX:Int = x + opFloorDiv(TRACK * value, steps - 1);
 		draw.blit(Knob, knobX, this.y, color);

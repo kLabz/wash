@@ -15,9 +15,9 @@ class Button implements IWidget {
 
 	public function draw():Void {
 		update(
-			Watch.drawable.darken(Manager.theme('ui')),
-			Manager.theme('mid'),
-			Manager.theme('bright')
+			Watch.drawable.darken(Wasp.system.theme.ui),
+			Wasp.system.theme.mid,
+			Wasp.system.theme.bright
 		);
 	}
 

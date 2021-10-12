@@ -37,7 +37,7 @@ class Clock implements IWidget {
 		)) {
 			var t = '{:02}:{02}'.format(now.HH, now.MM);
 			Watch.drawable.set_font(Fonts.sans28);
-			Watch.drawable.set_color(Manager.theme('status-clock'));
+			Watch.drawable.set_color(Wasp.system.theme.statusClock);
 			Watch.drawable.string(t, 52, 4, 138);
 		}
 

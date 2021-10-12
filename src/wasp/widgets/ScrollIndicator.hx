@@ -20,7 +20,7 @@ class ScrollIndicator {
 	}
 
 	public function update():Void {
-		var color = Manager.theme('scroll-indicator');
+		var color = Wasp.system.theme.scrollIndicator;
 
 		if (up) Watch.drawable.blit(UpArrow, pos.x, pos.y, color);
 		if (down) Watch.drawable.blit(DownArrow, pos.x, pos.y+13, color);

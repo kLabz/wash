@@ -4,14 +4,13 @@ import python.Bytes;
 import python.Syntax.bytes;
 
 import wasp.EventMask;
-import wasp.Manager;
+import wasp.Wasp;
 import wasp.Watch;
-import wasp.app.IApplication;
+import wasp.app.BaseApplication;
 
 @:native('TorchApp')
-class Torch implements IApplication {
-	public var NAME(default, null):String = "Torch";
-	public var ICON(default, null):Bytes = bytes(
+class Torch extends BaseApplication {
+	static var icon:Bytes = bytes(
 		'\\x02',
 		'`@',
 		'?\\xff\\xff\\xff\\xff\\xff\\xff\\xff&\\xc6\\x0c@\\xd4B?\\n',
@@ -36,45 +35,48 @@ class Torch implements IApplication {
 	private var brightness:Int;
 
 	public function new() {
+		NAME = "Torch";
+		ICON = icon;
 		activated = false;
 	}
 
-	public function foreground():Void {
-		brightness = Manager.brightness;
+	override public function foreground():Void {
+		brightness = Wasp.system.brightness;
 		draw();
-		Manager.request_tick(1000);
-		Manager.request_event(EventMask.TOUCH | EventMask.BUTTON);
+		Wasp.system.requestTick(1000);
+		Wasp.system.requestEvent(EventMask.TOUCH | EventMask.BUTTON);
 	}
 
-	public function background():Void {
+	override public function background():Void {
 		activated = false;
-		Manager.brightness = brightness;
+		Wasp.system.brightness = brightness;
 	}
 
-	function tick(_:Int):Void {
-		Manager.keep_awake();
+	override public function tick(ticks:Int):Void {
+		Wasp.system.keepAwake();
 	}
 
-	function touch(_):Void {
+	override public function touch(_):Void {
 		activated = !activated;
 		draw();
 	}
 
-	function press(_, state:Bool):Void {
-		if (!state) return;
+	override public function press(_, state:Bool):Bool {
+		if (!state) return true;
 		activated = !activated;
 		draw();
+		return false;
 	}
 
 	function draw():Void {
 		if (activated) {
 			Watch.drawable.fill(0xffff);
 			drawTorch(0, 0);
-			Manager.brightness = 3;
+			Wasp.system.brightness = 3;
 		} else {
 			Watch.drawable.fill();
-			drawTorch(Manager.theme('mid'), 0xffff);
-			Manager.brightness = brightness;
+			drawTorch(Wasp.system.theme.mid, 0xffff);
+			Wasp.system.brightness = brightness;
 		}
 	}
 

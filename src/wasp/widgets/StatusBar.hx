@@ -11,7 +11,7 @@ class StatusBar implements IWidget {
 	function get_displayClock():Bool return clock.enabled;
 	function set_displayClock(v:Bool):Bool return clock.enabled = v;
 
-	function new() {
+	public function new() {
 		clock = new Clock();
 		meter = new BatteryMeter();
 		notif = new NotificationBar();

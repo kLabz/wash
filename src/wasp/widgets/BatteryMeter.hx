@@ -2,7 +2,7 @@ package wasp.widgets;
 
 import python.Syntax.opFloorDiv;
 
-import wasp.icon.BatteryIcon;
+import wasp.icon.BatteryIcon.icon as BatteryIcon;
 
 class BatteryMeter implements IWidget {
 	var level:Int;
@@ -22,7 +22,7 @@ class BatteryMeter implements IWidget {
 
 		if (Watch.battery.charging()) {
 			if (this.level != -1) {
-				draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, Manager.theme('battery'));
+				draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, Wasp.system.theme.battery);
 				level = -1;
 			}
 		} else {
@@ -36,7 +36,7 @@ class BatteryMeter implements IWidget {
 
 			if (this.level < 0 || ((level > 5) != (this.level > 5))) {
 				if (level > 5) {
-					draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, Manager.theme('battery'));
+					draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, Wasp.system.theme.battery);
 				} else {
 					rgb = 0xf800;
 					draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, rgb);

@@ -18,7 +18,7 @@ class Checkbox implements IWidget {
 	public function draw():Void {
 		if (data.label != null) {
 			var draw = Watch.drawable;
-			draw.set_color(Manager.theme('bright'));
+			draw.set_color(Wasp.system.theme.bright);
 			draw.set_font(Fonts.sans24);
 			draw.string(data.label, data.x, data.y + 6);
 		}
@@ -43,11 +43,11 @@ class Checkbox implements IWidget {
 		var draw = Watch.drawable;
 		var c1:Int = 0;
 		var c2:Int = 0;
-		var fg:Int = Manager.theme('mid');
+		var fg:Int = Wasp.system.theme.mid;
 
 		if (state) {
-			c1 = Manager.theme('ui');
-			c2 = draw.lighten(c1, Manager.theme('contrast'));
+			c1 = Wasp.system.theme.ui;
+			c2 = draw.lighten(c1, Wasp.system.theme.contrast);
 			fg = c2;
 		}
 

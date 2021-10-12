@@ -4,14 +4,13 @@ import python.Bytes;
 import python.Syntax.bytes;
 import python.Syntax.opFloorDiv;
 
-import wasp.app.IApplication;
+import wasp.event.TouchEvent;
 import wasp.icon.AppIcon;
 import wasp.widgets.ScrollIndicator;
 
 @:native('LauncherApp')
-class Launcher implements IApplication {
-	public var NAME(default, null):String = "Launcher";
-	public var ICON(default, null):Bytes = bytes(
+class Launcher extends BaseApplication {
+	static var icon:Bytes = bytes(
 		'\\x02',
 		'@@',
 		'?\\xff\\x88@\\xc1t\\x0cA2A\\x0cA2A\\x0cA',
@@ -43,50 +42,58 @@ class Launcher implements IApplication {
 	var page:Int;
 	var numPages(get, null):Int;
 	var scroll:ScrollIndicator;
-	function get_numPages():Int return opFloorDiv(Manager.launcher_ring.length + 8, 9);
+	function get_numPages():Int return opFloorDiv(Wasp.system.launcherRing.length + 8, 9);
 
 	public function new() {
+		NAME = "Launcher";
+		ICON = icon;
 		scroll = new ScrollIndicator(null, 6);
 		page = 0;
 	}
 
-	public function foreground():Void {
+	override public function foreground():Void {
 		page = 0;
 		draw();
-		Manager.request_event(EventMask.TOUCH | EventMask.SWIPE_UPDOWN);
+		Wasp.system.requestEvent(EventMask.TOUCH | EventMask.SWIPE_UPDOWN);
 	}
 
-	public function background():Void {}
+	override public function background():Void {}
 
-	public function swipe(event:Array<Int>):Void {
+	override public function swipe(event:TouchEvent):Bool {
 		var i = page;
 		var n = numPages;
 
-		if (event[0] == EventType.UP) {
+		if (event.type == UP) {
 			i++;
-			if (i >= n) return Watch.vibrator.pulse();
+			if (i >= n) {
+				Watch.vibrator.pulse();
+				return false;
+			}
 		} else {
 			i--;
-			if (i < 0) return Manager.switchApp(Manager.quick_ring[0]);
+			if (i < 0) {
+				Wasp.system.switchApp(Wasp.system.quickRing[0]);
+				return false;
+			}
 		}
 
 		page = i;
 		// Watch.display.mute(true);
 		draw();
 		// Watch.display.mute(false);
+
+		return false;
 	}
 
-	public function touch(event:Array<Int>):Void {
+	override public function touch(event:TouchEvent):Void {
 		var page = getPage(page);
-		var x = event[1];
-		var y = event[2];
-		var app = page[3 * opFloorDiv(y, 74) + opFloorDiv(x, 74)];
-		if (app != null) Manager.switchApp(app);
+		var app = page[3 * opFloorDiv(event.y, 74) + opFloorDiv(event.x, 74)];
+		if (app != null) Wasp.system.switchApp(app);
 		else Watch.vibrator.pulse();
 	}
 
 	function getPage(i:Int):Array<IApplication> {
-		var ret = Manager.launcher_ring.slice(9*i, 9*(i+1));
+		var ret = Wasp.system.launcherRing.slice(9*i, 9*(i+1));
 		while (ret.length < 9) ret.push(null);
 		return ret;
 	}
@@ -108,6 +115,15 @@ class Launcher implements IApplication {
 	function drawApp(app:IApplication, x:Int, y:Int):Void {
 		if (app == null) return;
 
-		Watch.drawable.blit(app.ICON == null ? AppIcon : app.ICON, x+14, y+14);
+		Watch.drawable.blit(
+			app.ICON == null ? AppIcon : app.ICON,
+			x+14,
+			y+14,
+			// Force recoloring of icons with theme colors
+			Wasp.system.theme.bright,
+			Wasp.system.theme.mid,
+			Wasp.system.theme.ui,
+			true
+		);
 	}
 }

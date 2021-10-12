@@ -4,28 +4,31 @@
 # app.Torch
 
 --python out/wasp.py
+wasp.Wasp
+# --main wasp.Wasp
 
 # Temp inclusion of everything that has been ported
 # Will be handled differently when wasp entrypoint is entirely written in Haxe
-wasp.app.Launcher
-wasp.widgets.BatteryMeter
-wasp.widgets.Button
-wasp.widgets.Checkbox
-wasp.widgets.Clock
-wasp.widgets.ConfirmationView
-wasp.widgets.GfxButton
-wasp.widgets.NotificationBar
-wasp.widgets.ScrollIndicator
-wasp.widgets.Slider
-wasp.widgets.Spinner
-wasp.widgets.StatusBar
-wasp.widgets.StopWatch
-wasp.widgets.ToggleButton
-app.Torch
+# wasp.app.Launcher
+# wasp.widgets.BatteryMeter
+# wasp.widgets.Button
+# wasp.widgets.Checkbox
+# wasp.widgets.Clock
+# wasp.widgets.ConfirmationView
+# wasp.widgets.GfxButton
+# wasp.widgets.NotificationBar
+# wasp.widgets.ScrollIndicator
+# wasp.widgets.Slider
+# wasp.widgets.Spinner
+# wasp.widgets.StatusBar
+# wasp.widgets.StopWatch
+# wasp.widgets.ToggleButton
+# app.Torch
 
 -D analyzer-optimize
 -D source-header=
--D dce=std
+-D dce=full
+# -D dce=std
 # -D loop-unroll-max-cost=100
 
 -D python.unsafe_array_access

@@ -18,7 +18,7 @@ class Spinner implements IWidget {
 
 	public function draw():Void {
 		var draw = Watch.drawable;
-		var fg = draw.lighten(Manager.theme('ui'), Manager.theme('contrast'));
+		var fg = draw.lighten(Wasp.system.theme.ui, Wasp.system.theme.contrast);
 		draw.blit(UpArrow, data.x+30-8, data.y+20, fg);
 		draw.blit(DownArrow, data.x+30-8, data.y+120-20-9, fg);
 		update();
@@ -26,9 +26,9 @@ class Spinner implements IWidget {
 
 	public function update():Void {
 		var draw = Watch.drawable;
-		draw.set_color(Manager.theme('bright'));
+		draw.set_color(Wasp.system.theme.bright);
 		draw.set_font(Fonts.sans28);
-		var s = Std.string(value);
+		var s = "" + value;
 		while (s.length < data.field) s = '0' + s;
 		draw.string(s, data.x, data.y+60-14, 60);
 	}

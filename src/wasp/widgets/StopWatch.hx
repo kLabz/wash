@@ -57,7 +57,7 @@ class StopWatch implements IWidget {
 
 			var draw = Watch.drawable;
 			draw.set_font(Fonts.sans36);
-			draw.set_color(draw.lighten(Manager.theme('ui'), Manager.theme('contrast')));
+			draw.set_color(draw.lighten(Wasp.system.theme.ui, Wasp.system.theme.contrast));
 
 			var w = Fonts.width(Fonts.sans36, t1);
 			draw.string(t1, 180-w, y);
