@@ -12,6 +12,7 @@ import app.Torch;
 import wasp.app.CrashApp;
 import wasp.app.IApplication;
 import wasp.app.Launcher;
+import wasp.app.NotificationApp;
 import wasp.app.PagerApp;
 import wasp.event.TouchEvent;
 import wasp.util.Gc;
@@ -63,7 +64,7 @@ class Manager {
 	var bar:StatusBar;
 	var launcher:Launcher;
 	var button:PinHandler;
-	// var notifier:NotificationApp; // TODO
+	var notifier:NotificationApp;
 
 	function new() {
 		nfylev_ms = nfyLevels[notifyLevel - 1];
@@ -72,6 +73,7 @@ class Manager {
 	function init():Void {
 		if (bar == null) bar = new StatusBar();
 		if (launcher == null) launcher = new Launcher();
+		if (notifier == null) notifier = new NotificationApp();
 		if (button == null) button = new PinHandler(Watch.button);
 	}
 
@@ -315,12 +317,10 @@ class Manager {
 		if (event.type == NEXT) {
 			if (eventMask & EventMask.NEXT > 0 && !app.swipe(event)) {
 				event.type = NONE;
-			// TODO: notifications
-			// } else if (app == quickRing[0] && notifications.length > 0) {
-			// 	event.type = DOWN;
-			// TODO: notifier
-			// } else if (app == notifier) {
-			// 	event.type = UP;
+			} else if (app == quickRing[0] && notifications.length > 0) {
+				event.type = DOWN;
+			} else if (app == notifier) {
+				event.type = UP;
 			} else {
 				event.type = RIGHT;
 			}
@@ -390,12 +390,11 @@ class Manager {
 			case DOWN:
 				if (app != quickRing[0]) switchApp(quickRing[0]);
 				else {
-					// TODO: notifications
-					// if (notifications.length > 0) {
-					// 	switchApp(notifier);
-					// } else {
+					if (notifications.length > 0) {
+						switchApp(notifier);
+					} else {
 						Watch.vibrator.pulse();
-					// }
+					}
 				}
 
 			case HOME | BACK:

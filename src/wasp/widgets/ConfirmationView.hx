@@ -3,8 +3,8 @@ package wasp.widgets;
 import wasp.event.TouchEvent;
 
 class ConfirmationView {
-	var active:Bool;
-	var value:Bool;
+	public var active:Bool;
+	public var value:Bool;
 	var yesButton:Button;
 	var noButton:Button;
 

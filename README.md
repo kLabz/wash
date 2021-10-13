@@ -27,14 +27,15 @@ This is **hugely** WIP material.
 	* [x] ConfirmationView
 * [-] Port wasp.Manager to Haxe
 	* [x] MVP wasp.py generated via Haxe, running apps in simulator
-	* [ ] Notifications handling
+	* [x] Notifications handling (untested)
+	* [ ] Adjustement to work on real watch
 * [-] Port other apps to Haxe:
 	* [-] system apps
 		* [x] launcher
 		* [ ] settings
 		* [ ] software
 		* [x] PagerApp
-		* [ ] NotificationApp (from pager module)
+		* [x] NotificationApp (from pager module)
 		* [x] CrashApp (from pager module)
 	* [-] user apps
 		* [x] flashlight
