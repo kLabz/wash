@@ -6,8 +6,9 @@ import python.Syntax.bytes;
 import python.Syntax.construct;
 import python.Syntax.opFloorDiv;
 
-// Default apps
+// Default apps & watchfaces
 import app.Torch;
+import watchface.BatTri;
 
 import wasp.app.CrashApp;
 import wasp.app.IApplication;
@@ -100,8 +101,9 @@ class Manager {
 
 	function registerDefaults():Void {
 		// Quick ring
-		// TODO: replace with WatchFace, Alaarm, Torch
-		register(Torch, true, true, true);
+		register(BatTri, true, true, true);
+		// TODO: add alarm
+		register(Torch, true, false, true);
 
 		// TODO: other apps
 	}
@@ -163,7 +165,7 @@ class Manager {
 		Watch.display.poweroff();
 		Watch.touch.sleep();
 		charging = Watch.battery.charging();
-		sleepAt = null;
+		sleepAt = -1;
 	}
 
 	function wake():Void {

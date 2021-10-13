@@ -13,6 +13,7 @@ extern class Watch {
 	static var rtc:RTC;
 	static var battery:Battery;
 	static var backlight:Backlight;
+	static var accel:Accelerometer;
 	static var button:Button;
 	static var touch:Touch;
 	static var free:Int;
@@ -58,4 +59,9 @@ extern class Touch {
 // TODO: move to own module, add missing methods
 extern class Button {
 	function value():Null<Bool>;
+}
+
+// TODO: move to own module, add missing methods
+extern class Accelerometer {
+	var steps:Int;
 }

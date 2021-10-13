@@ -48,8 +48,8 @@ This is **hugely** WIP material.
 		* [ ] stopwatch
 		* [ ] timer
 		* [ ] weather
-	* [ ] watchfaces
-		* [ ] battri watchface (klabz)
+	* [-] watchfaces
+		* [x] BatTri watchface
 		* [ ] clock
 		* [ ] dual_clock
 		* [ ] chrono
@@ -84,6 +84,7 @@ Needed Haxe changes to get a better output (which is needed for micropython):
 * [x] Array access without overhead
 * [x] Do not generate `__slots__` (until supported by micropython)
 * [x] `NativeArrayTools.nativeSort()`
+* [-] Implement @:selfCall for python
 * [ ] Add `@micropython.native` runtime metadata
 * [ ] Skip all the unneeded code when doing `try / catch (e:SomeException)`
 * [ ] Skip generating empty classes/interfaces

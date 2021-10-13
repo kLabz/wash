@@ -47,6 +47,7 @@ class Torch extends BaseApplication {
 		Wasp.system.requestEvent(EventMask.TOUCH | EventMask.BUTTON);
 	}
 
+	// TODO: check why this is called a lot Oo
 	override public function background():Void {
 		activated = false;
 		Wasp.system.brightness = brightness;
