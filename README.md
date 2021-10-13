@@ -33,9 +33,9 @@ This is **hugely** WIP material.
 		* [x] launcher
 		* [ ] settings
 		* [ ] software
-		* [ ] pager
+		* [x] PagerApp
 		* [ ] NotificationApp (from pager module)
-		* [ ] CrashApp (from pager module)
+		* [x] CrashApp (from pager module)
 	* [-] user apps
 		* [x] flashlight
 		* [ ] alarm

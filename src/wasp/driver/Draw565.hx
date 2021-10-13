@@ -12,6 +12,7 @@ extern class Draw565 {
 	function string(s:String, x:Int, y:Int, ?width:Int, ?right:Bool):Void;
 	// TODO: bounding_box()
 	// TODO: wrap()
+	function wrap(s:String, width:Int):Array<Int>; // TODO: check return type
 	function line(x0:Int, y0:Int, x1:Int, y1:Int, ?width:Int, ?color:Int):Void;
 	// TODO: polar
 	function lighten(color:Int, ?step:Int):Int;

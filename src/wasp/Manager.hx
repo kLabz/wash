@@ -9,8 +9,10 @@ import python.Syntax.opFloorDiv;
 // Default apps
 import app.Torch;
 
+import wasp.app.CrashApp;
 import wasp.app.IApplication;
 import wasp.app.Launcher;
+import wasp.app.PagerApp;
 import wasp.event.TouchEvent;
 import wasp.util.Gc;
 import wasp.util.Machine;
@@ -204,17 +206,13 @@ class Manager {
 				python.Syntax.code('raise');
 
 				python.Syntax.code('\n            except MemoryError:');
-				// TODO: PagerApp
-				// switchApp(new PagerApp('Your watch is low on memory.\n\nYou may want to reboot.'));
-				// python.Syntax.code('pass');
-				python.Syntax.code('raise');
+				switchApp(new PagerApp('Your watch is low on memory.\n\nYou may want to reboot.'));
+				python.Syntax.code('pass');
 
 				python.Syntax.code('\n            except Exception as e:');
-				// TODO: CrashApp
 				// TODO: print exception when watch is able to
-				// switchApp(new CrashApp(e));
-				// python.Syntax.code('pass');
-				python.Syntax.code('raise');
+				switchApp(new CrashApp(untyped e));
+				python.Syntax.code('pass');
 			}
 
 			Machine.deepsleep();
@@ -271,10 +269,8 @@ class Manager {
 			tick();
 
 			python.Syntax.code('\n        except MemoryError:');
-			// TODO: PagerApp
-			// switchApp(new PagerApp('Your watch is low on memory.\n\nYou may want to reboot.'));
-			python.Syntax.code('raise');
-			// python.Syntax.code('pass');
+			switchApp(new PagerApp('Your watch is low on memory.\n\nYou may want to reboot.'));
+			python.Syntax.code('pass');
 
 			python.Syntax.code('\n        except Exception as e:');
 			// TODO: print exception when watch is able to
