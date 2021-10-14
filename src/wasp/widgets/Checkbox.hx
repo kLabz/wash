@@ -7,8 +7,8 @@ import wasp.event.TouchEvent;
 import wasp.icon.CheckboxIcon;
 
 class Checkbox implements IWidget {
+	public var state:Bool;
 	var data:CheckboxData;
-	var state:Bool;
 
 	public function new(x:Int, y:Int, label:String) {
 		data = CheckboxData.make(x, y, label);

@@ -30,24 +30,24 @@ This is **hugely** WIP material.
 	* [x] Notifications handling (untested)
 	* [ ] Adjustement to work on real watch
 * [-] Port other apps to Haxe:
-	* [-] system apps
+	* [x] system apps
 		* [x] launcher
 		* [x] settings
-		* [ ] software
+		* [x] software
 		* [x] PagerApp
 		* [x] NotificationApp (from pager module)
 		* [x] CrashApp (from pager module)
 	* [-] user apps
 		* [x] flashlight
+		* [x] stopwatch
 		* [ ] alarm
+		* [ ] timer
 		* [ ] calc
-		* [ ] faces
 		* [ ] heart
 		* [ ] musicplayer
-		* [ ] steps
-		* [x] stopwatch
-		* [ ] timer
 		* [ ] weather
+		* [ ] steps
+		* [ ] faces
 	* [-] watchfaces
 		* [x] BatTri watchface
 		* [ ] clock

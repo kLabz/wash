@@ -17,6 +17,7 @@ import wasp.app.Launcher;
 import wasp.app.NotificationApp;
 import wasp.app.PagerApp;
 import wasp.app.Settings;
+import wasp.app.Software;
 import wasp.event.TouchEvent;
 import wasp.util.Gc;
 import wasp.util.Machine;
@@ -103,15 +104,21 @@ class Manager {
 
 	function registerDefaults():Void {
 		// Quick ring
-		register(BatTri, true, true, true);
+		register(BatTri, true, true);
 		// TODO: add alarm
-		register(Torch, true, false, true);
+		register(Torch, true);
 
 		// Other apps
-		register(Settings, false, false, true);
+		register(Settings);
+		register(Software);
 	}
 
-	function register(cls:Class<IApplication>, quickRing:Bool, watchFace:Bool, noExcept:Bool):Void {
+	function register(
+		cls:Class<IApplication>,
+		quickRing:Bool = false,
+		watchFace:Bool = false,
+		noExcept:Bool = true
+	):Void {
 		var app:IApplication = construct(cls);
 
 		// TODO: special step counter handling
