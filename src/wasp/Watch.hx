@@ -35,6 +35,7 @@ extern class RTC {
 	function update():Bool; // TODO: check type
 	function get_localtime():TimeTuple;
 	function get_uptime_ms():Int; // TODO: check if Int or Float
+	function set_localtime(time:TimeTuple):Void;
 }
 
 // TODO: move to own module, add missing methods

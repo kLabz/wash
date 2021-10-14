@@ -8,8 +8,8 @@ import wasp.icon.DownArrow;
 import wasp.icon.UpArrow;
 
 class Spinner implements IWidget {
+	public var value:Int;
 	var data:SpinnerData;
-	var value:Int;
 
 	public function new(x:Int, y:Int, mn:Int, mx:Int, field:Int = 1) {
 		data = SpinnerData.make(x, y, mn, mx, field);

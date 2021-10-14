@@ -14,9 +14,9 @@ class Slider implements IWidget {
 	static inline var TRACK_Y1:Int = KNOB_RADIUS - (TRACK_HEIGHT >> 1);
 	static inline var TRACK_Y2:Int = TRACK_Y1 + TRACK_HEIGHT;
 
-	var value:Int;
+	public var value:Int;
 	var steps:Int;
-	var stepSize:Float;
+	var stepSize:Int;
 	var x:Int;
 	var y:Int;
 	var color:Null<Int>;
@@ -25,7 +25,7 @@ class Slider implements IWidget {
 	public function new(steps:Int, ?x:Int = 10, y:Int = 90, ?color:Int) {
 		value = 0;
 		this.steps = steps;
-		this.stepSize = TRACK / (steps - 1);
+		this.stepSize = opFloorDiv(TRACK, (steps - 1));
 		this.x = x;
 		this.y = y;
 		this.color = color;

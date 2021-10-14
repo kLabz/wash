@@ -15,6 +15,7 @@ import wasp.app.IApplication;
 import wasp.app.Launcher;
 import wasp.app.NotificationApp;
 import wasp.app.PagerApp;
+import wasp.app.Settings;
 import wasp.event.TouchEvent;
 import wasp.util.Gc;
 import wasp.util.Machine;
@@ -105,7 +106,8 @@ class Manager {
 		// TODO: add alarm
 		register(Torch, true, false, true);
 
-		// TODO: other apps
+		// Other apps
+		register(Settings, false, false, true);
 	}
 
 	function register(cls:Class<IApplication>, quickRing:Bool, watchFace:Bool, noExcept:Bool):Void {

@@ -32,7 +32,7 @@ This is **hugely** WIP material.
 * [-] Port other apps to Haxe:
 	* [-] system apps
 		* [x] launcher
-		* [ ] settings
+		* [x] settings
 		* [ ] software
 		* [x] PagerApp
 		* [x] NotificationApp (from pager module)
