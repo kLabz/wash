@@ -38,6 +38,7 @@ class Torch extends BaseApplication {
 		NAME = "Torch";
 		ICON = icon;
 		activated = false;
+		brightness = Wasp.system.brightness;
 	}
 
 	override public function foreground():Void {
