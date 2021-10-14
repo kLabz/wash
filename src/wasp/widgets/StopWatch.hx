@@ -5,13 +5,14 @@ import python.Syntax.opFloorDiv;
 using python.NativeStringTools;
 
 class StopWatch implements IWidget {
-	var y:Int;
-	var startedAt:Int;
-	var count:Int;
-	var lastCount:Int;
+	public var startedAt:Int;
+	public var count:Int;
 
-	var started(get, null):Bool;
+	public var started(get, null):Bool;
 	function get_started():Bool return startedAt > 0;
+
+	var y:Int;
+	var lastCount:Int;
 
 	public function new(y:Int) {
 		this.y = y;

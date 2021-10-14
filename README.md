@@ -45,7 +45,7 @@ This is **hugely** WIP material.
 		* [ ] heart
 		* [ ] musicplayer
 		* [ ] steps
-		* [ ] stopwatch
+		* [x] stopwatch
 		* [ ] timer
 		* [ ] weather
 	* [-] watchfaces
