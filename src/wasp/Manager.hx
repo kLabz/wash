@@ -222,7 +222,7 @@ class Manager {
 				python.Syntax.code('pass');
 
 				python.Syntax.code('\n            except Exception as e:');
-				// TODO: print exception when watch is able to
+				#if simulator Watch.print_exception(untyped e); #end
 				switchApp(new CrashApp(untyped e));
 				python.Syntax.code('pass');
 			}

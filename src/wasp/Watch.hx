@@ -22,6 +22,7 @@ extern class Watch {
 
 	static function connected():Bool;
 	static function nop():Void;
+	#if simulator static function print_exception(e:python.Exceptions.BaseException):Void; #end
 }
 
 // TODO: move to own module, add missing methods
