@@ -1,6 +1,7 @@
 package wasp;
 
 import python.Exceptions;
+import python.Lib.getType;
 import python.Lib.print;
 import python.Syntax.bytes;
 import python.Syntax.construct;
@@ -124,14 +125,19 @@ class Manager {
 	}
 
 	function unregister(cls:Class<IApplication>):Void {
-		var inst:IApplication = construct(cls);
-
 		for (app in launcherRing) {
-			if (app.NAME == inst.NAME) {
+			if (getType(app) == cls) {
 				launcherRing.remove(app);
 				break;
 			}
 		}
+	}
+
+	function hasApplication(cls:Class<IApplication>):Bool {
+		for (app in launcherRing)
+			if (getType(app) == cls) return true;
+
+		return false;
 	}
 
 	function requestTick(ticks:Int, ?periodMs:Int = 0):Void {
