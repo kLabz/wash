@@ -27,15 +27,16 @@ extern class Watch {
 
 // TODO: move to own module, add missing methods
 extern class Vibrator {
-	function pulse():Void;
+	function pulse(?duty:Int, ?ms:Int):Void;
 }
 
 // TODO: move to own module, add missing methods
 extern class RTC {
 	var uptime:Int;
-	function update():Bool; // TODO: check type
+	function update():Bool;
+	function time():Int; // Seconds
 	function get_localtime():TimeTuple;
-	function get_uptime_ms():Int; // TODO: check if Int or Float
+	function get_uptime_ms():Int;
 	function set_localtime(time:TimeTuple):Void;
 }
 

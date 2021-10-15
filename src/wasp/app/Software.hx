@@ -56,6 +56,7 @@ class Software extends BaseApplication {
 
 		db = [];
 		db.push(AppEntry.make(app.Stopclock, "Stopwatch", nextY(), Wasp.system.hasApplication(app.Stopclock)));
+		db.push(AppEntry.make(app.Timer, "Timer", nextY(), Wasp.system.hasApplication(app.Timer)));
 		// TODO: other apps
 
 		scroll = new ScrollIndicator();

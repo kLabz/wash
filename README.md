@@ -40,8 +40,8 @@ This is **hugely** WIP material.
 	* [-] user apps
 		* [x] flashlight
 		* [x] stopwatch
+		* [x] timer
 		* [ ] alarm
-		* [ ] timer
 		* [ ] calc
 		* [ ] heart
 		* [ ] musicplayer

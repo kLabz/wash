@@ -1,8 +1,7 @@
 package wasp;
 
-import python.Exceptions;
+// import python.Exceptions;
 import python.Lib.getType;
-import python.Lib.print;
 import python.Syntax.bytes;
 import python.Syntax.construct;
 import python.Syntax.opFloorDiv;
@@ -19,6 +18,7 @@ import wasp.app.PagerApp;
 import wasp.app.Settings;
 import wasp.app.Software;
 import wasp.event.TouchEvent;
+import wasp.util.Alarm;
 import wasp.util.Gc;
 import wasp.util.Machine;
 import wasp.util.Micropython;
@@ -52,7 +52,7 @@ class Manager {
 	);
 
 	var blankAfter:Int = 15;
-	// var alarms:Array<Alarm>; // TODO
+	var alarms:Array<Alarm> = [];
 	var brightness(default, set):Int = 2; // TODO: enum abstract
 	var notifyLevel(default, set):Int = 2; // TODO: enum abstract
 	var nfyLevels:Array<Int> = [0, 40, 80];
@@ -158,8 +158,16 @@ class Manager {
 	// - toggleMusic
 	// - setMusicInfo
 	// - setWeatherInfo
-	// - setAlarm
-	// - cancelAlarm
+
+	function setAlarm(time:Int, cb:Void->Void):Void {
+		alarms.push(Alarm.make(time, cb));
+		alarms.nativeSort(alarmSort);
+	}
+
+	function cancelAlarm(time:Int, cb:Void->Void):Bool {
+		try alarms.remove(Alarm.make(time, cb)) catch (_) return false;
+		return true;
+	}
 
 	// TODO: EventMask combination
 	function requestEvent(event:Int):Void {
@@ -243,7 +251,15 @@ class Manager {
 	function tick():Void {
 		var update = Watch.rtc.update();
 
-		// TODO: alarms
+		if (update && alarms.length > 0) {
+			var now = Watch.rtc.time();
+			var head = alarms[0];
+
+			if (head.time <= now) {
+				alarms.remove(head);
+				head.cb();
+			}
+		}
 
 		if (sleepAt > 0) {
 			if (update && tickExpiry > 0) {
@@ -317,7 +333,6 @@ class Manager {
 	}
 
 	function handleButton(state:Bool):Void {
-		// python.Syntax.code('print("handle button")');
 		keepAwake();
 
 		if (eventMask & EventMask.BUTTON > 0) {
@@ -328,7 +343,6 @@ class Manager {
 	}
 
 	function handleTouch(event:TouchEvent):Void {
-		// python.Syntax.code('print("handle touch")');
 		keepAwake();
 
 		if (event.type == NEXT) {
@@ -362,9 +376,11 @@ class Manager {
 	}
 
 	function switchApp(app:IApplication):Void {
+		if (app == this.app) return app.foreground();
+
 		if (this.app != null) {
 			try {
-				app.background();
+				this.app.background();
 			} catch (e) {
 				// TODO (see comment in wasp.py)
 			}
@@ -435,4 +451,5 @@ class Manager {
 	}
 
 	function appSort(app:IApplication):String return app.NAME;
+	function alarmSort(alarm:Alarm):Int return alarm.time;
 }
