@@ -9,7 +9,6 @@ class BatteryMeter implements IWidget {
 
 	public function new() {
 		level = -2;
-		update();
 	}
 
 	public function draw():Void {
