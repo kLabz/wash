@@ -87,7 +87,13 @@ class Launcher extends BaseApplication {
 
 	override public function touch(event:TouchEvent):Void {
 		var page = getPage(page);
-		var app = page[3 * opFloorDiv(event.y, 74) + opFloorDiv(event.x, 74)];
+
+		var x = opFloorDiv(event.x, 74);
+		if (x > 2) x = 2;
+		var y = opFloorDiv(event.y, 74);
+		if (y > 2) y = 2;
+
+		var app = page[3*y + x];
 		if (app != null) Wasp.system.switchApp(app);
 		else Watch.vibrator.pulse();
 	}
