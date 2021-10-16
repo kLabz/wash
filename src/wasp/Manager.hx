@@ -7,6 +7,7 @@ import python.Syntax.construct;
 import python.Syntax.opFloorDiv;
 
 // Default apps & watchfaces
+import app.AlarmApp;
 import app.Torch;
 import watchface.BatTri;
 
@@ -105,7 +106,7 @@ class Manager {
 	function registerDefaults():Void {
 		// Quick ring
 		register(BatTri, true, true);
-		// TODO: add alarm
+		register(AlarmApp, true);
 		register(Torch, true);
 
 		// Other apps
@@ -159,12 +160,12 @@ class Manager {
 	// - setMusicInfo
 	// - setWeatherInfo
 
-	function setAlarm(time:Int, cb:Void->Void):Void {
+	function setAlarm(time:Float, cb:Void->Void):Void {
 		alarms.push(Alarm.make(time, cb));
 		alarms.nativeSort(alarmSort);
 	}
 
-	function cancelAlarm(time:Int, cb:Void->Void):Bool {
+	function cancelAlarm(time:Float, cb:Void->Void):Bool {
 		try alarms.remove(Alarm.make(time, cb)) catch (_) return false;
 		return true;
 	}
@@ -375,8 +376,10 @@ class Manager {
 		Watch.touch.reset_touch_data();
 	}
 
+	function isActive(app:IApplication):Bool return app == this.app;
+
 	function switchApp(app:IApplication):Void {
-		if (app == this.app) return app.foreground();
+		if (isActive(app)) return;
 
 		if (this.app != null) {
 			try {
@@ -451,5 +454,5 @@ class Manager {
 	}
 
 	function appSort(app:IApplication):String return app.NAME;
-	function alarmSort(alarm:Alarm):Int return alarm.time;
+	function alarmSort(alarm:Alarm):Float return alarm.time;
 }

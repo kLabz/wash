@@ -27,7 +27,7 @@ class Button implements IWidget {
 		var y1 = data.y - 10;
 		var y2 = y1 + data.h + 20;
 
-		return data.x >= x1 && data.x < x2 && data.y >= y1 && data.y < y2;
+		return event.x >= x1 && event.x < x2 && event.y >= y1 && event.y < y2;
 	}
 
 	public function update(bg:Int, frame:Int, txt:Int):Void {

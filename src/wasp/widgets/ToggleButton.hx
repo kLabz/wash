@@ -3,7 +3,7 @@ package wasp.widgets;
 import wasp.event.TouchEvent;
 
 class ToggleButton extends Button {
-	var state:Bool;
+	public var state:Bool;
 
 	public function new(x:Int, y:Int, w:Int, h:Int, label:String) {
 		super(x, y, w, h, label);
@@ -12,7 +12,7 @@ class ToggleButton extends Button {
 
 	override public function draw():Void {
 		update(
-			Watch.drawable.darken(state ? Wasp.system.theme.ui : Wasp.system.theme.mid),
+			Watch.drawable.darken(state ? Wasp.system.theme.mid : Wasp.system.theme.ui),
 			Wasp.system.theme.mid,
 			Wasp.system.theme.bright
 		);

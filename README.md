@@ -41,7 +41,7 @@ This is **hugely** WIP material.
 		* [x] flashlight
 		* [x] stopwatch
 		* [x] timer
-		* [ ] alarm
+		* [x] alarm
 		* [ ] calc
 		* [ ] heart
 		* [ ] musicplayer

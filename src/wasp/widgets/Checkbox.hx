@@ -10,7 +10,7 @@ class Checkbox implements IWidget {
 	public var state:Bool;
 	var data:CheckboxData;
 
-	public function new(x:Int, y:Int, label:String) {
+	public function new(x:Int, y:Int, ?label:String) {
 		data = CheckboxData.make(x, y, label);
 		state = false;
 	}
@@ -60,7 +60,7 @@ class Checkbox implements IWidget {
 
 @:native("tuple")
 extern class CheckboxData extends Tuple<Dynamic> {
-	static inline function make(x:Int, y:Int, label:String):CheckboxData
+	static inline function make(x:Int, y:Int, ?label:String = null):CheckboxData
 		return Syntax.tuple(x, y, label);
 
 	var x(get, null):Int;
@@ -69,6 +69,6 @@ extern class CheckboxData extends Tuple<Dynamic> {
 	var y(get, null):Int;
 	inline function get_y():Int return this[1];
 
-	var label(get, null):String;
-	inline function get_label():String return this[2];
+	var label(get, null):Null<String>;
+	inline function get_label():Null<String> return this[2];
 }

@@ -114,7 +114,8 @@ class Timer extends BaseApplication {
 	function alert():Void {
 		state = Ringing;
 		Wasp.system.wake();
-		Wasp.system.switchApp(this);
+		if (Wasp.system.isActive(this)) draw();
+		else Wasp.system.switchApp(this);
 	}
 
 	function update():Void {

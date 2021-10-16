@@ -6,9 +6,9 @@ import python.Tuple;
 @:native("tuple")
 extern class TimeTuple extends Tuple<Dynamic> {
 	static inline function make(
-		yyyy:Int, mm:Int, dd:Int, HH:Int, MM:Int, SS:Int, wday:Int, yday:Int
+		yyyy:Int, mm:Int, dd:Int, HH:Int, MM:Int, SS:Int, wday:Int, yday:Int, ?_TODO:Int = 0
 	):TimeTuple
-		return Syntax.tuple(yyyy, mm, dd, HH, MM, SS, wday, yday);
+		return Syntax.tuple(yyyy, mm, dd, HH, MM, SS, wday, yday, _TODO);
 
 	var yyyy(get, null):Int;
 	inline function get_yyyy():Int return this[0];
@@ -33,4 +33,8 @@ extern class TimeTuple extends Tuple<Dynamic> {
 
 	var yday(get, null):Int;
 	inline function get_yday():Int return this[7];
+
+	// TODO: check what this data is
+	var _TODO(get, null):Int;
+	inline function get__TODO():Int return this[8];
 }
