@@ -4,15 +4,14 @@ import python.Bytes;
 import python.Syntax;
 import python.Syntax.bytes;
 import python.Syntax.opFloorDiv;
-import python.lib.Builtins;
 
 import wasp.EventMask;
 import wasp.Wasp;
 import wasp.Watch;
 import wasp.app.BaseApplication;
 import wasp.event.TouchEvent;
+import wasp.util.Builtins;
 
-using StringTools;
 using python.NativeStringTools;
 
 @:native('Calc')
@@ -92,7 +91,7 @@ class Calc extends BaseApplication {
 						Watch.vibrator.pulse();
 					}
 
-				case _: output += String.fromCharCode(buttonPressed);
+				case _: output += Builtins.chr(buttonPressed);
 			}
 		}
 
@@ -135,7 +134,7 @@ class Calc extends BaseApplication {
 			if (x == 3) draw.set_color(mid, bg);
 
 			for (y in 0...4) {
-				var label = String.fromCharCode(fields[x + 5*y]);
+				var label = Builtins.chr(fields[x + 5*y]);
 				if (x == 0) draw.string(label, x*47+14, y*47+60);
 				else draw.string(label, x*47+16, y*47+60);
 			}

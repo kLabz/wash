@@ -4,8 +4,8 @@ package wasp;
 import python.Syntax.bytes;
 import python.Syntax.construct;
 import python.Syntax.opFloorDiv;
-import python.lib.Builtins;
-import python.lib.Builtins.print;
+import wasp.util.Builtins;
+import wasp.util.Builtins.print;
 
 // Default apps & watchfaces
 import app.AlarmApp;

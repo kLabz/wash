@@ -12,6 +12,7 @@ import wasp.Wasp;
 import wasp.Watch;
 import wasp.app.BaseApplication;
 import wasp.event.TouchEvent;
+import wasp.util.Builtins;
 import wasp.util.Time;
 import wasp.util.TimeTuple;
 import wasp.widgets.Button;
@@ -173,7 +174,8 @@ class AlarmApp extends BaseApplication {
 				silenceAlarm();
 
 			case HOME_PAGE:
-				for (i in 0...alarmChecks.length) {
+				// Avoid haxe iterator..
+				for (i in 0...Builtins.len(alarmChecks)) {
 					var checkbox = alarmChecks[i];
 					if (i < numAlarms && checkbox.touch(event)) {
 						if (checkbox.state) {
@@ -187,9 +189,8 @@ class AlarmApp extends BaseApplication {
 					}
 				}
 
-				for (i in 0...alarms.length) {
-					var alarm = alarms[i];
-
+				// Avoid haxe iterator..
+				for (i in 0...Builtins.len(alarms)) {
 					// Open edit page for clicked alarms
 					if (
 						i < numAlarms && event.x < 190
@@ -287,7 +288,8 @@ class AlarmApp extends BaseApplication {
 			draw.line(0, 50, 239, 50, 1, Wasp.system.theme.bright);
 		}
 
-		for (i in 0...alarms.length) {
+		// Avoid haxe iterator..
+		for (i in 0...Builtins.len(alarms)) {
 			if (i < numAlarms && (alarmRow == HOME_PAGE || alarmRow == i)) {
 				drawAlarmRow(i);
 			} else if (i == numAlarms) {
@@ -302,11 +304,12 @@ class AlarmApp extends BaseApplication {
 	function drawAlarmRow(index:Int):Void {
 		var draw = Watch.drawable;
 		var alarm = alarms[index];
+		var alarmCheck:Checkbox = alarmChecks[index];
 
-		alarmChecks[index].state = alarm.mask & IS_ACTIVE;
-		alarmChecks[index].draw();
+		alarmCheck.state = alarm.mask & IS_ACTIVE > 0;
+		alarmCheck.draw();
 
-		draw.set_color(alarmChecks[index].state ? Wasp.system.theme.bright : Wasp.system.theme.mid);
+		draw.set_color(alarmCheck.state ? Wasp.system.theme.bright : Wasp.system.theme.mid);
 
 		draw.set_font(Fonts.sans28);
 		draw.string('{:02d}:{:02d}'.format(alarm.HH, alarm.MM), 10, 60+index*45, 120);
@@ -359,7 +362,9 @@ class AlarmApp extends BaseApplication {
 	function setPendingAlarms():Void {
 		var now = Watch.rtc.get_localtime();
 
-		for (index => alarm in alarms) {
+		// Avoid haxe iterator..
+		for (index in 0...Builtins.len(alarms)) {
+			var alarm = alarms[index];
 			if (index < numAlarms && (alarm.mask & IS_ACTIVE) > 0) {
 				var dd = now.dd;
 
@@ -399,7 +404,9 @@ class AlarmApp extends BaseApplication {
 		var now = Watch.rtc.get_localtime();
 		var now = Time.mktime(TimeTuple.make(now.yyyy, now.mm, now.dd, now.HH, now.MM, now.SS, 0, 0, 0));
 
-		for (i => alarm in alarms) {
+		// Avoid haxe iterator..
+		for (i in 0...Builtins.len(alarms)) {
+			var alarm = alarms[i];
 			var pendingAlarm = pendingAlarms[i];
 			if (pendingAlarm != 0.0) {
 				Wasp.system.cancelAlarm(pendingAlarm, alert);
