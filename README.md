@@ -42,7 +42,7 @@ This is **hugely** WIP material.
 		* [x] stopwatch
 		* [x] timer
 		* [x] alarm
-		* [ ] calc
+		* [x] calc
 		* [ ] heart
 		* [ ] musicplayer
 		* [ ] weather
