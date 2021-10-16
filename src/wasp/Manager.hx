@@ -1,10 +1,11 @@
 package wasp;
 
 // import python.Exceptions;
-import python.Lib.getType;
 import python.Syntax.bytes;
 import python.Syntax.construct;
 import python.Syntax.opFloorDiv;
+import python.lib.Builtins;
+import python.lib.Builtins.print;
 
 // Default apps & watchfaces
 import app.AlarmApp;
@@ -134,7 +135,7 @@ class Manager {
 
 	function unregister(cls:Class<IApplication>):Void {
 		for (app in launcherRing) {
-			if (getType(app) == cls) {
+			if (Builtins.type(app) == cls) {
 				launcherRing.remove(app);
 				break;
 			}
@@ -143,7 +144,7 @@ class Manager {
 
 	function hasApplication(cls:Class<IApplication>):Bool {
 		for (app in launcherRing)
-			if (getType(app) == cls) return true;
+			if (Builtins.type(app) == cls) return true;
 
 		return false;
 	}
@@ -202,8 +203,6 @@ class Manager {
 
 		keepAwake();
 	}
-
-	inline function print(s:String):Void python.Syntax.code('print({0})', s);
 
 	@:keep
 	function run(noExcept:Bool = true):Void {
