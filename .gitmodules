@@ -1,0 +1,4 @@
+[submodule "wasp-os"]
+	path = wasp-os
+	url = git@github.com:kLabz/wasp-os
+	branch = hxwasp

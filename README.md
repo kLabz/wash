@@ -57,6 +57,7 @@ This is **hugely** WIP material.
 		* [ ] word_clock (disabled)
 
 * [x] Transpile everything as `wasp.py`
+* [ ] Adjust CI to fit new structure
 * [ ] Integrate comments from wasp-os into Haxe versions
 
 * [ ] Port steplogger to Haxe
@@ -88,5 +89,6 @@ Needed Haxe changes to get a better output (which is needed for micropython):
 * [ ] Add `@micropython.native` runtime metadata
 * [ ] Skip all the unneeded code when doing `try / catch (e:SomeException)`
 * [ ] Skip generating empty classes/interfaces
+* [ ] Avoid iterator mess more easily
 
 See https://github.com/kLabz/haxe/tree/feature/micropython-utils
