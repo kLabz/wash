@@ -76,6 +76,16 @@ This is **hugely** WIP material.
 	* [ ] Rework theming (started in wasp-os fork)
 	* [x] Apply theme in generated images
 
+* [ ] Haxe-themed watchface (need ideas)
+
+* [ ] Tell apps whether they're part of quick ring or launcher
+	* [ ] Torch app: off by default when started from quick ring, on by default
+		  when started from launcher
+	* [ ] Adjust navigation events depending on the context?
+
+* [ ] Theme adjustement app (3 color pickers for ui/mid/bright)
+* [ ] Scroll indicator redesign (more like infinitime?)
+
 ### Haxe changes
 
 Needed Haxe changes to get a better output (which is needed for micropython):
