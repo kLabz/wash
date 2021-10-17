@@ -1,0 +1,137 @@
+name: hxwasp binary distribution
+on: [push, pull_request]
+
+jobs:
+  build:
+    # runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
+    env:
+      PLATFORM: linux64
+      OPAMYES: 1
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Cache opam
+      id: cache-opam
+      uses: actions/cache@v2
+      with:
+        path: /home/runner/.opam/
+        key: ${{ runner.os }}-${{ hashFiles('./haxe/opam') }}
+
+    - name: Install Neko using snapshot from S3
+      run: |
+        set -ex
+        pwd
+
+        cd haxe
+        curl -sSL https://build.haxe.org/builds/neko/$PLATFORM/neko_latest.tar.gz -o $RUNNER_TEMP/neko_latest.tar.gz
+        tar -xf $RUNNER_TEMP/neko_latest.tar.gz -C $RUNNER_TEMP
+        NEKOPATH=`echo $RUNNER_TEMP/neko-*-*`
+        sudo mkdir -p /usr/local/bin
+        sudo mkdir -p /usr/local/lib/neko
+        sudo ln -s $NEKOPATH/{neko,nekoc,nekoml,nekotools}  /usr/local/bin/
+        sudo ln -s $NEKOPATH/libneko.*                      /usr/local/lib/
+        sudo ln -s $NEKOPATH/*.ndll                         /usr/local/lib/neko/
+        echo "NEKOPATH=$NEKOPATH" >> $GITHUB_ENV
+
+    - name: Print Neko version
+      run: neko -version 2>&1
+
+    - name: Install dependencies
+      run: |
+        set -ex
+        sudo add-apt-repository ppa:avsm/ppa -y # provides OPAM 2
+        sudo add-apt-repository ppa:haxe/ocaml -y # provides newer version of mbedtls
+        sudo apt-get update -qqy
+        sudo apt-get install -qqy ocaml-nox camlp5 opam libpcre3-dev zlib1g-dev libgtk2.0-dev libmbedtls-dev ninja-build libstring-shellquote-perl
+
+    - name: Install OCaml libraries
+      if: steps.cache-opam.outputs.cache-hits != 'true'
+      run: |
+        set -ex
+        pwd
+        cd haxe
+        pwd
+        opam init # --disable-sandboxing
+        opam update
+        opam pin add haxe . --no-action
+        opam install haxe --deps-only --assume-depexts
+        opam list
+        ocamlopt -v
+
+    - name: Build Haxe
+      run: |
+        set -ex
+        cd haxe
+        git submodule update --init --recursive
+        eval $(opam env)
+        opam config exec -- make -s -j`nproc` STATICLINK=1 haxe
+        opam config exec -- make -s haxelib
+        make -s package_unix
+        ls -l out
+        ldd -v ./haxe
+        ldd -v ./haxelib
+
+    - name: Build HxWasp
+      run: ./haxe/haxe build.hxml
+
+    - name: Check the cached arm-none-eabi-gcc compiler
+      id:   cache-toolchain
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-toolchain
+      with:
+          path: ${{ runner.temp }}/arm-none-eabi
+          key:  ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
+
+    - name: Install arm-none-eabi-gcc
+      id:   install-toolchain
+      # installs arm-none-eabi if the CI environment can't find it in the cache
+      if:   steps.cache-toolchain.outputs.cache-hit != 'true'
+      # Currently v1.0.2 is the latest version... but it is from July 2020
+      # and is currently broken. Use a newer version instead.
+      uses: fiam/arm-none-eabi-gcc@162d71c10065d706b8a07a2f27d7628cad82e4e3
+      with:
+          release: 9-2019-q4
+          directory: ${{ runner.temp }}/arm-none-eabi
+
+    - name: Install packages
+      id: install-packages
+      run:  |
+          sudo apt-get update
+          sudo apt-get install -y python3-sphinx python3-cryptography python3-cbor graphviz
+          sudo pip3 install recommonmark
+
+    - name: Update submodules
+      id:   update-submodules
+      run:  |
+          cd wasp-os
+          export PATH=$PATH:${{ runner.temp }}/arm-none-eabi/bin
+          make -j `nproc` submodules
+
+    - name: Download softdevice
+      id:   download-softdevice
+      run:  |
+          cd wasp-os
+          export PATH=$PATH:${{ runner.temp }}/arm-none-eabi/bin
+          make -j `nproc` softdevice
+
+    - name: Build wasp-os binary distribution
+      id:   binary-distribution
+      run:  |
+          cd wasp-os
+          export PATH=$PATH:${{ runner.temp }}/arm-none-eabi/bin
+          make -j `nproc` VERSION=${{ github.sha }} dist
+          mv ../wasp-os-${{ github.sha }}.tar.gz .
+
+    - name: Upload pinetime binaries
+      id:   upload-pinetime
+      uses: actions/upload-artifact@v2
+      with:
+          name: pinetime-${{ github.sha }}
+          path: wasp-os/build-pinetime
