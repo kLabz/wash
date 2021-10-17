@@ -2,3 +2,7 @@
 	path = wasp-os
 	url = git@github.com:kLabz/wasp-os
 	branch = hxwasp
+[submodule "haxe"]
+	path = haxe
+	url = git@github.com:kLabz/haxe.git
+	branch = feature/micropython-utils
