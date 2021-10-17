@@ -12,16 +12,13 @@ indent_size = 4
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[*.yaml]
+[*.yml]
 indent_style = space
 indent_size = 2
 
-[*.html]
-indent_style = tab
+[*.py]
+indent_style = space
 indent_size = 4
-
-[*.css]
-indent_style = tab
 
 [*.hx]
 indent_style = tab
