@@ -13,8 +13,9 @@ class Wasp {
 		}
 	}
 
+	@:keep
 	public static function start():Void {
 		init();
-		system.schedule();
+		system.schedule(true);
 	}
 }

@@ -314,7 +314,7 @@ class Manager {
 	}
 
 	@:keep
-	function schedule(enable:Bool = true):Void {
+	function schedule(enable:Bool):Void {
 		secondaryInit();
 
 		if (enable) Watch.schedule = _schedule;
