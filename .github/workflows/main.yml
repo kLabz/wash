@@ -20,7 +20,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: /home/runner/.opam/
-        key: ${{ runner.os }}-${{ hashFiles('./haxe/opam') }}
+        key: ${{ runner.os }}-${{ hashFiles('./haxe/opam') }}-01
 
     - name: Install Neko using snapshot from S3
       run: |
