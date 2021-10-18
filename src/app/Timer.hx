@@ -10,6 +10,7 @@ import wasp.Wasp;
 import wasp.Watch;
 import wasp.app.BaseApplication;
 import wasp.event.TouchEvent;
+import wasp.util.Builtins;
 import wasp.widgets.Spinner;
 
 using python.NativeStringTools;
@@ -127,7 +128,7 @@ class Timer extends BaseApplication {
 			var s = currentAlarm - now;
 			if (s < 0) s = 0;
 			var m = opFloorDiv(s, 60);
-			var s = Math.floor(s) % 60;
+			var s = Builtins.int(s) % 60;
 			draw.set_font(Fonts.sans28);
 			draw.string('{:02}'.format(m), 50, 120-14, 60);
 			draw.string('{:02}'.format(s), 130, 120-14, 60);
