@@ -309,13 +309,11 @@ class Manager {
 
 			python.Syntax.code('\n        except Exception as e:');
 			// TODO: print exception when watch is able to
-			// TODO: CrashApp
-			python.Syntax.code('raise');
-			// python.Syntax.code('pass');
-			// switchApp(new CrashApp(e));
+			switchApp(new CrashApp(untyped e));
 		}
 	}
 
+	@:keep
 	function schedule(enable:Bool = true):Void {
 		secondaryInit();
 
