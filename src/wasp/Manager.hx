@@ -30,6 +30,7 @@ import wasp.widgets.StatusBar;
 using python.NativeArrayTools;
 
 @:publicFields
+@:native("Manager")
 // TODO: determine public and private fields
 class Manager {
 	var app:Null<IApplication> = null;
@@ -246,8 +247,7 @@ class Manager {
 		}
 	}
 
-	// TODO: @micropython.native
-	// Not needed in simulator, but might be needed on real watch
+	@:python("micropython.native")
 	function tick():Void {
 		var update = Watch.rtc.update();
 
@@ -294,6 +294,7 @@ class Manager {
 		}
 	}
 
+	@:keep
 	function work():Void {
 		scheduled = false;
 
@@ -326,7 +327,7 @@ class Manager {
 	private function _schedule():Void {
 		if (!scheduled) {
 			scheduled = true;
-			Micropython.schedule(work, this);
+			Micropython.schedule((untyped Manager).work, this);
 		}
 	}
 
