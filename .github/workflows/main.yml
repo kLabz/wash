@@ -25,7 +25,6 @@ jobs:
     - name: Install Neko using snapshot from S3
       run: |
         set -ex
-        pwd
 
         cd haxe
         curl -sSL https://build.haxe.org/builds/neko/$PLATFORM/neko_latest.tar.gz -o $RUNNER_TEMP/neko_latest.tar.gz
@@ -50,12 +49,10 @@ jobs:
         sudo apt-get install -qqy ocaml-nox camlp5 opam libpcre3-dev zlib1g-dev libgtk2.0-dev libmbedtls-dev ninja-build libstring-shellquote-perl
 
     - name: Install OCaml libraries
-      if: steps.cache-opam.outputs.cache-hits != 'true'
+      if: steps.cache-opam.outputs.cache-hit != 'true'
       run: |
         set -ex
-        pwd
         cd haxe
-        pwd
         opam init # --disable-sandboxing
         opam update
         opam pin add haxe . --no-action
