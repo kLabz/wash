@@ -150,9 +150,10 @@ class Manager {
 		return false;
 	}
 
-	function requestTick(ticks:Int, ?periodMs:Int = 0):Void {
+	function requestTick(periodMs:Int):Void {
 		tickPeriodMs = periodMs;
-		tickExpiry = Watch.rtc.get_uptime_ms() + periodMs;
+		// Don't wait for first tick()
+		tickExpiry = Watch.rtc.get_uptime_ms(); //  + periodMs;
 	}
 
 	// TODO:
@@ -266,15 +267,8 @@ class Manager {
 				var now = Watch.rtc.get_uptime_ms();
 
 				if (tickExpiry <= now) {
-					// var ticks = 0;
-					// TODO: double check formula
-					var ticks = tickPeriodMs == 0 ? 0 : -opFloorDiv(-(now - tickExpiry), tickPeriodMs);
-
-					// while (tickExpiry <= now) {
-					// 	tickExpiry = tickExpiry + tickPeriodMs;
-					// 	ticks++;
-					// }
-
+					var ticks = -opFloorDiv(-(now - tickExpiry), tickPeriodMs);
+					tickExpiry = tickExpiry + ticks * tickPeriodMs;
 					app.tick(ticks);
 				}
 			}
