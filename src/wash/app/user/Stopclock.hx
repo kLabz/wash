@@ -3,7 +3,6 @@ package wash.app.user;
 import python.Bytes;
 import python.Syntax.bytes;
 import python.Syntax.delete;
-import python.Syntax.opFloorDiv;
 
 import wasp.Fonts;
 import wasp.Watch;

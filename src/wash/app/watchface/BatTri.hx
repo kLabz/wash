@@ -3,7 +3,6 @@ package wash.app.watchface;
 import python.Bytes;
 import python.Syntax;
 import python.Syntax.bytes;
-import python.Syntax.opFloorDiv;
 
 import wash.Wash;
 import wasp.Watch;

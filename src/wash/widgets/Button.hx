@@ -1,7 +1,6 @@
 package wash.widgets;
 
 import python.Syntax;
-import python.Syntax.opFloorDiv;
 import python.Tuple;
 
 import wasp.Fonts;

@@ -2,7 +2,6 @@ package wash.app.system;
 
 import python.Bytes;
 import python.Syntax.bytes;
-import python.Syntax.opFloorDiv;
 
 import wasp.Watch;
 import wash.event.EventMask;

@@ -3,7 +3,6 @@ package wash;
 // import python.Exceptions;
 import python.Syntax.bytes;
 import python.Syntax.construct;
-import python.Syntax.opFloorDiv;
 
 import wasp.Builtins;
 import wasp.Builtins.print;
@@ -269,7 +268,7 @@ class Manager {
 				var now = Watch.rtc.get_uptime_ms();
 
 				if (tickExpiry <= now) {
-					var ticks = -opFloorDiv(-(now - tickExpiry), tickPeriodMs);
+					var ticks = opCeilDiv(now - tickExpiry, tickPeriodMs);
 					tickExpiry = tickExpiry + ticks * tickPeriodMs;
 					app.tick(ticks);
 				}

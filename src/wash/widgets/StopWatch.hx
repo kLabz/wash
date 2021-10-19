@@ -1,7 +1,5 @@
 package wash.widgets;
 
-import python.Syntax.opFloorDiv;
-
 import wasp.Fonts;
 import wasp.Watch;
 

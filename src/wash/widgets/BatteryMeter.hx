@@ -1,7 +1,5 @@
 package wash.widgets;
 
-import python.Syntax.opFloorDiv;
-
 import wasp.Watch;
 import wash.icon.BatteryIcon.icon as BatteryIcon;
 

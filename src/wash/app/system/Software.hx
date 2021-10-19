@@ -4,7 +4,6 @@ import python.Bytes;
 import python.Syntax.bytes;
 import python.Syntax.delete;
 import python.Syntax.tuple;
-import python.Syntax.opFloorDiv;
 import python.Tuple;
 
 import wasp.Watch;
