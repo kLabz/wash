@@ -22,7 +22,7 @@ class Checkbox implements IWidget {
 			var draw = Watch.drawable;
 			draw.set_color(Wash.system.theme.bright);
 			draw.set_font(Fonts.sans24);
-			draw.string(data.label, data.x, data.y + 6);
+			draw.string(data.label, data.x + 32 + 6, data.y + 6);
 		}
 
 		update();
@@ -53,10 +53,7 @@ class Checkbox implements IWidget {
 			fg = c2;
 		}
 
-		// Draw checkbox on the right margin if there is a label, otherwise
-		// draw at the natural location
-		var x = data.label != null ? 239 - 32 - 4 : data.x;
-		draw.blit(CheckboxIcon, x, data.y, fg, c1, c2);
+		draw.blit(CheckboxIcon, data.x, data.y, fg, c1, c2);
 	}
 }
 
