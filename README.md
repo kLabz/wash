@@ -6,7 +6,7 @@ This is **hugely** WIP material.
 
 What it currently does:
 * Run on simulator
-* Run on a pinetime (currently using safe mode; see #3)
+* Run on a pinetime (currently using safe mode; see [#3](https://github.com/kLabz/wash/issues/3))
 * Display date / time / battery level
 
 Available apps:
