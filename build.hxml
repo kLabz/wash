@@ -1,7 +1,7 @@
 -cp src
 
 --python wasp-os/wasp/wasp.py
-wasp.Wasp
+wash.Wash
 
 -D analyzer-optimize
 -D source-header=

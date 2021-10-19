@@ -1,4 +1,4 @@
-# Haxe + wasp-os
+# Watch Application System in Haxe
 
 [wasp-os](https://github.com/daniel-thompson/wasp-os) userland code, ported to Haxe and then modified to my taste.
 

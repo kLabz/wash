@@ -1,9 +1,9 @@
 package wasp;
 
+import wash.event.TouchEvent;
+import wash.util.TimeTuple;
 import wasp.driver.Draw565;
 import wasp.driver.ST7789;
-import wasp.event.TouchEvent;
-import wasp.util.TimeTuple;
 
 @:pythonImport('watch')
 extern class Watch {
@@ -14,7 +14,7 @@ extern class Watch {
 	static var battery:Battery;
 	static var backlight:Backlight;
 	static var accel:Accelerometer;
-	static var button:Button;
+	static var button:WatchButton;
 	static var touch:Touch;
 	static var free:Int;
 
@@ -60,7 +60,7 @@ extern class Touch {
 }
 
 // TODO: move to own module, add missing methods
-extern class Button {
+extern class WatchButton {
 	function value():Null<Bool>;
 }
 

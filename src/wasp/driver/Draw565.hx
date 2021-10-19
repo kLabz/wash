@@ -2,7 +2,7 @@ package wasp.driver;
 
 import python.Bytes;
 
-import wasp.util.PointTuple;
+import wash.util.PointTuple;
 
 // TODO: double check default values
 extern class Draw565 {
