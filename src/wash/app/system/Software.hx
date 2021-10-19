@@ -41,6 +41,8 @@ class Software extends BaseApplication {
 		'\\x08\\x8a?\\xff\\x0b'
 	);
 
+	static inline var PAGE_LEN:Int = 6;
+
 	var db:Array<AppEntry>;
 	var scroll:ScrollIndicator;
 	var page:Int;
@@ -54,7 +56,7 @@ class Software extends BaseApplication {
 		var y = -40;
 		function nextY():Int {
 			y += 40;
-			if (y > 160) y = 0;
+			if (y > 200) y = 0;
 			return y;
 		}
 
@@ -64,7 +66,8 @@ class Software extends BaseApplication {
 		db.push(AppEntry.make(Timer, "Timer", nextY(), Wash.system.hasApplication(Timer)));
 		// TODO: other apps
 
-		scroll = new ScrollIndicator();
+		var pages = opCeilDiv(db.length, PAGE_LEN) - 1;
+		scroll = new ScrollIndicator(null, 0, pages, 0);
 		page = 0;
 
 		draw();
@@ -82,10 +85,10 @@ class Software extends BaseApplication {
 		delete(db);
 	}
 
-	function getPage():Array<AppEntry> return db.slice(page*5, page*5+5);
+	function getPage():Array<AppEntry> return db.slice(page*PAGE_LEN, page*PAGE_LEN+PAGE_LEN);
 
 	override public function swipe(event:TouchEvent):Bool {
-		var pages = opFloorDiv(db.length - 1, 5);
+		var pages = opFloorDiv(db.length - 1, PAGE_LEN);
 
 		switch (event.type) {
 			case DOWN: page = page > 0 ? page - 1 : pages;
@@ -111,8 +114,10 @@ class Software extends BaseApplication {
 
 	function draw():Void {
 		Watch.drawable.fill();
-		scroll.draw();
 		for (p in getPage()) p.checkbox.draw();
+
+		scroll.value = page;
+		scroll.draw();
 	}
 }
 
@@ -121,7 +126,7 @@ extern class AppEntry extends Tuple<Dynamic> {
 	static inline function make(
 		cls:Class<IApplication>, label:String, y:Int, checked:Bool
 	):AppEntry {
-		var checkbox = new Checkbox(0, y, label);
+		var checkbox = new Checkbox(2, y + 2, label);
 		checkbox.state = checked;
 		return tuple(cls, label, checkbox);
 	}

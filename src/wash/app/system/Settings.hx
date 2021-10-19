@@ -48,7 +48,6 @@ class Settings extends BaseApplication {
 		NAME = "Settings";
 		ICON = icon;
 
-		scroll = new ScrollIndicator();
 		slider = new Slider(3, 10, 90);
 		nfySlider = new Slider(3, 10, 90);
 		HH = new Spinner(50, 60, 0, 23, 2);
@@ -58,9 +57,11 @@ class Settings extends BaseApplication {
 		yy = new Spinner(160, 60, 21, 60, 2);
 		units = ["Metric", "Imperial"];
 		unitsToggle = new Button(32, 90, 176, 48, "Change");
-		settings = ["Brightness", "Notification Level", "Time", "Date", "Units"];
+
 		settingsIndex = 0;
+		settings = ["Brightness", "Notification Level", "Time", "Date", "Units"];
 		currentSetting = settings[settingsIndex];
+		scroll = new ScrollIndicator(null, 0, settings.length - 1, settingsIndex);
 	}
 
 	override public function foreground():Void {
@@ -166,7 +167,6 @@ class Settings extends BaseApplication {
 			case _:
 		}
 
-		scroll.draw();
 		update();
 		Watch.display.mute(false);
 	}
@@ -201,5 +201,8 @@ class Settings extends BaseApplication {
 
 			case _:
 		}
+
+		scroll.value = settingsIndex;
+		scroll.draw();
 	}
 }

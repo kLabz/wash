@@ -63,6 +63,8 @@ class PagerApp extends BaseApplication {
 		Watch.drawable.set_font(Fonts.sans18);
 		chunks = Watch.drawable.wrap(msg, 240);
 		numPages = opFloorDiv(chunks.length - 2, 9);
+		scroll.min = 0;
+		scroll.max = numPages;
 		draw();
 	}
 
@@ -81,8 +83,7 @@ class PagerApp extends BaseApplication {
 			Watch.drawable.string(sub, 0, 24*i);
 		}
 
-		scroll.up = page > 0;
-		scroll.down = page < numPages;
+		scroll.value = page;
 		scroll.draw();
 
 		Watch.display.mute(false);

@@ -1,19 +1,20 @@
 package wash.widgets;
 
+import wasp.Builtins;
 import wasp.Watch;
-import wash.icon.DownArrow;
-import wash.icon.UpArrow;
 import wash.util.PointTuple;
 
 class ScrollIndicator {
-	public var up:Bool;
-	public var down:Bool;
-	public var pos:PointTuple;
+	var y:Int;
+	public var value:Int;
+	public var min:Int;
+	public var max:Int;
 
-	public function new(x:Int = 240-18, y:Int = 240-24) {
-		pos = PointTuple.make(x, y);
-		up = true;
-		down = true;
+	public function new(y:Int = 2, min:Int = 0, max:Int = 0, value:Int = 0) {
+		this.y = y;
+		this.min = min;
+		this.max = max;
+		this.value = value;
 	}
 
 	public function draw():Void {
@@ -21,9 +22,15 @@ class ScrollIndicator {
 	}
 
 	public function update():Void {
-		var color = Wash.system.theme.scrollIndicator;
+		if (min == max) return;
 
-		if (up) Watch.drawable.blit(UpArrow, pos.x, pos.y, color);
-		if (down) Watch.drawable.blit(DownArrow, pos.x, pos.y+13, color);
+		var draw = Watch.drawable;
+		var size = 240-2-y;
+		var trackSize = opFloorDiv(size, max - min + 1);
+		var trackPos = Builtins.int((value - min) * trackSize);
+
+		draw.fill(0, 240-5, y, 4, size);
+		draw.fill(0x18a3, 240-4, y, 2, size);
+		draw.fill(Wash.system.theme.ui, 240-5, y + trackPos, 4, trackSize);
 	}
 }

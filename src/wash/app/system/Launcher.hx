@@ -48,8 +48,8 @@ class Launcher extends BaseApplication {
 	public function new() {
 		NAME = "Launcher";
 		ICON = icon;
-		scroll = new ScrollIndicator(null, 6);
 		page = 0;
+		scroll = new ScrollIndicator(null, 0, numPages, page);
 	}
 
 	override public function foreground():Void {
@@ -79,9 +79,7 @@ class Launcher extends BaseApplication {
 		}
 
 		page = i;
-		// Watch.display.mute(true);
 		draw();
-		// Watch.display.mute(false);
 
 		return false;
 	}
@@ -114,8 +112,7 @@ class Launcher extends BaseApplication {
 			for (j in 0...3)
 				drawApp(page[i*3 + j], j*74, i*74);
 
-		scroll.up = pageNum > 0;
-		scroll.down = pageNum < (numPages - 1);
+		scroll.value = pageNum;
 		scroll.draw();
 	}
 
