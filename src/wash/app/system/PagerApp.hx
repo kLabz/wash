@@ -2,6 +2,7 @@ package wash.app.system;
 
 import python.Syntax;
 
+import wasp.Fonts;
 import wasp.Watch;
 import wash.event.EventMask;
 import wash.event.TouchEvent;
@@ -59,6 +60,7 @@ class PagerApp extends BaseApplication {
 
 	function redraw():Void {
 		page = 0;
+		Watch.drawable.set_font(Fonts.sans18);
 		chunks = Watch.drawable.wrap(msg, 240);
 		numPages = opFloorDiv(chunks.length - 2, 9);
 		draw();
@@ -66,6 +68,7 @@ class PagerApp extends BaseApplication {
 
 	function draw():Void {
 		Watch.display.mute(true);
+		Watch.drawable.set_font(Fonts.sans18);
 		Watch.drawable.set_color(0xffff);
 		Watch.drawable.fill();
 
