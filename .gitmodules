@@ -1,7 +1,7 @@
 [submodule "wasp-os"]
 	path = wasp-os
 	url = git@github.com:kLabz/wasp-os
-	branch = hxwasp
+	branch = wash
 [submodule "haxe"]
 	path = haxe
 	url = git@github.com:kLabz/haxe.git
