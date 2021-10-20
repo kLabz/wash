@@ -2,7 +2,6 @@ package wash.widgets;
 
 import wasp.Builtins;
 import wasp.Watch;
-import wash.util.PointTuple;
 
 class ScrollIndicator {
 	var y:Int;
