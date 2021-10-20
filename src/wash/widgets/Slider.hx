@@ -27,16 +27,14 @@ class Slider implements IWidget {
 		this.stepSize = opFloorDiv(TRACK, (steps - 1));
 		this.x = x;
 		this.y = y;
+
+		if (color == null) color = Wash.system.theme.ui;
 		this.color = color;
-		this.lowLight = null;
+		this.lowLight = 0x18a3;
 	}
 
 	public function draw():Void {
 		var draw = Watch.drawable;
-
-		if (color == null) color = Wash.system.theme.ui;
-		if (lowLight == null)
-			lowLight = draw.lighten(color, Wash.system.theme.contrast);
 
 		var knobX:Int = x + opFloorDiv(TRACK * value, steps - 1);
 		draw.blit(Knob, knobX, this.y, color);
