@@ -8,6 +8,7 @@ using python.NativeStringTools;
 class StopWatch implements IWidget {
 	public var startedAt:Int;
 	public var count:Int;
+	var inverted:Bool;
 
 	public var started(get, null):Bool;
 	function get_started():Bool return startedAt > 0;
@@ -15,8 +16,9 @@ class StopWatch implements IWidget {
 	var y:Int;
 	var lastCount:Int;
 
-	public function new(y:Int) {
+	public function new(y:Int, ?inverted = false) {
 		this.y = y;
+		this.inverted = inverted;
 		reset();
 	}
 
@@ -37,6 +39,10 @@ class StopWatch implements IWidget {
 
 	public function draw():Void {
 		lastCount = -1;
+
+		if (inverted)
+			Watch.drawable.fill(Wash.system.theme.mid, 0, y-6, 240, 36+12);
+
 		update();
 	}
 
@@ -59,11 +65,15 @@ class StopWatch implements IWidget {
 
 			var draw = Watch.drawable;
 			draw.set_font(Fonts.sans36);
-			draw.set_color(draw.lighten(Wash.system.theme.ui, Wash.system.theme.contrast));
+
+			if (inverted)
+				draw.set_color(0, Wash.system.theme.mid);
+			else
+				draw.set_color(Wash.system.theme.mid);
 
 			var w = Fonts.width(Fonts.sans36, t1);
 			draw.string(t1, 180-w, y);
-			draw.fill(0, 0, y, 180-w, 36);
+			if (!inverted) draw.fill(0, 0, y, 180-w, 36);
 			draw.set_font(Fonts.sans24);
 			draw.string(t2, 180, y+18, 46);
 

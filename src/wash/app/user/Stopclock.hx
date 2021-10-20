@@ -46,7 +46,7 @@ class Stopclock extends BaseApplication {
 		NAME = "Stopclock";
 		ICON = icon;
 
-		timer = new StopWatch(120-36);
+		timer = new StopWatch(120-36, true);
 		reset();
 	}
 
@@ -109,12 +109,12 @@ class Stopclock extends BaseApplication {
 	function drawSplits():Void {
 		var draw = Watch.drawable;
 		if (splits.length == 0) {
-			draw.fill(0, 0, 120, 240, 120);
+			draw.fill(0, 0, 120+12, 240, 120-12);
 			return;
 		}
 
 		draw.set_font(Fonts.sans24);
-		draw.set_color(Wash.system.theme.mid);
+		draw.set_color(Wash.system.theme.ui);
 		var y = 240 - 6 - splits.length * 24;
 
 		var n = nsplits;
