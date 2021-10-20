@@ -97,46 +97,37 @@ class Calc extends BaseApplication {
 
 	function update():Void {
 		output = output.length < 12 ? output : Syntax.substr(output, output.length-12, null);
-		Watch.drawable.string(output, 0, 14, 200, true);
+		Watch.drawable.set_color(Wash.system.theme.bright);
+		Watch.drawable.string(output, 0, 14, 205, true);
 	}
 
 	function draw():Void {
 		var draw = Watch.drawable;
+		draw.fill();
 
 		var hi = Wash.system.theme.bright;
-		var lo = Wash.system.theme.mid;
-		var mid = draw.lighten(lo, 2);
-		var bg = draw.darken(Wash.system.theme.ui, Wash.system.theme.contrast);
-		var bg2 = draw.darken(bg, 2);
+		var mid = Wash.system.theme.mid;
+		var ui = Wash.system.theme.ui;
 
-		// Draw the background
-		draw.fill(0, 0, 0, 239, 47);
-		draw.fill(0, 236, 239, 3);
-		draw.fill(bg, 141, 48, 239-141, 236-48);
-		draw.fill(bg2, 0, 48, 141, 236-48);
-
-		// Make grid
-		draw.set_color(lo);
-		for (i in 0...4) {
-			draw.line(0, (i+1)*47, 239, (i+1)*47);
-			draw.line((i+1)*47, 47, (i+1)*47, 235);
-		}
-		draw.line(0, 47, 0, 236);
-		draw.line(239, 47, 239, 236);
-		draw.line(0, 236, 239, 236);
-
-		// Draw button labels
-		draw.set_color(hi, bg2);
 		for (x in 0...5) {
-			if (x == 3) draw.set_color(mid, bg);
-
 			for (y in 0...4) {
+				var bg:Int = 0;
+				if (x == 4 && y == 3) bg = mid;
+				else if ((x == 0 || x == 2) && y == 3) bg = ui;
+				else if (x >= 3) bg = ui;
+
+				if (bg == 0) draw.set_color(hi, bg);
+				else {
+					draw.fill(bg, x*47 + 2 + 3, (y+1)*47 + 2 + 2, 43, 43);
+					draw.set_color(0, bg);
+				}
+
 				var label = Builtins.chr(fields[x + 5*y]);
-				if (x == 0) draw.string(label, x*47+14, y*47+60);
-				else draw.string(label, x*47+16, y*47+60);
+				draw.string(label, x*47+2+3, y*47+47+13+2, 43);
 			}
 		}
-		draw.set_color(hi);
-		draw.string("<", 215, 10);
+
+		draw.set_color(mid);
+		draw.string("<", 215, 13);
 	}
 }
