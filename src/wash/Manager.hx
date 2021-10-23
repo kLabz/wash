@@ -1,6 +1,7 @@
 package wash;
 
 // import python.Exceptions;
+import python.Bytearray;
 import python.Syntax.bytes;
 import python.Syntax.construct;
 
@@ -41,7 +42,7 @@ class Manager {
 	// var musicState:MusicState; // TODO
 	// var weatherInfo:WeatherInfo; // TODO
 	var units:String = 'Metric'; // TODO: enum abstract
-	var theme:Theme = bytes(
+	var theme:Theme = new Bytearray(cast bytes(
 		'\\x7b\\xef', // ble
 		'\\x7b\\xef', // scroll-indicator
 		'\\x7b\\xef', // battery
@@ -53,7 +54,7 @@ class Manager {
 		'\\xff\\x00', // spot1
 		'\\xdd\\xd0', // spot2
 		'\\x00\\x0f' // contrast
-	);
+	));
 
 	var blankAfter:Int = 15;
 	var alarms:Array<Alarm> = [];

@@ -9,9 +9,30 @@ import wash.event.EventMask;
 import wash.event.TouchEvent;
 import wash.util.TimeTuple;
 import wash.widgets.Button;
+import wash.widgets.ColorPicker;
 import wash.widgets.ScrollIndicator;
 import wash.widgets.Slider;
 import wash.widgets.Spinner;
+
+private enum abstract SettingsPage(Int) {
+	var Brightness;
+	var NotificationLevel;
+	var Time;
+	var Date;
+	var Theme;
+	var Units;
+
+	@:to public function toString():String {
+		return switch (cast this:SettingsPage) {
+			case Brightness: "Brightness";
+			case NotificationLevel: "Notification Level";
+			case Time: "Time";
+			case Date: "Date";
+			case Theme: "Theme";
+			case Units: "Units";
+		};
+	}
+}
 
 @:native('SettingsApp')
 class Settings extends BaseApplication {
@@ -40,9 +61,17 @@ class Settings extends BaseApplication {
 	var yy:Spinner;
 	var units:Array<String>;
 	var unitsToggle:Button;
-	var settings:Array<String>;
+	var settings:Array<SettingsPage>;
 	var settingsIndex:Int; // TODO: enum abstract
-	var currentSetting:String;
+	var currentSetting:SettingsPage;
+
+	var themeColor:Int;
+	var uiButton:Button;
+	var midButton:Button;
+	var brightButton:Button;
+	var uiColorPicker:ColorPicker;
+	var midColorPicker:ColorPicker;
+	var brightColorPicker:ColorPicker;
 
 	public function new() {
 		NAME = "Settings";
@@ -58,8 +87,16 @@ class Settings extends BaseApplication {
 		units = ["Metric", "Imperial"];
 		unitsToggle = new Button(32, 90, 176, 48, "Change");
 
+		themeColor = 0;
+		uiColorPicker = new ColorPicker(Wash.system.theme.ui);
+		midColorPicker = new ColorPicker(Wash.system.theme.mid);
+		brightColorPicker = new ColorPicker(Wash.system.theme.bright);
+		uiButton = new Button(10, 90, 220, 40, "Set primary");
+		midButton = new Button(10, 140, 220, 40, "Set secondary");
+		brightButton = new Button(10, 190, 220, 40, "Set highlight");
+
 		settingsIndex = 0;
-		settings = ["Brightness", "Notification Level", "Time", "Date", "Units"];
+		settings = [Brightness, NotificationLevel, Time, Date, Theme, Units];
 		currentSetting = settings[settingsIndex];
 		scroll = new ScrollIndicator(null, 0, settings.length - 1, settingsIndex);
 	}
@@ -67,7 +104,7 @@ class Settings extends BaseApplication {
 	override public function foreground():Void {
 		slider.value = Wash.system.brightness - 1;
 		draw();
-		Wash.system.requestEvent(EventMask.TOUCH | EventMask.SWIPE_UPDOWN);
+		Wash.system.requestEvent(EventMask.TOUCH | EventMask.SWIPE_UPDOWN | EventMask.SWIPE_LEFTRIGHT);
 	}
 
 	override public function swipe(event:TouchEvent):Bool {
@@ -77,6 +114,7 @@ class Settings extends BaseApplication {
 				settingsIndex++;
 				if (settingsIndex >= settings.length) settingsIndex = 0;
 				currentSetting = settings[settingsIndex];
+				if (currentSetting == Theme) themeColor = 0;
 				draw();
 
 			case DOWN:
@@ -84,6 +122,18 @@ class Settings extends BaseApplication {
 				settingsIndex--;
 				if (settingsIndex < 0) settingsIndex = settings.length - 1;
 				currentSetting = settings[settingsIndex];
+				if (currentSetting == Theme) themeColor = 0;
+				draw();
+
+			case LEFT | RIGHT:
+				if (currentSetting != Theme) return true;
+				switch (themeColor) {
+					case 1: Wash.system.theme.ui = uiColorPicker.color;
+					case 2: Wash.system.theme.mid = midColorPicker.color;
+					case 3: Wash.system.theme.bright = brightColorPicker.color;
+					case _: return true;
+				}
+				themeColor = 0;
 				draw();
 
 			case _:
@@ -93,34 +143,46 @@ class Settings extends BaseApplication {
 	}
 
 	override public function touch(event:TouchEvent):Void {
-		switch (settingsIndex) {
-			case 0: // Brightness
+		switch (currentSetting) {
+			case Brightness:
 				slider.touch(event);
 				Wash.system.brightness = slider.value + 1;
 
-			case 1: // Notification Level
+			case NotificationLevel:
 				nfySlider.touch(event);
 				Wash.system.notifyLevel = nfySlider.value + 1;
 
-			case 2: // Time
+			case Time:
 				if (HH.touch(event) || MM.touch(event)) {
 					var now = Watch.rtc.get_localtime();
 					Watch.rtc.set_localtime(TimeTuple.make(now.yyyy, now.mm, now.dd, HH.value, MM.value, 0, now.wday, now.yday));
 				}
 
-			case 3: // Date
+			case Date:
 				if (dd.touch(event) || mm.touch(event) || yy.touch(event)) {
 					var now = Watch.rtc.get_localtime();
 					Watch.rtc.set_localtime(TimeTuple.make(yy.value + 2000, mm.value, dd.value, now.HH, now.MM, now.SS, now.wday, now.yday));
 				}
 
-			case 4: // Units
+			case Theme:
+				switch (themeColor) {
+					case 0:
+						if (uiButton.touch(event)) themeColor = 1;
+						if (midButton.touch(event)) themeColor = 2;
+						if (brightButton.touch(event)) themeColor = 3;
+						if (themeColor > 0) draw();
+
+					case 1: uiColorPicker.touch(event);
+					case 2: midColorPicker.touch(event);
+					case 3: brightColorPicker.touch(event);
+				}
+
+
+			case Units:
 				if (unitsToggle.touch(event)) {
 					var index = (units.indexOf(Wash.system.units) + 1) % units.length;
 					Wash.system.units = units[index];
 				}
-
-			case _:
 		}
 
 		update();
@@ -134,14 +196,14 @@ class Settings extends BaseApplication {
 		draw.set_font(Fonts.sans24);
 		draw.string(currentSetting, 0, 6, 240);
 
-		switch (settingsIndex) {
-			case 0: // Brightness
+		switch (currentSetting) {
+			case Brightness:
 				slider.value = Wash.system.brightness - 1;
 
-			case 1: // Notification Level
+			case NotificationLevel:
 				nfySlider.value = Wash.system.notifyLevel - 1;
 
-			case 2: // Time
+			case Time:
 				var now = Watch.rtc.get_localtime();
 				HH.value = now.HH;
 				MM.value = now.MM;
@@ -150,7 +212,7 @@ class Settings extends BaseApplication {
 				HH.draw();
 				MM.draw();
 
-			case 3: // Date
+			case Date:
 				var now = Watch.rtc.get_localtime();
 				yy.value = now.yyyy - 2000;
 				mm.value = now.mm;
@@ -161,10 +223,23 @@ class Settings extends BaseApplication {
 				draw.set_font(Fonts.sans24);
 				draw.string('DD    MM    YY', 0, 180, 240);
 
-			case 4: // Units
-				unitsToggle.draw();
+			case Theme:
+				switch (themeColor) {
+					case 0:
+						draw.fill(Wash.system.theme.ui, 55, 35, 40, 40);
+						draw.fill(Wash.system.theme.mid, 100, 35, 40, 40);
+						draw.fill(Wash.system.theme.bright, 145, 35, 40, 40);
+						uiButton.draw();
+						midButton.draw();
+						brightButton.draw();
 
-			case _:
+					case 1: uiColorPicker.draw();
+					case 2: midColorPicker.draw();
+					case 3: brightColorPicker.draw();
+				}
+
+			case Units:
+				unitsToggle.draw();
 		}
 
 		update();
@@ -175,8 +250,8 @@ class Settings extends BaseApplication {
 		var draw = Watch.drawable;
 		draw.set_color(Wash.system.theme.bright);
 
-		switch (settingsIndex) {
-			case 0: // Brightness
+		switch (currentSetting) {
+			case Brightness:
 				var say = switch (Wash.system.brightness) {
 					case 3: "High";
 					case 2: "Mid";
@@ -186,7 +261,7 @@ class Settings extends BaseApplication {
 				slider.update();
 				draw.string(say, 0, 150, 240);
 
-			case 1: // Notification Level
+			case NotificationLevel:
 				var say = switch (Wash.system.notifyLevel) {
 					case 3: "High";
 					case 2: "Mid";
@@ -196,10 +271,10 @@ class Settings extends BaseApplication {
 				nfySlider.update();
 				draw.string(say, 0, 150, 240);
 
-			case 4: // Units
+			case Units:
 				draw.string(Wash.system.units, 0, 150, 240);
 
-			case _:
+			case Date | Time | Theme:
 		}
 
 		scroll.value = settingsIndex;
