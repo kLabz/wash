@@ -2,7 +2,6 @@ package wash.app;
 
 import python.Bytes;
 
-import wasp.Watch.WatchButton;
 import wash.event.EventType;
 import wash.event.TouchEvent;
 
@@ -13,6 +12,8 @@ interface IApplication {
 
 	public function foreground():Void;
 	public function background():Void;
+	public function registered(quickRing:Bool):Void;
+	public function unregistered():Void;
 	public function sleep():Bool;
 	public function wake():Void;
 	public function tick(ticks:Int):Void; // Float?

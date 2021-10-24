@@ -4,6 +4,8 @@ import python.Bytes;
 import python.Syntax.bytes;
 
 import wash.Wash;
+import wash.app.system.Settings;
+import wash.app.user.settings.TorchConfig;
 import wash.event.EventMask;
 import wasp.Watch;
 
@@ -30,6 +32,10 @@ class Torch extends BaseApplication {
 		'\\xff\\x95'
 	);
 
+	// Configuration
+	static var initialState:Bool = true;
+	static var redLight:Bool = false;
+
 	private var activated:Bool;
 	private var brightness:Int;
 
@@ -42,6 +48,7 @@ class Torch extends BaseApplication {
 
 	override public function foreground():Void {
 		brightness = Wash.system.brightness;
+		activated = initialState;
 		draw();
 		Wash.system.requestTick(1000);
 		Wash.system.requestEvent(EventMask.TOUCH | EventMask.BUTTON);
@@ -50,6 +57,15 @@ class Torch extends BaseApplication {
 	override public function background():Void {
 		activated = false;
 		Wash.system.brightness = brightness;
+	}
+
+	override function registered(quickRing:Bool):Void {
+		initialState = !quickRing;
+		Settings.registerApp(NAME, TorchConfig);
+	}
+
+	override function unregistered():Void {
+		Settings.unregisterApp(NAME);
 	}
 
 	override public function tick(ticks:Int):Void {
@@ -70,12 +86,12 @@ class Torch extends BaseApplication {
 
 	function draw():Void {
 		if (activated) {
-			Watch.drawable.fill(0xffff);
+			Watch.drawable.fill(redLight ? 0xf800 : 0xffff);
 			drawTorch(0, 0);
 			Wash.system.brightness = 3;
 		} else {
 			Watch.drawable.fill();
-			drawTorch(Wash.system.theme.mid, 0xffff);
+			drawTorch(Wash.system.theme.mid, redLight ? 0xf800 : 0xffff);
 			Wash.system.brightness = brightness;
 		}
 	}

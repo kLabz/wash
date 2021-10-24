@@ -2,6 +2,7 @@ package wash.app.system;
 
 import python.Bytes;
 import python.Syntax.bytes;
+import python.Syntax.construct;
 
 import wasp.Fonts;
 import wasp.Watch;
@@ -14,28 +15,9 @@ import wash.app.system.settings.ThemeConfig;
 import wash.app.system.settings.TimeConfig;
 import wash.event.EventMask;
 import wash.event.TouchEvent;
-import wash.widgets.Button;
 import wash.widgets.ScrollIndicator;
 
 using python.NativeArrayTools;
-
-private enum abstract SettingsPage(Int) {
-	var Brightness;
-	var NotificationLevel;
-	var Time;
-	var Date;
-	var Theme;
-
-	@:to public function toString():String {
-		return switch (cast this:SettingsPage) {
-			case Brightness: "Brightness";
-			case NotificationLevel: "Notification Level";
-			case Time: "Time";
-			case Date: "Date";
-			case Theme: "Theme";
-		};
-	}
-}
 
 @:native('SettingsApp')
 class Settings extends BaseApplication {
@@ -54,16 +36,14 @@ class Settings extends BaseApplication {
 		'D?\\xff\\xffq'
 	);
 
-	// TODO: next step: use this instead of SettingsPage enum abstract
-	// static var systemSettings:Array<AppConfig> = [
-	// 	AppConfig.make("Brightness", BrightnessConfig),
-	// 	AppConfig.make("Notification Level", NotificationLevelConfig),
-	// 	AppConfig.make("Time", TimeConfig),
-	// 	AppConfig.make("Date", DateConfig),
-	// 	AppConfig.make("Theme", ThemeConfig),
-	// ];
+	static var systemSettings:Array<AppConfig> = [
+		AppConfig.make("Brightness", BrightnessConfig),
+		AppConfig.make("Notification Level", NotificationLevelConfig),
+		AppConfig.make("Time", TimeConfig),
+		AppConfig.make("Date", DateConfig),
+		AppConfig.make("Theme", ThemeConfig),
+	];
 
-	// TODO: next step: enable application settings
 	static var applicationSettings:Array<AppConfig> = [];
 
 	public static function registerApp(appName:String, configApp:Class<ISettingsApplication>):Void {
@@ -76,40 +56,40 @@ class Settings extends BaseApplication {
 	}
 
 	var scroll:ScrollIndicator;
-	var settings:Array<SettingsPage>;
-	var settingsIndex(default, set):Int; // TODO: enum abstract
-	var currentSetting:SettingsPage;
+	var settingsIndex(default, set):Int;
 	var currentSettingsApp:Null<ISettingsApplication>;
 
 	public function new() {
 		NAME = "Settings";
 		ICON = icon;
 
-		settings = [Brightness, NotificationLevel, Time, Date, Theme];
 		settingsIndex = 0;
-		scroll = new ScrollIndicator(null, 0, settings.length - 1, settingsIndex);
+		scroll = new ScrollIndicator(
+			null,
+			0,
+			systemSettings.length + applicationSettings.length - 1,
+			settingsIndex
+		);
 	}
 
 	function set_settingsIndex(value:Int):Int {
 		settingsIndex = value;
-		if (settingsIndex < 0) settingsIndex = settings.length - 1;
-		else if (settingsIndex >= settings.length) settingsIndex = 0;
-		currentSetting = settings[settingsIndex];
+
+		if (settingsIndex < 0)
+			settingsIndex = systemSettings.length + applicationSettings.length - 1;
+		else if (settingsIndex >= systemSettings.length + applicationSettings.length)
+			settingsIndex = 0;
 
 		if (currentSettingsApp != null) {
 			// TODO: some cleanup?
 			currentSettingsApp = null;
 		}
 
-		// TODO: use systemSettings data
-		switch (currentSetting) {
-			case Brightness: currentSettingsApp = new BrightnessConfig();
-			case NotificationLevel: currentSettingsApp = new NotificationLevelConfig();
-			case Time: currentSettingsApp = new TimeConfig();
-			case Date: currentSettingsApp = new DateConfig();
-			case Theme: currentSettingsApp = new ThemeConfig(this);
-			case _:
-		}
+		var target = (settingsIndex < systemSettings.length)
+			? systemSettings[settingsIndex].settingsCls
+			: applicationSettings[settingsIndex - systemSettings.length].settingsCls;
+
+		currentSettingsApp = construct(target, this);
 
 		return value;
 	}
@@ -152,11 +132,14 @@ class Settings extends BaseApplication {
 		Watch.display.mute(true);
 
 		draw.fill(0);
-		draw.set_color(Wash.system.theme.bright);
-		draw.set_font(Fonts.sans24);
-		draw.string(currentSetting, 0, 6, 240);
 
-		if (currentSettingsApp != null) currentSettingsApp.draw();
+		if (currentSettingsApp != null) {
+			draw.set_color(Wash.system.theme.bright);
+			draw.set_font(Fonts.sans24);
+			draw.string(currentSettingsApp.NAME, 0, 6, 240);
+			currentSettingsApp.draw();
+		}
+
 		update();
 		Watch.display.mute(false);
 	}

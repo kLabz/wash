@@ -12,7 +12,9 @@ class DateConfig extends BaseApplication implements ISettingsApplication {
 	var mm:Spinner;
 	var yy:Spinner;
 
-	public function new() {
+	public function new(_) {
+		NAME = "Date";
+
 		dd = new Spinner(20, 60, 1, 31, 1);
 		mm = new Spinner(90, 60, 1, 12, 1);
 		yy = new Spinner(160, 60, 21, 60, 2);

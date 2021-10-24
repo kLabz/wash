@@ -11,6 +11,8 @@ class BaseApplication implements IApplication {
 
 	public function foreground():Void {}
 	public function background():Void {}
+	public function registered(quickRing:Bool):Void {}
+	public function unregistered():Void {}
 	public function sleep():Bool return false;
 	public function wake():Void {}
 	public function tick(ticks:Int):Void {}

@@ -8,7 +8,9 @@ import wasp.Watch;
 class NotificationLevelConfig extends BaseApplication implements ISettingsApplication {
 	var slider:Slider;
 
-	public function new() {
+	public function new(_) {
+		NAME = "Notification Level";
+
 		slider = new Slider(3, 10, 90);
 	}
 

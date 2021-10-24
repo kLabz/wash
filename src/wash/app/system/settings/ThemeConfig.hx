@@ -18,6 +18,8 @@ class ThemeConfig extends BaseApplication implements ISettingsApplication {
 	var brightColorPicker:ColorPicker;
 
 	public function new(settings:Settings) {
+		NAME = "Theme";
+
 		this.settings = settings;
 
 		themeColor = 0;

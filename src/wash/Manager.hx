@@ -133,12 +133,15 @@ class Manager {
 			launcherRing.push(app);
 			launcherRing.nativeSort(appSort);
 		}
+
+		app.registered(watchFace || quickRing);
 	}
 
 	function unregister(cls:Class<IApplication>):Void {
 		for (app in launcherRing) {
 			if (Builtins.type(app) == cls) {
 				launcherRing.remove(app);
+				app.unregistered();
 				break;
 			}
 		}

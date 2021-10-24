@@ -8,9 +8,10 @@ import wasp.Watch;
 class BrightnessConfig extends BaseApplication implements ISettingsApplication {
 	var slider:Slider;
 
-	public function new() {
+	public function new(_) {
+		NAME = "Brightness";
+
 		slider = new Slider(3, 10, 90);
-		// slider.value = Wash.system.brightness - 1; // Handled in draw()
 	}
 
 	override public function touch(event:TouchEvent):Void {
