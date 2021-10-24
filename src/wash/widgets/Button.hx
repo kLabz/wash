@@ -15,11 +15,7 @@ class Button implements IWidget {
 	}
 
 	public function draw():Void {
-		update(
-			Watch.drawable.darken(Wash.system.theme.ui),
-			Wash.system.theme.mid,
-			Wash.system.theme.bright
-		);
+		update(Wash.system.theme.ui, Wash.system.theme.bright);
 	}
 
 	public function touch(event:TouchEvent):Bool {
@@ -31,14 +27,13 @@ class Button implements IWidget {
 		return event.x >= x1 && event.x < x2 && event.y >= y1 && event.y < y2;
 	}
 
-	public function update(bg:Int, frame:Int, txt:Int):Void {
+	public function update(bg:Int, txt:Int):Void {
 		var draw = Watch.drawable;
 
-		draw.fill(frame, data.x, data.y, data.w, data.h);
-		draw.fill(bg, data.x+2, data.y+2, data.w-4, data.h-4);
+		draw.fill(bg, data.x, data.y, data.w, data.h);
 		draw.set_color(txt, bg);
 		draw.set_font(Fonts.sans24);
-		draw.string(data.label, data.x+2, data.y+opFloorDiv(data.h, 2)-12, data.w-4);
+		draw.string(data.label, data.x, data.y+opFloorDiv(data.h, 2)-12, data.w);
 	}
 }
 

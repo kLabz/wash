@@ -1,6 +1,5 @@
 package wash.widgets;
 
-import wasp.Watch;
 import wash.event.TouchEvent;
 
 class ToggleButton extends Button {
@@ -13,8 +12,7 @@ class ToggleButton extends Button {
 
 	override public function draw():Void {
 		update(
-			Watch.drawable.darken(state ? Wash.system.theme.mid : Wash.system.theme.ui),
-			Wash.system.theme.mid,
+			state ? Wash.system.theme.mid : Wash.system.theme.ui,
 			Wash.system.theme.bright
 		);
 	}
