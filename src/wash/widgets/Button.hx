@@ -34,15 +34,11 @@ class Button implements IWidget {
 	public function update(bg:Int, frame:Int, txt:Int):Void {
 		var draw = Watch.drawable;
 
-		draw.fill(bg, data.x, data.y, data.w, data.h);
+		draw.fill(frame, data.x, data.y, data.w, data.h);
+		draw.fill(bg, data.x+2, data.y+2, data.w-4, data.h-4);
 		draw.set_color(txt, bg);
 		draw.set_font(Fonts.sans24);
-		draw.string(data.label, data.x, data.y+opFloorDiv(data.h, 2)-12, data.w);
-
-		draw.fill(frame, data.x, data.y, data.w, 2);
-		draw.fill(frame, data.x, data.y + data.h - 2, data.w, 2);
-		draw.fill(frame, data.x, data.y, 2, data.h);
-		draw.fill(frame, data.x + data.w - 2, data.y, 2, data.h);
+		draw.string(data.label, data.x+2, data.y+opFloorDiv(data.h, 2)-12, data.w-4);
 	}
 }
 
