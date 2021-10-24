@@ -41,7 +41,6 @@ class Manager {
 	var notifications:Array<Notification> = []; // TODO: real type?
 	// var musicState:MusicState; // TODO
 	// var weatherInfo:WeatherInfo; // TODO
-	var units:String = 'Metric'; // TODO: enum abstract
 	var theme:Theme = new Bytearray(cast bytes(
 		'\\x7b\\xef', // ble
 		'\\x7b\\xef', // scroll-indicator
