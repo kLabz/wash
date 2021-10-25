@@ -12,8 +12,8 @@ class ToggleButton extends Button {
 
 	override public function draw():Void {
 		update(
-			state ? Wash.system.theme.mid : Wash.system.theme.ui,
-			Wash.system.theme.bright
+			state ? Wash.system.theme.secondary : Wash.system.theme.primary,
+			0
 		);
 	}
 

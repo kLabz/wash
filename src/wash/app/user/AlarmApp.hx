@@ -280,10 +280,10 @@ class AlarmApp extends BaseApplication {
 		var draw = Watch.drawable;
 
 		if (alarmRow == HOME_PAGE) {
-			draw.set_color(Wash.system.theme.bright);
+			draw.set_color(Wash.system.theme.highlight);
 			draw.fill();
 			drawSystemBar();
-			draw.line(0, 50, 239, 50, 1, Wash.system.theme.bright);
+			draw.line(0, 50, 239, 50, 1, Wash.system.theme.highlight);
 		}
 
 		// Avoid haxe iterator..
@@ -292,7 +292,7 @@ class AlarmApp extends BaseApplication {
 				drawAlarmRow(i);
 			} else if (i == numAlarms) {
 				// Draw the add button
-				draw.set_color(Wash.system.theme.bright);
+				draw.set_color(Wash.system.theme.highlight);
 				draw.set_font(Fonts.sans28);
 				draw.string('+', 100, 60+(i*45));
 			}
@@ -307,7 +307,7 @@ class AlarmApp extends BaseApplication {
 		alarmCheck.state = alarm.mask & IS_ACTIVE > 0;
 		alarmCheck.draw();
 
-		draw.set_color(alarmCheck.state ? Wash.system.theme.bright : Wash.system.theme.mid);
+		draw.set_color(alarmCheck.state ? Wash.system.theme.highlight : Wash.system.theme.secondary);
 
 		draw.set_font(Fonts.sans28);
 		draw.string('{:02d}:{:02d}'.format(alarm.HH, alarm.MM), 10, 60+index*45, 120);
@@ -315,17 +315,17 @@ class AlarmApp extends BaseApplication {
 		draw.set_font(Fonts.sans18);
 		draw.string(getRepeatCode(alarm.mask), 130, 70+index*45, 60);
 
-		draw.line(0, 95+index*45, 239, 95+index*45, 1, Wash.system.theme.bright);
+		draw.line(0, 95+index*45, 239, 95+index*45, 1, Wash.system.theme.highlight);
 	}
 
 	function drawRingingPage():Void {
 		var draw = Watch.drawable;
 
-		draw.set_color(Wash.system.theme.bright);
+		draw.set_color(Wash.system.theme.highlight);
 		draw.fill();
 		draw.set_font(Fonts.sans24);
 		draw.string("Alarm", 0, 150, 240);
-		draw.blit(icon, 73, 50, Wash.system.theme.bright, Wash.system.theme.mid, Wash.system.theme.ui, true);
+		draw.blit(icon, 73, 50, Wash.system.theme.highlight, Wash.system.theme.secondary, Wash.system.theme.primary, true);
 		draw.line(35, 1, 35, 239);
 		draw.string('Z', 10, 80);
 		draw.string('z', 10, 110);

@@ -18,15 +18,15 @@ class NotificationBar implements IWidget {
 		var draw = Watch.drawable;
 
 		if (Watch.connected()) {
-			draw.blit(BleStatusIcon, pos.x, pos.y, Wash.system.theme.ble);
+			draw.blit(BleStatusIcon, pos.x, pos.y, Wash.system.theme.shadow);
 
 			if (Wash.system.notifications.length > 0)
-				draw.blit(NotificationIcon, pos.x+22, pos.y, Wash.system.theme.notifyIcon);
+				draw.blit(NotificationIcon, pos.x+22, pos.y, Wash.system.theme.shadow);
 			else
 				draw.fill(0, pos.x+22, pos.y, 30, 32);
 
 		} else if (Wash.system.notifications.length > 0) {
-			draw.blit(NotificationIcon, pos.x, pos.y, Wash.system.theme.notifyIcon);
+			draw.blit(NotificationIcon, pos.x, pos.y, Wash.system.theme.shadow);
 			draw.fill(0, pos.x + 30, pos.y, 22, 32);
 		} else {
 			draw.fill(0, pos.x, pos.y, 52, 32);

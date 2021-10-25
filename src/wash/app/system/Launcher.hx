@@ -124,9 +124,9 @@ class Launcher extends BaseApplication {
 			x+14,
 			y+14,
 			// Force recoloring of icons with theme colors
-			Wash.system.theme.bright,
-			Wash.system.theme.mid,
-			Wash.system.theme.ui,
+			Wash.system.theme.highlight,
+			Wash.system.theme.secondary,
+			Wash.system.theme.primary,
 			true
 		);
 	}

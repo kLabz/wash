@@ -39,7 +39,7 @@ class Clock implements IWidget {
 		)) {
 			var t = '{:02}:{:02}'.format(now.HH, now.MM);
 			Watch.drawable.set_font(Fonts.sans28);
-			Watch.drawable.set_color(Wash.system.theme.statusClock);
+			Watch.drawable.set_color(Wash.system.theme.highlight);
 			Watch.drawable.string(t, 52, 4, 138);
 		}
 

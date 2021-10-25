@@ -79,9 +79,9 @@ class BatTri extends BaseWatchFace {
 
 	function draw(redraw:Bool = false):Void {
 		var draw = Watch.drawable;
-		var hi = Wash.system.theme.bright;
-		var mid = Wash.system.theme.mid;
-		var ui = Wash.system.theme.ui;
+		var hi = Wash.system.theme.highlight;
+		var mid = Wash.system.theme.secondary;
+		var ui = Wash.system.theme.primary;
 
 		var now = Watch.rtc.get_localtime();
 		var batteryLevel = Watch.battery.level();

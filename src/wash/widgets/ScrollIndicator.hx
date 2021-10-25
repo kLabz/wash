@@ -29,7 +29,7 @@ class ScrollIndicator {
 		var trackPos = Builtins.int((value - min) * trackSize);
 
 		draw.fill(0, 240-5, y, 4, size);
-		draw.fill(0x18a3, 240-4, y, 2, size);
-		draw.fill(Wash.system.theme.ui, 240-5, y + trackPos, 4, trackSize);
+		draw.fill(Wash.system.theme.shadow, 240-4, y, 2, size);
+		draw.fill(Wash.system.theme.primary, 240-5, y + trackPos, 4, trackSize);
 	}
 }

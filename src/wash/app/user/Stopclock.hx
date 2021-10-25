@@ -114,7 +114,7 @@ class Stopclock extends BaseApplication {
 		}
 
 		draw.set_font(Fonts.sans24);
-		draw.set_color(Wash.system.theme.ui);
+		draw.set_color(Wash.system.theme.primary);
 		var y = 240 - 6 - splits.length * 24;
 
 		var n = nsplits;

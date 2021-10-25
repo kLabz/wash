@@ -41,7 +41,7 @@ class StopWatch implements IWidget {
 		lastCount = -1;
 
 		if (inverted)
-			Watch.drawable.fill(Wash.system.theme.mid, 0, y-6, 240, 36+12);
+			Watch.drawable.fill(Wash.system.theme.secondary, 0, y-6, 240, 36+12);
 
 		update();
 	}
@@ -67,9 +67,9 @@ class StopWatch implements IWidget {
 			draw.set_font(Fonts.sans36);
 
 			if (inverted)
-				draw.set_color(0, Wash.system.theme.mid);
+				draw.set_color(0, Wash.system.theme.secondary);
 			else
-				draw.set_color(Wash.system.theme.mid);
+				draw.set_color(Wash.system.theme.secondary);
 
 			var w = Fonts.width(Fonts.sans36, t1);
 			draw.string(t1, 180-w, y);

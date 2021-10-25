@@ -19,7 +19,6 @@ class Slider implements IWidget {
 	var x:Int;
 	var y:Int;
 	var color:Null<Int>;
-	var lowLight:Null<Int>;
 
 	public function new(steps:Int, ?x:Int = 10, y:Int = 90, ?color:Int) {
 		value = 0;
@@ -28,9 +27,8 @@ class Slider implements IWidget {
 		this.x = x;
 		this.y = y;
 
-		if (color == null) color = Wash.system.theme.ui;
+		if (color == null) color = Wash.system.theme.primary;
 		this.color = color;
-		this.lowLight = 0x18a3;
 	}
 
 	public function draw():Void {
@@ -58,7 +56,7 @@ class Slider implements IWidget {
 			draw.fill(0, sx, y, w, TRACK_Y1);
 			if (w > KNOB_RADIUS) {
 				draw.fill(0, sx+w-KNOB_RADIUS, y+TRACK_Y1,KNOB_RADIUS, TRACK_HEIGHT);
-				draw.fill(lowLight, sx, y+TRACK_Y1, w-KNOB_RADIUS, TRACK_HEIGHT);
+				draw.fill(Wash.system.theme.shadow, sx, y+TRACK_Y1, w-KNOB_RADIUS, TRACK_HEIGHT);
 			} else {
 				draw.fill(0, sx, y+TRACK_Y1, w, TRACK_HEIGHT);
 			}

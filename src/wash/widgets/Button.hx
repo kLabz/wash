@@ -15,7 +15,7 @@ class Button implements IWidget {
 	}
 
 	public function draw():Void {
-		update(Wash.system.theme.ui, Wash.system.theme.bright);
+		update(Wash.system.theme.primary, 0);
 	}
 
 	public function touch(event:TouchEvent):Bool {

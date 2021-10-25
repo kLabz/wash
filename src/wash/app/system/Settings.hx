@@ -134,7 +134,7 @@ class Settings extends BaseApplication {
 		draw.fill(0);
 
 		if (currentSettingsApp != null) {
-			draw.set_color(Wash.system.theme.bright);
+			draw.set_color(Wash.system.theme.highlight);
 			draw.set_font(Fonts.sans24);
 			draw.string(currentSettingsApp.NAME, 0, 6, 240);
 			currentSettingsApp.draw();

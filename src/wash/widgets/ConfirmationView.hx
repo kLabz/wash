@@ -22,7 +22,7 @@ class ConfirmationView {
 
 		// TODO: check if mute is needed
 		Watch.display.mute(true);
-		draw.set_color(Wash.system.theme.bright);
+		draw.set_color(Wash.system.theme.highlight);
 		draw.set_font(Fonts.sans24);
 		draw.fill();
 		draw.string(message, 0, 60);

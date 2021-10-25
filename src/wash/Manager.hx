@@ -42,17 +42,10 @@ class Manager {
 	// var musicState:MusicState; // TODO
 	// var weatherInfo:WeatherInfo; // TODO
 	var theme:Theme = new Bytearray(cast bytes(
-		'\\x7b\\xef', // ble
-		'\\x7b\\xef', // scroll-indicator
-		'\\x7b\\xef', // battery
-		'\\xe7\\x3c', // status-clock
-		'\\x7b\\xef', // notify-icon
-		'\\xff\\xff', // bright
-		'\\xfe\\x20', // mid - yellowish orange
-		'\\xfb\\x80', // ui - orange
-		'\\xff\\x00', // spot1
-		'\\xdd\\xd0', // spot2
-		'\\x00\\x0f' // contrast
+		'\\xfb\\x80', // primary
+		'\\xfe\\x20', // secondary
+		'\\xff\\xff', // highlight
+		'\\x29\\x45' // shadow
 	));
 
 	var blankAfter:Int = 15;

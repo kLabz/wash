@@ -20,7 +20,7 @@ class Checkbox implements IWidget {
 	public function draw():Void {
 		if (data.label != null) {
 			var draw = Watch.drawable;
-			draw.set_color(Wash.system.theme.bright);
+			draw.set_color(Wash.system.theme.highlight);
 			draw.set_font(Fonts.sans24);
 			draw.string(data.label, data.x + 32 + 6, data.y + 6);
 		}
@@ -45,12 +45,11 @@ class Checkbox implements IWidget {
 		var draw = Watch.drawable;
 		var c1:Int = 0;
 		var c2:Int = 0;
-		var fg:Int = Wash.system.theme.mid;
+		var fg:Int = Wash.system.theme.primary;
 
 		if (state) {
-			c1 = Wash.system.theme.ui;
-			c2 = draw.lighten(c1, Wash.system.theme.contrast);
-			fg = c2;
+			c1 = fg;
+			c2 = 0;
 		}
 
 		draw.blit(CheckboxIcon, data.x, data.y, fg, c1, c2);

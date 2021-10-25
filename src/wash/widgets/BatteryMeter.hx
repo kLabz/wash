@@ -20,7 +20,7 @@ class BatteryMeter implements IWidget {
 
 		if (Watch.battery.charging()) {
 			if (this.level != -1) {
-				draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, Wash.system.theme.battery);
+				draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, Wash.system.theme.shadow);
 				level = -1;
 			}
 		} else {
@@ -34,7 +34,7 @@ class BatteryMeter implements IWidget {
 
 			if (this.level < 0 || ((level > 5) != (this.level > 5))) {
 				if (level > 5) {
-					draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, Wash.system.theme.battery);
+					draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, Wash.system.theme.shadow);
 				} else {
 					rgb = 0xf800;
 					draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, rgb);

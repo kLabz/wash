@@ -97,7 +97,7 @@ class Calc extends BaseApplication {
 
 	function update():Void {
 		output = output.length < 12 ? output : Syntax.substr(output, output.length-12, null);
-		Watch.drawable.set_color(Wash.system.theme.bright);
+		Watch.drawable.set_color(Wash.system.theme.highlight);
 		Watch.drawable.string(output, 0, 14, 205, true);
 	}
 
@@ -105,9 +105,9 @@ class Calc extends BaseApplication {
 		var draw = Watch.drawable;
 		draw.fill();
 
-		var hi = Wash.system.theme.bright;
-		var mid = Wash.system.theme.mid;
-		var ui = Wash.system.theme.ui;
+		var hi = Wash.system.theme.highlight;
+		var mid = Wash.system.theme.secondary;
+		var ui = Wash.system.theme.primary;
 
 		for (x in 0...5) {
 			for (y in 0...4) {

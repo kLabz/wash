@@ -20,7 +20,7 @@ class Spinner implements IWidget {
 
 	public function draw():Void {
 		var draw = Watch.drawable;
-		var fg = Wash.system.theme.mid;
+		var fg = Wash.system.theme.secondary;
 		draw.blit(UpArrow, data.x+30-8, data.y+20, fg);
 		draw.blit(DownArrow, data.x+30-8, data.y+120-20-9, fg);
 		update();
@@ -28,7 +28,7 @@ class Spinner implements IWidget {
 
 	public function update():Void {
 		var draw = Watch.drawable;
-		draw.set_color(Wash.system.theme.bright);
+		draw.set_color(Wash.system.theme.highlight);
 		draw.set_font(Fonts.sans28);
 		var s = "" + value;
 		while (s.length < data.field) s = '0' + s;

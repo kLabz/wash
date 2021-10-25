@@ -143,7 +143,7 @@ class Timer extends BaseApplication {
 			case Ringing:
 				draw.set_font(Fonts.sans24);
 				draw.string(NAME, 0, 150, 240);
-				draw.blit(icon, 89, 54, Wash.system.theme.bright, Wash.system.theme.mid, Wash.system.theme.ui, true);
+				draw.blit(icon, 89, 54, Wash.system.theme.highlight, Wash.system.theme.secondary, Wash.system.theme.primary, true);
 
 			case Running:
 				drawStop(104, BUTTON_Y);
