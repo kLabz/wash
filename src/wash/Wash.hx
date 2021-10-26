@@ -21,4 +21,14 @@ class System {
 		Wash.init();
 		Wash.system.schedule(true);
 	}
+
+	@:keep
+	public static function notify(id:Int, notif:Notification):Void {
+		Wash.system.notify(id, notif);
+	}
+
+	@:keep
+	public static function unnotify(id:Int):Void {
+		Wash.system.unnotify(id);
+	}
 }

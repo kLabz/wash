@@ -2,6 +2,7 @@ package wasp;
 
 import python.Bytearray;
 import python.Bytes;
+import python.NativeIterator;
 import python.Tuple;
 
 @:pythonImport("builtins")
@@ -23,4 +24,6 @@ extern class Builtins {
 	@:overload(function(f:Bytearray):Int {})
 	@:overload(function(f:Tuple<Dynamic>):Int {})
 	static function len(x:String):Int;
+
+	static function next<T>(it:NativeIterator<T>):T;
 }

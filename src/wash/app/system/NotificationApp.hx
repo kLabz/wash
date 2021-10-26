@@ -3,6 +3,7 @@ package wash.app.system;
 import wash.event.EventMask;
 import wash.event.TouchEvent;
 import wash.widgets.ConfirmationView;
+import wasp.Builtins.next;
 
 using python.NativeArrayTools;
 using python.NativeStringTools;
@@ -19,7 +20,7 @@ class NotificationApp extends PagerApp {
 
 	override public function foreground():Void {
 		var notes = Wash.system.notifications;
-		var note = notes.last();
+		var note = notes.pop(next(notes.iter()));
 		var title = note.title == null ? "Untitled" : note.title;
 		var body = note.body == null ? "" : note.body;
 		msg = '{}\n\n{}'.format(title, body);
@@ -53,7 +54,7 @@ class NotificationApp extends PagerApp {
 	override public function touch(event:TouchEvent):Void {
 		if (confirmationView.touch(event)) {
 			if (confirmationView.value) {
-				Wash.system.notifications = [];
+				Wash.system.notifications.clear();
 				Wash.system.navigate(BACK);
 			} else {
 				draw();

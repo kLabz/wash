@@ -2,6 +2,7 @@ package wash;
 
 // import python.Exceptions;
 import python.Bytearray;
+import python.Dict;
 import python.Syntax;
 import python.Syntax.bytes;
 import python.Syntax.construct;
@@ -40,7 +41,7 @@ class Manager {
 	var app:Null<IApplication> = null;
 	var quickRing:Array<IApplication> = [];
 	var launcherRing:Array<IApplication> = [];
-	var notifications:Array<Notification> = [];
+	var notifications:Dict<Int, Notification> = new Dict();
 	// var musicState:MusicState; // TODO
 	// var weatherInfo:WeatherInfo; // TODO
 	var theme:Theme = new Bytearray(cast bytes(
@@ -156,11 +157,17 @@ class Manager {
 	}
 
 	// TODO:
-	// - notify
-	// - unnotify
 	// - toggleMusic
 	// - setMusicInfo
 	// - setWeatherInfo
+
+	function notify(id:Int, msg:Notification):Void {
+		notifications.set(id, msg);
+	}
+
+	function unnotify(id:Int):Void {
+		notifications.remove(id);
+	}
 
 	function setAlarm(time:Float, cb:Void->Void):Void {
 		alarms.push(Alarm.make(time, cb));
