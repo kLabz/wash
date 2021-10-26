@@ -60,6 +60,7 @@ class Settings extends BaseApplication {
 	var currentSettingsApp:Null<ISettingsApplication>;
 
 	public function new() {
+		super();
 		NAME = "Settings";
 		ICON = icon;
 

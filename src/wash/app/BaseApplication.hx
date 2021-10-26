@@ -9,6 +9,7 @@ class BaseApplication implements IApplication {
 	public var NAME(default, null):String;
 	public var ICON(default, null):Bytes;
 
+	public function new() {}
 	public function foreground():Void {}
 	public function background():Void {}
 	public function registered(quickRing:Bool):Void {}

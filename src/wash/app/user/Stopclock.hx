@@ -43,6 +43,7 @@ class Stopclock extends BaseApplication {
 	var nsplits:Int;
 
 	public function new() {
+		super();
 		NAME = "Stopclock";
 		ICON = icon;
 

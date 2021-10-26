@@ -10,6 +10,7 @@ class TorchConfig extends BaseApplication implements ISettingsApplication {
 	var redLight:Checkbox;
 
 	public function new(_) {
+		super();
 		NAME = "Torch App";
 
 		initialState = new Checkbox(6, 90, "Initial state ON");

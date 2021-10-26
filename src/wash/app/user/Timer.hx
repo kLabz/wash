@@ -49,6 +49,7 @@ class Timer extends BaseApplication {
 	var state:State;
 
 	public function new() {
+		super();
 		NAME = "Timer";
 		ICON = icon;
 

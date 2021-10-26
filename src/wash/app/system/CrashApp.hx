@@ -14,6 +14,7 @@ class CrashApp extends BaseApplication {
 	var msg:String;
 
 	public function new(e:BaseException) {
+		super();
 		NAME = "Crash";
 		ICON = BombIcon;
 

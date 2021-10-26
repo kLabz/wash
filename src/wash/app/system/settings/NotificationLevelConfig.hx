@@ -9,6 +9,7 @@ class NotificationLevelConfig extends BaseApplication implements ISettingsApplic
 	var slider:Slider;
 
 	public function new(_) {
+		super();
 		NAME = "Notification Level";
 
 		slider = new Slider(3, 10, 90);

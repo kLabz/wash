@@ -49,6 +49,7 @@ class Calc extends BaseApplication {
 	var output:String;
 
 	public function new() {
+		super();
 		NAME = "Calc";
 		ICON = icon;
 

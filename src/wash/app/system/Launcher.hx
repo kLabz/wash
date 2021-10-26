@@ -46,6 +46,7 @@ class Launcher extends BaseApplication {
 	function get_numPages():Int return opFloorDiv(Wash.system.launcherRing.length + 8, 9);
 
 	public function new() {
+		super();
 		NAME = "Launcher";
 		ICON = icon;
 		page = 0;

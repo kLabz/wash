@@ -20,6 +20,7 @@ class PagerApp extends BaseApplication {
 	var chunks:Array<Int>;
 
 	public function new(msg:String) {
+		super();
 		NAME = "Pager";
 		ICON = AppIcon;
 

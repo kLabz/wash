@@ -13,6 +13,7 @@ import wasp.Machine;
 import wasp.Micropython;
 import wasp.Watch;
 
+import wash.app.BaseApplication;
 import wash.app.IApplication;
 import wash.app.system.CrashApp;
 import wash.app.system.Launcher;
@@ -39,7 +40,7 @@ class Manager {
 	var app:Null<IApplication> = null;
 	var quickRing:Array<IApplication> = [];
 	var launcherRing:Array<IApplication> = [];
-	var notifications:Array<Notification> = []; // TODO: real type?
+	var notifications:Array<Notification> = [];
 	// var musicState:MusicState; // TODO
 	// var weatherInfo:WeatherInfo; // TODO
 	var theme:Theme = new Bytearray(cast bytes(
@@ -375,7 +376,8 @@ class Manager {
 			try {
 				this.app.background();
 			} catch (e) {
-				// TODO (see comment in wasp.py)
+				// TODO? (see comment in original wasp.py)
+				this.app = new BaseApplication();
 			}
 		}
 

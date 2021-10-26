@@ -9,6 +9,7 @@ class BrightnessConfig extends BaseApplication implements ISettingsApplication {
 	var slider:Slider;
 
 	public function new(_) {
+		super();
 		NAME = "Brightness";
 
 		slider = new Slider(3, 10, 90);

@@ -12,6 +12,7 @@ class TimeConfig extends BaseApplication implements ISettingsApplication {
 	var MM:Spinner;
 
 	public function new(_) {
+		super();
 		NAME = "Time";
 
 		HH = new Spinner(50, 60, 0, 23, 2);

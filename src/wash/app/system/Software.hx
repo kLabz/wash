@@ -48,6 +48,7 @@ class Software extends BaseApplication {
 	var page:Int;
 
 	public function new() {
+		super();
 		NAME = "Apps";
 		ICON = icon;
 	}

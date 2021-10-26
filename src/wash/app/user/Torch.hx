@@ -40,6 +40,7 @@ class Torch extends BaseApplication {
 	private var brightness:Int;
 
 	public function new() {
+		super();
 		NAME = "Torch";
 		ICON = icon;
 		activated = false;

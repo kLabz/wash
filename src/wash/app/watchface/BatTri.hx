@@ -60,6 +60,7 @@ class BatTri extends BaseWatchFace {
 	var hr:Int = -2;
 
 	public function new() {
+		super();
 		NAME = "BatTri";
 	}
 

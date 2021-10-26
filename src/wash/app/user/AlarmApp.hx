@@ -86,6 +86,7 @@ class AlarmApp extends BaseApplication {
 	var alarmChecks:Tuple4<Checkbox, Checkbox, Checkbox, Checkbox>;
 
 	public function new() {
+		super();
 		NAME = "Alarm";
 		ICON = icon;
 
