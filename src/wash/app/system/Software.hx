@@ -67,6 +67,8 @@ class Software extends BaseApplication {
 		db.push(AppEntry.make(Timer, "Timer", nextY(), Wash.system.hasApplication(Timer)));
 		// TODO: other apps
 
+		// TODO: user-loaded applications
+
 		var pages = opCeilDiv(db.length, PAGE_LEN) - 1;
 		scroll = new ScrollIndicator(null, 0, pages, 0);
 		page = 0;

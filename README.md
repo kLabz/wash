@@ -5,16 +5,16 @@
 This is **hugely** WIP material.
 
 What it currently does:
-* Run on simulator
-* Run on a pinetime (currently using safe mode; see [#3](https://github.com/kLabz/wash/issues/3))
+* Run on simulator or on a [pinetime watch](https://www.pine64.org/pinetime/)
 * Display date / time / battery level
+* Display notifications
 
 Available apps:
-* Flashlight/Torch app
-* Calculator
 * Alarms
-* Timer
+* Calculator
+* Flashlight/Torch app
 * StopWatch
+* Timer
 
 ## Haxe changes
 
