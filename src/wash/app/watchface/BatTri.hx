@@ -217,6 +217,17 @@ class BatTri extends BaseWatchFace {
 			else draw.string('{}'.format(st), 133, 219, 80, true);
 		}
 
+		if (this.plug != plug) {
+			if (plug) draw.blit(plugIcon, 6, 28, mid);
+			// Clear bluetooth icon too if any
+			else draw.fill(0, 6, 28, 32, 18);
+		}
+
+		if (this.plug != plug || this.bluetooth != bluetooth) {
+			if (bluetooth) draw.blit(bluetoothIcon, plug ? 28 : 6, 28, mid);
+			else draw.fill(0, plug ? 28 : 6, 28, 10, 18);
+		}
+
 		// Update references
 		this.battery = battery;
 		this.bluetooth = bluetooth;
