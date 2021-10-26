@@ -5,6 +5,7 @@ import python.Syntax;
 import python.Syntax.bytes;
 
 import wash.Wash;
+import wasp.Builtins;
 import wasp.Watch;
 import wasp.Fonts;
 import wasp.driver.Draw565.Fill.fill;
@@ -86,9 +87,7 @@ class BatTri extends BaseWatchFace {
 
 		var now = Watch.rtc.get_localtime();
 		var batteryLevel = Watch.battery.level();
-		// TODO: check output
-		// TODO: check if 240 instead of 239 is fine
-		var battery = Std.int(batteryLevel / 100 * 240);
+		var battery = Builtins.int(batteryLevel / 100 * 240);
 		var hr = -1; // TODO: fetch heart rate somehow...
 
 		var plug = try Watch.battery.charging() catch (_) false;
