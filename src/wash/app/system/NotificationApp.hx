@@ -15,9 +15,16 @@ using python.NativeStringTools;
 class NotificationApp extends BaseApplication {
 	var confirmationView:ConfirmationView;
 	var scroll:ScrollIndicator;
-	var i:Int;
+	var i(default, set):Int;
 	var current:Notification;
 	var nbNotifications:Int;
+
+	function set_i(v:Int):Int {
+		i = v;
+		scroll.value = i;
+		current = Wash.system.notifications[i];
+		return i;
+	}
 
 	public function new() {
 		super();
@@ -47,7 +54,6 @@ class NotificationApp extends BaseApplication {
 
 			case DOWN:
 				i--;
-				current = Wash.system.notifications[i];
 				draw();
 
 			case UP if (i == 0 && confirmationView.active):
@@ -56,7 +62,6 @@ class NotificationApp extends BaseApplication {
 
 			case UP if (i < nbNotifications - 1):
 				i++;
-				current = Wash.system.notifications[i];
 				draw();
 
 			case UP:
@@ -97,11 +102,8 @@ class NotificationApp extends BaseApplication {
 		}
 
 		i = nbNotifications - 1;
-		current = Wash.system.notifications[i];
-
 		scroll.min = 0;
 		scroll.max = i;
-		scroll.value = i;
 
 		draw();
 	}
