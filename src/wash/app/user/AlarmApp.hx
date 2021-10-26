@@ -347,7 +347,7 @@ class AlarmApp extends BaseApplication {
 
 	function snooze():Void {
 		var now = Watch.rtc.get_localtime();
-		var alarm = TimeTuple.make(now.yyyy, now.mm, now.dd, now.HH, now.MM + 10, now.SS, 0, 0, 0);
+		var alarm = TimeTuple.make(now.yyyy, now.mm, now.dd, now.HH, now.MM + 10, now.SS, 0, 0);
 		Wash.system.setAlarm(Time.mktime(alarm), alert);
 	}
 
@@ -373,7 +373,7 @@ class AlarmApp extends BaseApplication {
 				}
 
 				var pendingTime = Time.mktime(
-					TimeTuple.make(now.yyyy, now.mm, dd, alarm.HH, alarm.MM, 0, 0, 0, 0)
+					TimeTuple.make(now.yyyy, now.mm, dd, alarm.HH, alarm.MM, 0, 0, 0)
 				);
 
 				// If this is not a one time alarm find the next day of the week
@@ -383,7 +383,7 @@ class AlarmApp extends BaseApplication {
 						if ((1 << Time.localtime(pendingTime).wday) & alarm.mask == 0) {
 							dd++;
 							pendingTime = Time.mktime(
-								TimeTuple.make(now.yyyy, now.mm, dd, alarm.HH, alarm.MM, 0, 0, 0, 0)
+								TimeTuple.make(now.yyyy, now.mm, dd, alarm.HH, alarm.MM, 0, 0, 0)
 							);
 						} else {
 							break;
@@ -401,7 +401,7 @@ class AlarmApp extends BaseApplication {
 
 	function deactivatePendingAlarms():Void {
 		var now = Watch.rtc.get_localtime();
-		var now = Time.mktime(TimeTuple.make(now.yyyy, now.mm, now.dd, now.HH, now.MM, now.SS, 0, 0, 0));
+		var now = Time.mktime(TimeTuple.make(now.yyyy, now.mm, now.dd, now.HH, now.MM, now.SS, 0, 0));
 
 		// Avoid haxe iterator..
 		for (i in 0...Builtins.len(alarms)) {

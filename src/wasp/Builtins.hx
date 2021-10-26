@@ -26,4 +26,5 @@ extern class Builtins {
 	static function len(x:String):Int;
 
 	static function next<T>(it:NativeIterator<T>):T;
+	static function divmod(a:Int, b:Int):Tuple2<Int, Int>;
 }
