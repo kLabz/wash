@@ -2,6 +2,7 @@ package wash;
 
 // import python.Exceptions;
 import python.Bytearray;
+import python.Syntax;
 import python.Syntax.bytes;
 import python.Syntax.construct;
 
@@ -79,7 +80,7 @@ class Manager {
 	}
 
 	function secondaryInit():Void {
-		// TODO: global free
+		Syntax.code('global free');
 
 		if (app == null) {
 			if (quickRing.length == 0) registerDefaults();
@@ -91,8 +92,8 @@ class Manager {
 
 			if (Watch.free > 0) {
 				Gc.collect();
-				// TODO
-				var free = Gc.mem_free();
+				var _free = Gc.mem_free();
+				Syntax.code('free = {0}', _free);
 			}
 
 			switchApp(quickRing[0]);
