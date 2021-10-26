@@ -2,7 +2,6 @@ package wash;
 
 // import python.Exceptions;
 import python.Bytearray;
-import python.Dict;
 import python.Syntax;
 import python.Syntax.bytes;
 import python.Syntax.construct;
@@ -14,6 +13,7 @@ import wasp.Machine;
 import wasp.Micropython;
 import wasp.Watch;
 
+import wash.Notification;
 import wash.app.BaseApplication;
 import wash.app.IApplication;
 import wash.app.system.CrashApp;
@@ -41,7 +41,7 @@ class Manager {
 	var app:Null<IApplication> = null;
 	var quickRing:Array<IApplication> = [];
 	var launcherRing:Array<IApplication> = [];
-	var notifications:Dict<Int, Notification> = new Dict();
+	var notifications:Array<Notification> = [];
 	// var musicState:MusicState; // TODO
 	// var weatherInfo:WeatherInfo; // TODO
 	var theme:Theme = new Bytearray(cast bytes(
@@ -161,12 +161,13 @@ class Manager {
 	// - setMusicInfo
 	// - setWeatherInfo
 
-	function notify(id:Int, msg:Notification):Void {
-		notifications.set(id, msg);
+	function notify(id:Int, msg:NotificationContent):Void {
+		notifications.push(Notification.make(id, msg));
+		notifications.nativeSort(notifSort);
 	}
 
 	function unnotify(id:Int):Void {
-		notifications.remove(id);
+		notifications = notifications.filter(n -> n.id != id);
 	}
 
 	function setAlarm(time:Float, cb:Void->Void):Void {
@@ -453,5 +454,6 @@ class Manager {
 	}
 
 	function appSort(app:IApplication):String return app.NAME;
+	function notifSort(notif:Notification):Int return notif.id;
 	function alarmSort(alarm:Alarm):Float return alarm.time;
 }

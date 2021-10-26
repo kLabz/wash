@@ -1,5 +1,7 @@
 package wash;
 
+import wash.Notification;
+
 @:native('Wasp')
 class Wash {
 	@:keep
@@ -23,7 +25,7 @@ class System {
 	}
 
 	@:keep
-	public static function notify(id:Int, notif:Notification):Void {
+	public static function notify(id:Int, notif:NotificationContent):Void {
 		Wash.system.notify(id, notif);
 	}
 
