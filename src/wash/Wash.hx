@@ -12,10 +12,13 @@ class Wash {
 			system.init();
 		}
 	}
+}
 
+@:native('system')
+class System {
 	@:keep
-	public static function start():Void {
-		init();
-		system.schedule(true);
+	public static function schedule():Void {
+		Wash.init();
+		Wash.system.schedule(true);
 	}
 }
