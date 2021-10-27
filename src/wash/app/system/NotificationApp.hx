@@ -109,6 +109,7 @@ class NotificationApp extends BaseApplication {
 	}
 
 	function draw():Void {
+		Watch.display.mute(true);
 		Watch.drawable.set_font(Fonts.sans24);
 		Watch.drawable.fill(Wash.system.theme.secondary, 0, 0, 240, 26);
 		Watch.drawable.fill(0, 0, 26, 240, 214);
@@ -125,13 +126,14 @@ class NotificationApp extends BaseApplication {
 		Watch.drawable.set_color(Wash.system.theme.highlight);
 		var body = current.content.body;
 		if (body != null && body.length > 0) {
-			var chunks = Watch.drawable.wrap(current.content.body, 232);
+			var chunks = Watch.drawable.wrap(body, 232);
 			var nbLines = chunks.length - 1;
 			if (nbLines > 8) nbLines = 8;
 			for (i in 0...nbLines) {
-				var sub = Syntax.substr(current.content.body, chunks[i], chunks[i+1]).rstrip();
-				Watch.drawable.string(sub, 1, 28 + 26*i);
+				var sub = Syntax.substr(body, chunks[i], chunks[i+1]).rstrip();
+				Watch.drawable.string(sub, 2, 29 + 26*i);
 			}
 		}
+		Watch.display.mute(false);
 	}
 }
