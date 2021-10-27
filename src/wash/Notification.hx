@@ -18,8 +18,8 @@ extern class Notification extends Tuple<Dynamic> {
 
 abstract NotificationContent(Dict<String, Any>) {
 	public var title(get, never):String;
-	function get_title():String return this.getSafe("title");
+	function get_title():String return this.hasKey("title") ? this.getSafe("title") : "";
 
 	public var body(get, never):String;
-	function get_body():String return this.getSafe("body");
+	function get_body():String return this.hasKey("body") ? this.getSafe("body") : "";
 }

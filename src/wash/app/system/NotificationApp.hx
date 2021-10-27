@@ -116,17 +116,22 @@ class NotificationApp extends BaseApplication {
 
 		// TODO: TextScroller widget (width = 200)
 		Watch.drawable.set_color(0, Wash.system.theme.secondary);
-		Watch.drawable.string(current.content.title, 2, 2);
+		var title = current.content.title;
+		if (title != null && title.length > 0)
+			Watch.drawable.string(current.content.title, 2, 2);
 		Watch.drawable.string('{}/{}'.format(i + 1, nbNotifications), 202, 2, 36, true);
 
 		// TODO: handle multi-screens notification body (truncated for now)
 		Watch.drawable.set_color(Wash.system.theme.highlight);
-		var chunks = Watch.drawable.wrap(current.content.body, 232);
-		var nbLines = chunks.length - 1;
-		if (nbLines > 8) nbLines = 8;
-		for (i in 0...nbLines) {
-			var sub = Syntax.substr(current.content.body, chunks[i], chunks[i+1]).rstrip();
-			Watch.drawable.string(sub, 1, 28 + 26*i);
+		var body = current.content.body;
+		if (body != null && body.length > 0) {
+			var chunks = Watch.drawable.wrap(current.content.body, 232);
+			var nbLines = chunks.length - 1;
+			if (nbLines > 8) nbLines = 8;
+			for (i in 0...nbLines) {
+				var sub = Syntax.substr(current.content.body, chunks[i], chunks[i+1]).rstrip();
+				Watch.drawable.string(sub, 1, 28 + 26*i);
+			}
 		}
 	}
 }
