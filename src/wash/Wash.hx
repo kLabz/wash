@@ -1,12 +1,9 @@
 package wash;
 
 import wash.Notification;
-import wasp.Watch;
 
 @:native('Wasp')
 class Wash {
-	public static extern var watch:Watch;
-
 	@:keep
 	public static var system(default, null):Manager;
 
