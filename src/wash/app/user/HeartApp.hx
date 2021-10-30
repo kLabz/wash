@@ -53,7 +53,7 @@ class HeartApp extends BaseApplication {
 
 	static var monitoring:Bool;
 	static var lastRate:Int = -1;
-	public static function getRate(?preprocess:Bool = true):Int {
+	public static function getRate(preprocess:Bool):Int {
 		if (hrdata == null || !monitoring) {
 			lastRate = -1;
 			return -1;
@@ -95,10 +95,10 @@ class HeartApp extends BaseApplication {
 	}
 
 	override public function background():Void {
-		if (!runInBackground) stop();
+		if (!runInBackground) stop(true);
 	}
 
-	static function stop(?clear:Bool = true):Void {
+	static function stop(clear:Bool):Void {
 		Watch.hrs.disable();
 		monitoring = false;
 		if (clear) hrdata = null;
@@ -194,7 +194,7 @@ class HeartApp extends BaseApplication {
 
 	static function set_runInBackground(v:Bool):Bool {
 		runInBackground = v;
-		if (!runInBackground && hrdata != null) stop();
+		if (!runInBackground && hrdata != null) stop(true);
 		return runInBackground;
 	}
 }

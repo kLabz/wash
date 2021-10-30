@@ -105,7 +105,7 @@ class BatTri extends BaseWatchFace {
 		var now = Watch.rtc.get_localtime();
 		var batteryLevel = Watch.battery.level();
 		var battery = Builtins.int(batteryLevel / 100 * 240);
-		var hr = try HeartApp.getRate() catch (_) -1;
+		var hr = try HeartApp.getRate(false) catch (_) -1;
 
 		var plug = try Watch.battery.charging() catch (_) false;
 		var bluetooth = try Watch.connected() catch (_) false;
