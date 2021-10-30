@@ -36,6 +36,7 @@ class Settings extends BaseApplication {
 		'D?\\xff\\xffq'
 	);
 
+	static var settingsListChanged:Bool = false;
 	static var systemSettings:Array<AppConfig> = [
 		AppConfig.make("Brightness", BrightnessConfig),
 		AppConfig.make("Notification Level", NotificationLevelConfig),
@@ -49,10 +50,12 @@ class Settings extends BaseApplication {
 	public static function registerApp(appName:String, configApp:Class<ISettingsApplication>):Void {
 		applicationSettings.push(AppConfig.make(appName, configApp));
 		applicationSettings.nativeSort(appConfigSort);
+		settingsListChanged = true;
 	}
 
 	public static function unregisterApp(appName:String):Void {
 		applicationSettings = applicationSettings.filter(a -> a.appName != appName);
+		settingsListChanged = true;
 	}
 
 	var scroll:ScrollIndicator;
@@ -131,6 +134,11 @@ class Settings extends BaseApplication {
 	public function draw():Void {
 		var draw = Watch.drawable;
 		Watch.display.mute(true);
+
+		if (settingsListChanged) {
+			scroll.max = systemSettings.length + applicationSettings.length - 1;
+			settingsListChanged = false;
+		}
 
 		draw.fill(0);
 
