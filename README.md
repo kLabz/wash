@@ -13,6 +13,7 @@ Available apps:
 * Alarms
 * Calculator
 * Flashlight/Torch app
+* Heart rate monitoring
 * StopWatch
 * Timer
 
