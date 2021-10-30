@@ -11,17 +11,19 @@ import wash.icon.CheckboxIcon;
 class Checkbox implements IWidget {
 	public var state:Bool;
 	var data:CheckboxData;
+	var smallText:Bool;
 
-	public function new(x:Int, y:Int, ?label:String) {
+	public function new(x:Int, y:Int, ?label:String, ?smallText:Bool = false) {
 		data = CheckboxData.make(x, y, label);
 		state = false;
+		this.smallText = smallText;
 	}
 
 	public function draw():Void {
 		if (data.label != null) {
 			var draw = Watch.drawable;
 			draw.set_color(Wash.system.theme.highlight);
-			draw.set_font(Fonts.sans24);
+			draw.set_font(!smallText ? Fonts.sans24 : Fonts.sans18);
 			draw.string(data.label, data.x + 32 + 6, data.y + 6);
 		}
 
