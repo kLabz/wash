@@ -1,5 +1,7 @@
 package wasp;
 
+import python.Bytearray;
+
 import wash.event.TouchEvent;
 import wash.util.TimeTuple;
 import wasp.driver.Draw565;
@@ -10,6 +12,7 @@ extern class Watch {
 	static var drawable:Draw565;
 	static var display:ST7789;
 	static var vibrator:Vibrator;
+	static var hrs:HRS;
 	static var rtc:RTC;
 	static var battery:Battery;
 	static var backlight:Backlight;
@@ -28,6 +31,23 @@ extern class Watch {
 // TODO: move to own module, add missing methods
 extern class Vibrator {
 	function pulse(?duty:Int, ?ms:Int):Void;
+}
+
+// TODO: move to own module, add missing methods
+extern class HRS {
+	function enable():Void;
+	function disable():Void;
+	function read_hrs():Int;
+}
+
+// TODO: move to own module, add missing methods
+@:pythonImport('ppg', 'PPG')
+extern class PPG {
+	var data:Bytearray;
+	function new(spl:Int);
+	function enable_debug():Void;
+	function get_heart_rate():Int;
+	function preprocess(spl:Int):Int;
 }
 
 // TODO: move to own module, add missing methods

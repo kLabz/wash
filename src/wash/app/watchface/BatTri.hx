@@ -5,6 +5,7 @@ import python.Syntax;
 import python.Syntax.bytes;
 
 import wash.Wash;
+import wash.app.user.HeartApp;
 import wash.app.system.Settings;
 import wash.app.watchface.settings.BatTriConfig;
 import wasp.Builtins;
@@ -104,7 +105,7 @@ class BatTri extends BaseWatchFace {
 		var now = Watch.rtc.get_localtime();
 		var batteryLevel = Watch.battery.level();
 		var battery = Builtins.int(batteryLevel / 100 * 240);
-		var hr = -1; // TODO: fetch heart rate somehow...
+		var hr = try HeartApp.getRate() catch (_) -1;
 
 		var plug = try Watch.battery.charging() catch (_) false;
 		var bluetooth = try Watch.connected() catch (_) false;
@@ -249,6 +250,7 @@ class BatTri extends BaseWatchFace {
 		if (this.hr != hr) {
 			draw.set_color(mid);
 			draw.set_font(Fonts.sans18);
+			draw.fill(0, 25, 219, 40, 20);
 			if (hr < 0) draw.string('-', 25, 219);
 			else draw.string('{}'.format(hr), 25, 219);
 		}
