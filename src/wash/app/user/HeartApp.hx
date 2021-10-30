@@ -4,6 +4,7 @@ import python.Bytes;
 import python.Lib;
 import python.Syntax.bytes;
 import python.Syntax.delete;
+import python.Syntax.positional;
 
 import wash.app.system.Settings;
 import wash.app.user.settings.HeartConfig;
@@ -148,7 +149,7 @@ class HeartApp extends BaseApplication {
 	override public function tick(ticks:Int):Void {
 		if (!monitoring) return;
 
-		var t = new Timer(1, 8000000); // id, period
+		var t = new Timer(positional("id", 1), positional("period", 8000000));
 		t.start();
 		subtick(1);
 		Wash.system.keepAwake();
