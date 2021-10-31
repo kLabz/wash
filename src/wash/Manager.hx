@@ -48,13 +48,16 @@ class Manager {
 		'\\xfb\\x80', // primary
 		'\\xfe\\x20', // secondary
 		'\\xff\\xff', // highlight
-		'\\x29\\x45' // shadow
+		'\\x29\\x45', // shadow
+		'\\xfa\\x49', // primary (night mode)
+		'\\xfb\\xac', // secondary (night mode)
+		'\\xff\\x1c'  // highlight (night mode)
 	));
 
 	var blankAfter:Int = 15;
 	var alarms:Array<Alarm> = [];
-	var brightness(default, set):Int = 2; // TODO: enum abstract
-	var notifyLevel(default, set):Int = 2; // TODO: enum abstract
+	var brightnessLevel(default, set):BrightnessLevel = Settings.brightnessLevel;
+	var notificationLevel(default, set):NotificationLevel = Settings.notificationLevel;
 	var nfyLevels:Array<Int> = [0, 40, 80];
 	var nfylev_ms:Int = 40;
 	var charging:Bool = true;
@@ -64,6 +67,7 @@ class Manager {
 	var tickExpiry:Int = 0;
 	var sleepAt:Int = 0;
 	var eventMask:Int = 0; // EventMask combination
+	public var nightMode(default, set):Bool = false;
 
 	var bar:StatusBar;
 	var launcher:Launcher;
@@ -71,7 +75,7 @@ class Manager {
 	var notifier:NotificationApp;
 
 	function new() {
-		nfylev_ms = nfyLevels[notifyLevel - 1];
+		nfylev_ms = nfyLevels[notificationLevel - 1];
 	}
 
 	function init():Void {
@@ -89,7 +93,7 @@ class Manager {
 
 			Watch.display.poweron();
 			Watch.display.mute(true);
-			Watch.backlight.set(brightness);
+			Watch.backlight.set(brightnessLevel);
 			sleepAt = Watch.rtc.uptime + 90;
 
 			if (Watch.free > 0) {
@@ -206,7 +210,7 @@ class Manager {
 		if (sleepAt <= 0) {
 			Watch.display.poweron();
 			app.wake();
-			Watch.backlight.set(brightness);
+			Watch.backlight.set(brightnessLevel);
 			Watch.touch.wake();
 		}
 
@@ -441,14 +445,33 @@ class Manager {
 		}
 	}
 
-	function set_brightness(b:Int):Int {
-		brightness = b;
+	public function resetBrightnessLevel():Void {
+		brightnessLevel = nightMode ? Low : Settings.brightnessLevel;
+	}
+
+	@:keep
+	function set_nightMode(v:Bool):Bool {
+		nightMode = v;
+
+		if (nightMode) {
+			brightnessLevel = Low;
+			notificationLevel = Silent;
+		} else {
+			brightnessLevel = Settings.brightnessLevel;
+			notificationLevel = Settings.notificationLevel;
+		}
+
+		return nightMode;
+	}
+
+	function set_brightnessLevel(b:BrightnessLevel):BrightnessLevel {
+		brightnessLevel = b;
 		Watch.backlight.set(b);
 		return b;
 	}
 
-	function set_notifyLevel(level:Int):Int {
-		notifyLevel = level;
+	function set_notificationLevel(level:NotificationLevel):NotificationLevel {
+		notificationLevel = level;
 		nfylev_ms = nfyLevels[level - 1];
 		return level;
 	}

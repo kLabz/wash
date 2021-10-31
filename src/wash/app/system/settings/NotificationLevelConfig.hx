@@ -17,21 +17,18 @@ class NotificationLevelConfig extends BaseApplication implements ISettingsApplic
 
 	override public function touch(event:TouchEvent):Void {
 		slider.touch(event);
-		Wash.system.notifyLevel = slider.value + 1;
+		Settings.notificationLevel = cast (slider.value + 1);
+
+		if (!Wash.system.nightMode)
+			Wash.system.notificationLevel = Settings.notificationLevel;
 	}
 
 	public function draw():Void {
-		slider.value = Wash.system.notifyLevel - 1;
+		slider.value = Settings.notificationLevel - 1;
 	}
 
 	public function update():Void {
-		var say = switch (Wash.system.notifyLevel) {
-			case 3: "High";
-			case 2: "Mid";
-			case _: "Silent";
-		};
-
 		slider.update();
-		Watch.drawable.string(say, 0, 150, 240);
+		Watch.drawable.string(Settings.notificationLevel.toString(), 0, 150, 240);
 	}
 }

@@ -17,21 +17,18 @@ class BrightnessConfig extends BaseApplication implements ISettingsApplication {
 
 	override public function touch(event:TouchEvent):Void {
 		slider.touch(event);
-		Wash.system.brightness = slider.value + 1;
+		Settings.brightnessLevel = cast (slider.value + 1);
+
+		if (!Wash.system.nightMode)
+			Wash.system.brightnessLevel = Settings.brightnessLevel;
 	}
 
 	public function draw():Void {
-		slider.value = Wash.system.brightness - 1;
+		slider.value = Settings.brightnessLevel - 1;
 	}
 
 	public function update():Void {
-		var say = switch (Wash.system.brightness) {
-			case 3: "High";
-			case 2: "Mid";
-			case _: "Low";
-		};
-
 		slider.update();
-		Watch.drawable.string(say, 0, 150, 240);
+		Watch.drawable.string(Settings.brightnessLevel.toString(), 0, 150, 240);
 	}
 }

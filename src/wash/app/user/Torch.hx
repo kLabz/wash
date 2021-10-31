@@ -37,18 +37,15 @@ class Torch extends BaseApplication {
 	static var redLight:Bool = false;
 
 	private var activated:Bool;
-	private var brightness:Int;
 
 	public function new() {
 		super();
 		NAME = "Torch";
 		ICON = icon;
 		activated = false;
-		brightness = Wash.system.brightness;
 	}
 
 	override public function foreground():Void {
-		brightness = Wash.system.brightness;
 		activated = initialState;
 		draw();
 		Wash.system.requestTick(1000);
@@ -57,7 +54,7 @@ class Torch extends BaseApplication {
 
 	override public function background():Void {
 		activated = false;
-		Wash.system.brightness = brightness;
+		Wash.system.resetBrightnessLevel();
 	}
 
 	override function registered(quickRing:Bool):Void {
@@ -86,14 +83,16 @@ class Torch extends BaseApplication {
 	}
 
 	function draw():Void {
+		var redLight = redLight || Wash.system.nightMode;
+
 		if (activated) {
 			Watch.drawable.fill(redLight ? 0xf800 : 0xffff);
 			drawTorch(0, 0);
-			Wash.system.brightness = 3;
+			Wash.system.brightnessLevel = High;
 		} else {
 			Watch.drawable.fill();
 			drawTorch(Wash.system.theme.secondary, redLight ? 0xf800 : 0xffff);
-			Wash.system.brightness = brightness;
+			Wash.system.resetBrightnessLevel();
 		}
 	}
 

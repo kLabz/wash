@@ -36,6 +36,10 @@ class Settings extends BaseApplication {
 		'D?\\xff\\xffq'
 	);
 
+	// System configuration
+	public static var notificationLevel:NotificationLevel = Mid;
+	public static var brightnessLevel:BrightnessLevel = Mid;
+
 	static var settingsListChanged:Bool = false;
 	static var systemSettings:Array<AppConfig> = [
 		AppConfig.make("Brightness", BrightnessConfig),
