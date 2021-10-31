@@ -162,7 +162,7 @@ class Settings extends BaseApplication {
 				case _: "App Settings";
 			}, 0, 6, 240);
 
-			draw.set_color(Wash.system.theme.highlight, Wash.system.theme.primary);
+			draw.set_color(0, Wash.system.theme.primary);
 			draw.set_font(Fonts.sans24);
 
 			for (i in 0...5) {
@@ -170,8 +170,8 @@ class Settings extends BaseApplication {
 				if (index >= (settingsPage == 0 ? systemSettings : applicationSettings).length) break;
 				var target = settingsPage == 0 ? systemSettings[index] : applicationSettings[index];
 
-				draw.fill(Wash.system.theme.primary, 10, (i + 1) * 40 + 2, 220, 36);
-				draw.string(target.appName, 10, (i + 1) * 40 + 7, 220);
+				draw.fill(Wash.system.theme.primary, 12, (i + 1) * 40 + 2, 216, 36);
+				draw.string(target.appName, 12, (i + 1) * 40 + 7, 216);
 			}
 		}
 
