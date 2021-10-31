@@ -71,10 +71,12 @@ class Settings extends BaseApplication {
 		settingsPage = 0;
 		var nbButtons = systemSettings.length + applicationSettings.length;
 		settingsPages = 1 + opCeilDiv(applicationSettings.length, 5);
-		scroll = new ScrollIndicator(null, 0, settingsPages - 1, settingsPage);
+		scroll = new ScrollIndicator(42, 0, settingsPages - 1, settingsPage);
 	}
 
 	override public function foreground():Void {
+		settingsPage = 0;
+		currentSettingsApp = null;
 		draw();
 		Wash.system.requestEvent(EventMask.TOUCH | EventMask.SWIPE_UPDOWN | EventMask.SWIPE_LEFTRIGHT);
 	}
