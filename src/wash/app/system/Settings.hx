@@ -8,11 +8,9 @@ import wasp.Fonts;
 import wasp.Watch;
 import wash.app.IApplication.ISettingsApplication;
 import wash.app.system.settings.AppConfig;
-import wash.app.system.settings.BrightnessConfig;
-import wash.app.system.settings.DateConfig;
-import wash.app.system.settings.NotificationLevelConfig;
+import wash.app.system.settings.DateTimeConfig;
+import wash.app.system.settings.SystemConfig;
 import wash.app.system.settings.ThemeConfig;
-import wash.app.system.settings.TimeConfig;
 import wash.event.EventMask;
 import wash.event.TouchEvent;
 import wash.widgets.ScrollIndicator;
@@ -42,11 +40,9 @@ class Settings extends BaseApplication {
 
 	static var settingsListChanged:Bool = false;
 	static var systemSettings:Array<AppConfig> = [
-		AppConfig.make("Brightness", BrightnessConfig),
-		AppConfig.make("Notification Level", NotificationLevelConfig),
-		AppConfig.make("Time", TimeConfig),
-		AppConfig.make("Date", DateConfig),
-		AppConfig.make("Theme", ThemeConfig),
+		AppConfig.make("System", SystemConfig),
+		AppConfig.make("Date/Time", DateTimeConfig),
+		AppConfig.make("Theme", ThemeConfig)
 	];
 
 	static var applicationSettings:Array<AppConfig> = [];
@@ -63,7 +59,8 @@ class Settings extends BaseApplication {
 	}
 
 	var scroll:ScrollIndicator;
-	var settingsIndex(default, set):Int;
+	var settingsPage:Int;
+	var settingsPages:Int;
 	var currentSettingsApp:Null<ISettingsApplication>;
 
 	public function new() {
@@ -71,35 +68,10 @@ class Settings extends BaseApplication {
 		NAME = "Settings";
 		ICON = icon;
 
-		settingsIndex = 0;
-		scroll = new ScrollIndicator(
-			null,
-			0,
-			systemSettings.length + applicationSettings.length - 1,
-			settingsIndex
-		);
-	}
-
-	function set_settingsIndex(value:Int):Int {
-		settingsIndex = value;
-
-		if (settingsIndex < 0)
-			settingsIndex = systemSettings.length + applicationSettings.length - 1;
-		else if (settingsIndex >= systemSettings.length + applicationSettings.length)
-			settingsIndex = 0;
-
-		if (currentSettingsApp != null) {
-			// TODO: some cleanup?
-			currentSettingsApp = null;
-		}
-
-		var target = (settingsIndex < systemSettings.length)
-			? systemSettings[settingsIndex].settingsCls
-			: applicationSettings[settingsIndex - systemSettings.length].settingsCls;
-
-		currentSettingsApp = construct(target, this);
-
-		return value;
+		settingsPage = 0;
+		var nbButtons = systemSettings.length + applicationSettings.length;
+		settingsPages = 1 + opCeilDiv(applicationSettings.length, 5);
+		scroll = new ScrollIndicator(null, 0, settingsPages - 1, settingsPage);
 	}
 
 	override public function foreground():Void {
@@ -110,29 +82,59 @@ class Settings extends BaseApplication {
 	override public function swipe(event:TouchEvent):Bool {
 		if (currentSettingsApp != null) {
 			if (!currentSettingsApp.swipe(event)) return false;
+
+			switch (event.type) {
+				case LEFT | RIGHT:
+					currentSettingsApp = null;
+					draw();
+
+				case _:
+			}
+		} else {
+			switch (event.type) {
+				case UP if (settingsPage < settingsPages - 1):
+					settingsPage++;
+					draw();
+
+				case DOWN if (settingsPage > 0):
+					settingsPage--;
+					draw();
+
+				case LEFT | RIGHT:
+					return true;
+
+				case _:
+			}
 		}
 
-		switch (event.type) {
-			case UP:
-				settingsIndex++;
-				draw();
-
-			case DOWN:
-				settingsIndex--;
-				draw();
-
-			case LEFT | RIGHT:
-				return true;
-
-			case _:
-		}
 
 		return false;
 	}
 
 	override public function touch(event:TouchEvent):Void {
-		if (currentSettingsApp != null) currentSettingsApp.touch(event);
+		if (currentSettingsApp != null) {
+			currentSettingsApp.touch(event);
+		} else {
+			var index = opFloorDiv(event.y - 40, 40);
+
+			switch (settingsPage) {
+				case 0:
+					if (index < 3) setApp(systemSettings[index]);
+
+				case _:
+					index += (settingsPage - 1) * 5;
+					if (index < applicationSettings.length)
+						setApp(applicationSettings[index]);
+			}
+
+		}
+
 		update();
+	}
+
+	function setApp(app:AppConfig):Void {
+		currentSettingsApp = construct(app.settingsCls, this);
+		draw();
 	}
 
 	public function draw():Void {
@@ -140,17 +142,37 @@ class Settings extends BaseApplication {
 		Watch.display.mute(true);
 
 		if (settingsListChanged) {
-			scroll.max = systemSettings.length + applicationSettings.length - 1;
+			settingsPages = 1 + opCeilDiv(applicationSettings.length, 5);
+			scroll.max = settingsPages - 1;
 			settingsListChanged = false;
 		}
 
 		draw.fill(0);
 
 		if (currentSettingsApp != null) {
+			currentSettingsApp.draw();
+		} else {
+			Watch.display.mute(true);
+			draw.fill(0);
+
 			draw.set_color(Wash.system.theme.highlight);
 			draw.set_font(Fonts.sans24);
-			draw.string(currentSettingsApp.NAME, 0, 6, 240);
-			currentSettingsApp.draw();
+			draw.string(switch (settingsPage) {
+				case 0: "Watch Settings";
+				case _: "App Settings";
+			}, 0, 6, 240);
+
+			draw.set_color(Wash.system.theme.highlight, Wash.system.theme.primary);
+			draw.set_font(Fonts.sans24);
+
+			for (i in 0...5) {
+				var index = settingsPage == 0 ? i : (settingsPage - 1) * 5 + i;
+				if (index >= (settingsPage == 0 ? systemSettings : applicationSettings).length) break;
+				var target = settingsPage == 0 ? systemSettings[index] : applicationSettings[index];
+
+				draw.fill(Wash.system.theme.primary, 10, (i + 1) * 40 + 2, 220, 36);
+				draw.string(target.appName, 10, (i + 1) * 40 + 7, 220);
+			}
 		}
 
 		update();
@@ -158,9 +180,12 @@ class Settings extends BaseApplication {
 	}
 
 	function update():Void {
-		if (currentSettingsApp != null) currentSettingsApp.update();
-		scroll.value = settingsIndex;
-		scroll.draw();
+		if (currentSettingsApp != null) {
+			currentSettingsApp.update();
+		} else {
+			scroll.value = settingsPage;
+			scroll.draw();
+		}
 	}
 
 	static function appConfigSort(appConfig:AppConfig):String return appConfig.appName;

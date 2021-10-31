@@ -4,6 +4,7 @@ import wash.app.IApplication.ISettingsApplication;
 import wash.event.TouchEvent;
 import wash.widgets.Button;
 import wash.widgets.ColorPicker;
+import wasp.Fonts;
 import wasp.Watch;
 
 class ThemeConfig extends BaseApplication implements ISettingsApplication {
@@ -67,11 +68,17 @@ class ThemeConfig extends BaseApplication implements ISettingsApplication {
 	}
 
 	public function draw():Void {
+		var draw = Watch.drawable;
+
+		draw.set_color(Wash.system.theme.highlight);
+		draw.set_font(Fonts.sans24);
+		draw.string("Theme", 0, 6, 240);
+
 		switch (themeColor) {
 			case 0:
-				Watch.drawable.fill(Wash.system.theme.primary, 55, 35, 40, 40);
-				Watch.drawable.fill(Wash.system.theme.secondary, 100, 35, 40, 40);
-				Watch.drawable.fill(Wash.system.theme.highlight, 145, 35, 40, 40);
+				draw.fill(Wash.system.theme.primary, 55, 35, 40, 40);
+				draw.fill(Wash.system.theme.secondary, 100, 35, 40, 40);
+				draw.fill(Wash.system.theme.highlight, 145, 35, 40, 40);
 				primaryButton.draw();
 				secondaryButton.draw();
 				highlightButton.draw();

@@ -3,6 +3,8 @@ package wash.app.user.settings;
 import wash.app.IApplication.ISettingsApplication;
 import wash.event.TouchEvent;
 import wash.widgets.Checkbox;
+import wasp.Fonts;
+import wasp.Watch;
 
 @:access(wash.app.user.HeartApp)
 class HeartConfig extends BaseApplication implements ISettingsApplication {
@@ -23,6 +25,11 @@ class HeartConfig extends BaseApplication implements ISettingsApplication {
 	}
 
 	public function draw():Void {
+		var draw = Watch.drawable;
+		draw.set_color(Wash.system.theme.highlight);
+		draw.set_font(Fonts.sans24);
+		draw.string(NAME, 0, 6, 240);
+
 		debug.state = HeartApp.debug;
 		runInBackground.state = HeartApp.runInBackground;
 

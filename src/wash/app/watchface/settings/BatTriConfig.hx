@@ -3,6 +3,8 @@ package wash.app.watchface.settings;
 import wash.app.IApplication.ISettingsApplication;
 import wash.event.TouchEvent;
 import wash.widgets.Checkbox;
+import wasp.Fonts;
+import wasp.Watch;
 
 @:access(wash.app.watchface.BatTri)
 class BatTriConfig extends BaseApplication implements ISettingsApplication {
@@ -12,7 +14,7 @@ class BatTriConfig extends BaseApplication implements ISettingsApplication {
 
 	public function new(_) {
 		super();
-		NAME = "BatTri Watchface";
+		NAME = "Watchface";
 
 		hours12 = new Checkbox(6, 60, "12 Hours");
 		weekNb = new Checkbox(6, 110, "Week nb");
@@ -26,6 +28,11 @@ class BatTriConfig extends BaseApplication implements ISettingsApplication {
 	}
 
 	public function draw():Void {
+		var draw = Watch.drawable;
+		draw.set_color(Wash.system.theme.highlight);
+		draw.set_font(Fonts.sans24);
+		draw.string(NAME, 0, 6, 240);
+
 		hours12.state = BatTri.hours12;
 		weekNb.state = BatTri.displayWeekNb;
 		batteryPct.state = BatTri.displayBatteryPct;

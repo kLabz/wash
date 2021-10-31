@@ -9,9 +9,9 @@ import wash.app.user.HeartApp;
 import wash.app.system.Settings;
 import wash.app.watchface.settings.BatTriConfig;
 import wasp.Builtins;
-import wasp.Watch;
 import wasp.Fonts;
 import wasp.Time;
+import wasp.Watch;
 import wasp.driver.Draw565.Fill.fill;
 
 using python.NativeStringTools;
@@ -80,7 +80,7 @@ class BatTri extends BaseWatchFace {
 	}
 
 	override function registered(quickRing:Bool):Void {
-		Settings.registerApp(NAME, BatTriConfig);
+		Settings.registerApp("Watchface", BatTriConfig);
 	}
 
 	override function unregistered():Void {
