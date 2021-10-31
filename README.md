@@ -28,6 +28,7 @@ Needed Haxe changes to get a better output (which is needed for micropython):
 * [x] `NativeArrayTools.nativeSort()`
 * [x] Add `@micropython.native` runtime metadata (undocumented `@:python("micropython.native")`)
 * [-] Implement @:selfCall for python
+* [-] Add support for positional arguments, sometimes mandatory with micropython
 * [ ] Skip all the unneeded code when doing `try / catch (e:SomeException)`
 * [ ] Skip generating empty classes/interfaces
 * [ ] Avoid iterator mess more easily
