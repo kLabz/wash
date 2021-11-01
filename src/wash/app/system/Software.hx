@@ -7,6 +7,7 @@ import python.Syntax.tuple;
 import python.Tuple;
 
 import wasp.Watch;
+import wash.app.user.AlarmApp;
 import wash.app.user.Calc;
 import wash.app.user.HeartApp;
 import wash.app.user.Stopclock;
@@ -63,6 +64,7 @@ class Software extends BaseApplication {
 		}
 
 		db = [];
+		db.push(AppEntry.make(AlarmApp, "Alarms", nextY(), Wash.system.hasApplication(AlarmApp)));
 		db.push(AppEntry.make(Calc, "Calc", nextY(), Wash.system.hasApplication(Calc)));
 		db.push(AppEntry.make(HeartApp, "Heart", nextY(), Wash.system.hasApplication(HeartApp)));
 		db.push(AppEntry.make(Stopclock, "Stopwatch", nextY(), Wash.system.hasApplication(Stopclock)));

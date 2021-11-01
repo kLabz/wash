@@ -119,16 +119,6 @@ class Launcher extends BaseApplication {
 
 	function drawApp(app:IApplication, x:Int, y:Int):Void {
 		if (app == null) return;
-
-		Watch.drawable.blit(
-			app.ICON == null ? AppIcon : app.ICON,
-			x+14,
-			y+14,
-			// Force recoloring of icons with theme colors
-			Wash.system.theme.highlight,
-			Wash.system.theme.secondary,
-			Wash.system.theme.primary,
-			true
-		);
+		Watch.drawable.recolor(app.ICON == null ? AppIcon : app.ICON, x+14, y+14);
 	}
 }

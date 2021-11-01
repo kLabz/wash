@@ -2,6 +2,7 @@ package wasp.driver;
 
 import python.Bytes;
 
+import wash.Wash;
 import wash.util.PointTuple;
 
 // TODO: double check default values
@@ -19,6 +20,17 @@ extern class Draw565 {
 		image:Bytes, x:Int, y:Int, ?fg:Int = 0xffff, ?c1:Int = 0x4a69, ?c2:Int = 0x7bef, ?forceRecolor:Bool = false
 	):Void _blit(image, x, y, fg, c1, c2, forceRecolor);
 	@:native('blit') private function _blit(image:Bytes, x:Int, y:Int, fg:Int, c1:Int, c2:Int, forceRecolor:Bool):Void;
+
+	inline function recolor(image:Bytes, x:Int, y:Int):Void
+		_blit(
+			image,
+			x,
+			y,
+			Wash.system.theme.highlight,
+			Wash.system.theme.secondary,
+			Wash.system.theme.primary,
+			true
+		);
 
 	// TODO: rleblit()
 	function set_color(color:Int, bg:Int = 0):Void;

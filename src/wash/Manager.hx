@@ -23,6 +23,7 @@ import wash.app.system.PagerApp;
 import wash.app.system.Settings;
 import wash.app.system.Software;
 import wash.app.user.AlarmApp;
+import wash.app.user.NightMode;
 import wash.app.user.Torch;
 import wash.app.watchface.BatTri;
 import wash.event.EventMask;
@@ -88,6 +89,8 @@ class Manager {
 	function secondaryInit():Void {
 		Syntax.code('global free');
 
+		AlarmApp.init();
+
 		if (app == null) {
 			if (quickRing.length == 0) registerDefaults();
 
@@ -109,7 +112,7 @@ class Manager {
 	function registerDefaults():Void {
 		// Quick ring
 		register(BatTri, true, true);
-		register(AlarmApp, true);
+		register(NightMode, true);
 		register(Torch, true);
 
 		// Other apps

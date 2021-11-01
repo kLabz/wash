@@ -33,7 +33,7 @@ class Button implements IWidget {
 		draw.fill(bg, data.x, data.y, data.w, data.h);
 		draw.set_color(txt, bg);
 		draw.set_font(Fonts.sans24);
-		draw.string(data.label, data.x, data.y+opFloorDiv(data.h, 2)-12, data.w);
+		draw.string(data.label, data.x, data.y+opFloorDiv(data.h, 2)-9, data.w);
 	}
 }
 

@@ -4,6 +4,8 @@ import wash.util.TimeTuple;
 import wash.util.Math.opFloorDiv;
 import wasp.Builtins.divmod;
 
+using python.NativeStringTools;
+
 @:pythonImport("time")
 extern class Time {
 	static function time():Float;
@@ -11,6 +13,9 @@ extern class Time {
 	static function sleep(t:Float):Void;
 	static function mktime(s:TimeTuple):Float;
 	static function localtime(time:Float):TimeTuple;
+
+	inline static function printHour(time:TimeTuple):String
+		return '{:02d}:{:02d}'.format(time.HH, time.MM);
 
 	inline static function weekNb(year:Int, month:Int, day:Int):Int
 		return TimeUtils.isoWeekNumber(year, month, day);

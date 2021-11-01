@@ -46,44 +46,50 @@ enum abstract Page(Int) from Int to Int {
 class AlarmApp extends BaseApplication {
 	static var icon:Bytes = bytes(
 		'\\x02',
-		'`@',
-		'\\x17@\\xd2G#G-K\\x1fK)O\\x1bO&O',
-		"\\n\\x80\\xb4\\x89\\x0bN$N\\x08\\x91\\tM\"M\\x07\\x97",
-		'\\x07M!L\\x06\\x9b\\x07K K\\x06\\x9f\\x06K\\x1fJ',
-		'\\x05\\xa3\\x05J\\x1eJ\\x05\\x91\\xc0\\xd0\\xc3\\x91\\x05J\\x1dI',
-		'\\x05\\x8c\\xcf\\x8c\\x05I\\x1dH\\x05\\x8b\\xd3\\x8b\\x05H\\x1dG',
-		'\\x05\\x8a\\xd7\\x8a\\x05G\\x1dG\\x04\\x89\\xdb\\x89\\x05F\\x1dF',
-		'\\x04\\x89\\xcc\\x05\\xcc\\x89\\x04F\\x1dE\\x04\\x89\\xcd\\x05\\xcd\\x89',
-		'\\x04E\\x1eD\\x03\\x88\\xce\\x07\\xce\\x88\\x04C\\x1fC\\x04\\x88',
-		'\\xce\\x07\\xce\\x88\\x04C\\x1fC\\x03\\x88\\xcf\\x07\\xcf\\x88\\x04A',
-		'!A\\x04\\x87\\xd0\\x07\\xd0\\x87\\x04A%\\x87\\xd1\\x07\\xd1\\x87',
-		')\\x87\\xd1\\x07\\xd1\\x87(\\x87\\xd2\\x07\\xd2\\x87\\\'\\x87\\xd2\\x07',
-		'\\xd2\\x87\\\'\\x86\\xd3\\x07\\xd3\\x86&\\x87\\xd3\\x07\\xd3\\x87%\\x86',
-		'\\xd4\\x07\\xd4\\x86%\\x86\\xd4\\x07\\xd4\\x86%\\x86\\xd4\\x07\\xd4\\x86',
-		"$\\x87\\xd4\\x07\\xd4\\x87#\\x87\\xd4\\x07\\xd4\\x87#\\x87\\xd4\\x07",
-		'\\xd4\\x87#\\x86\\xd4\\x08\\xd5\\x86#\\x86\\xd3\\t\\xd5\\x86#\\x86',
-		'\\xd2\\t\\xd6\\x86#\\x87\\xd0\\n\\xd5\\x87#\\x87\\xcf\\n\\xd6\\x87',
-		"#\\x87\\xce\\n\\xd7\\x87$\\x86\\xce\\t\\xd8\\x86%\\x86\\xce\\x08",
-		'\\xd9\\x86%\\x86\\xcd\\x08\\xda\\x86%\\x87\\xcc\\x07\\xda\\x87%\\x87',
-		'\\xcc\\x06\\xdb\\x86\\\'\\x87\\xcc\\x03\\xdc\\x87\\\'\\x87\\xeb\\x87(\\x87',
-		'\\xe9\\x87)\\x87\\xe9\\x87*\\x87\\xe7\\x87+\\x88\\xe5\\x88,\\x87',
-		'\\xe5\\x87-\\x88\\xe3\\x88.\\x88\\xe1\\x880\\x89\\xdd\\x892\\x89',
-		'\\xdb\\x893\\x8b\\xd7\\x8b2\\x8d\\xd4\\x8e0\\x91\\xcf\\x91.\\x97',
-		'\\xc5\\x97,\\xb5+\\x88\\x03\\x9f\\x03\\x88*\\x88\\x05\\x9d\\x05\\x88',
-		')\\x87\\t\\x97\\t\\x87*\\x85\\x0c\\x93\\x0c\\x85,\\x83\\x11\\x8b',
-		'\\x11\\x83\\x17'
+		'@@',
+		'?\\xff\\xffQ\\xc5\\x08\\x8a\\x08\\xc5\\x1a\\xc7\\x05\\x90\\x05\\xc7\\x17',
+		'\\xc7\\x04\\x94\\x04\\xc7\\x16\\xc6\\x03\\x87\\n\\x87\\x03\\xc6\\x15\\xc6\\x03',
+		'\\x85\\x10\\x85\\x03\\xc6\\x14\\xc5\\x03\\x84\\t@\\xacB\\t\\x84\\x03',
+		'\\xc5\\x14\\xc4\\x03\\x83\\x0bB\\x0b\\x83\\x03\\xc4\\x14\\xc3\\x03\\x83\\x1a',
+		'\\x83\\x03\\xc3\\x14\\xc2\\x03\\x83\\x1c\\x83\\x03\\xc2\\x18\\x83\\x0e\\xc2\\x0e',
+		'\\x83\\x1b\\x83\\x0f\\xc2\\x0f\\x83\\x1a\\x83\\x0f\\xc2\\x0f\\x83\\x19\\x83\\x10',
+		'\\xc2\\x10\\x83\\x18\\x83\\x10\\xc2\\x10\\x83\\x17\\x83\\x11\\xc2\\x11\\x83\\x16',
+		'\\x83\\x11\\xc2\\x11\\x83\\x16\\x83\\x11\\xc2\\x11\\x83\\x15\\x83\\x12\\xc2\\x12',
+		'\\x83\\x14\\x83\\x12\\xc2\\x12\\x83\\x14\\x83\\x12\\xc2\\x12\\x83\\x14\\x83\\x02',
+		'B\\x06\\xca\\x0eB\\x02\\x83\\x14\\x83\\x02B\\x06\\xca\\x0eB\\x02',
+		'\\x83\\x14\\x83&\\x83\\x14\\x83&\\x83\\x14\\x83&\\x83\\x14\\x83&',
+		'\\x83\\x15\\x83$\\x83\\x16\\x83$\\x83\\x16\\x83$\\x83\\x17\\x83"',
+		'\\x83\\x18\\x83"\\x83\\x19\\x83 \\x83\\x1a\\x83 \\x83\\x1b\\x83\\x1e',
+		'\\x83\\x1d\\x83\\x1c\\x83\\x1f\\x83\\x1a\\x83!\\x83\\x0b\\xc2\\x0b\\x83#',
+		'\\x84\\t\\xc2\\t\\x84%\\x85\\x10\\x85&A\\x87\\n\\x87A%',
+		'C\\x01\\x94\\x01C#C\\x04\\x90\\x04C!C\\x08\\x8a\\x08',
+		'C B\\x1cB?\\xff\\xffS'
 	);
 
-	var page:Page;
-	var alarms:Array<AlarmDef>;
-	var pendingAlarms:Array<Float>;
-	var numAlarms:Int;
+	static var instance:AlarmApp;
+	static var alarms:Array<AlarmDef>;
+	static var pendingAlarms:Array<Float>;
+	static var numAlarms:Int;
 
+	var page:Page;
 	var delAlarmButton:Button;
 	var hoursSpinner:Spinner;
 	var minutesSpinner:Spinner;
 	var dayButtons:DayButtons;
 	var alarmChecks:Tuple4<Checkbox, Checkbox, Checkbox, Checkbox>;
+
+	public static function init():Void {
+		alarms = [
+			AlarmDef.make(8, 0, WEEKDAYS),
+			AlarmDef.make(8, 0, 0),
+			AlarmDef.make(8, 0, 0),
+			AlarmDef.make(8, 0, 0)
+		];
+
+		pendingAlarms = [0.0, 0.0, 0.0, 0.0];
+		numAlarms = 1;
+		setPendingAlarms();
+	}
 
 	public function new() {
 		super();
@@ -91,14 +97,7 @@ class AlarmApp extends BaseApplication {
 		ICON = icon;
 
 		page = HOME_PAGE;
-		alarms = [
-			AlarmDef.make(8, 0, WEEKDAYS),
-			AlarmDef.make(8, 0, 0),
-			AlarmDef.make(8, 0, 0),
-			AlarmDef.make(8, 0, 0)
-		];
-		pendingAlarms = [0.0, 0.0, 0.0, 0.0];
-		numAlarms = 1;
+		instance = this;
 	}
 
 	override public function foreground():Void {
@@ -311,7 +310,7 @@ class AlarmApp extends BaseApplication {
 		draw.set_color(alarmCheck.state ? Wash.system.theme.highlight : Wash.system.theme.secondary);
 
 		draw.set_font(Fonts.sans28);
-		draw.string('{:02d}:{:02d}'.format(alarm.HH, alarm.MM), 10, 60+index*45, 120);
+		draw.string(alarm.formatHour(), 10, 60+index*45, 120);
 
 		draw.set_font(Fonts.sans18);
 		draw.string(getRepeatCode(alarm.mask), 130, 70+index*45, 60);
@@ -358,7 +357,7 @@ class AlarmApp extends BaseApplication {
 		Wash.system.navigate(HOME);
 	}
 
-	function setPendingAlarms():Void {
+	static function setPendingAlarms():Void {
 		var now = Watch.rtc.get_localtime();
 
 		// Avoid haxe iterator..
@@ -392,7 +391,7 @@ class AlarmApp extends BaseApplication {
 				}
 
 				pendingAlarms[index] = pendingTime;
-				Wash.system.setAlarm(pendingTime, alert);
+				Wash.system.setAlarm(pendingTime, instance.alert);
 			} else {
 				pendingAlarms[index] = 0.0;
 			}
@@ -415,6 +414,25 @@ class AlarmApp extends BaseApplication {
 					alarm.mask = 0;
 			}
 		}
+	}
+
+	public static function getInstance():AlarmApp {
+		if (instance == null) new AlarmApp();
+		return instance;
+	}
+
+	public static function nextAlarm():Null<Float> {
+		var next = 0.0;
+
+		// Avoid haxe iterator..
+		for (i in 0...Builtins.len(pendingAlarms)) {
+			var val = pendingAlarms[i];
+			if (val == 0) continue;
+			if (next == 0 || next > val) next = val;
+		}
+
+		if (next == 0) return null;
+		return next;
 	}
 
 	static function getRepeatCode(days):String {
@@ -443,4 +461,6 @@ extern class AlarmDef extends Bytearray {
 	var mask(get, set):RepetitionFlag;
 	inline function get_mask():RepetitionFlag return this[2];
 	inline function set_mask(v:RepetitionFlag):RepetitionFlag return this[2] = v;
+
+	inline function formatHour():String return '{:02d}:{:02d}'.format(this.HH, this.MM);
 }
