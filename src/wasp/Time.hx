@@ -8,7 +8,6 @@ using python.NativeStringTools;
 
 @:pythonImport("time")
 extern class Time {
-	static function time():Float;
 	static function clock():Float;
 	static function sleep(t:Float):Void;
 	static function mktime(s:TimeTuple):Float;
@@ -19,6 +18,11 @@ extern class Time {
 
 	inline static function weekNb(year:Int, month:Int, day:Int):Int
 		return TimeUtils.isoWeekNumber(year, month, day);
+
+	inline static function time():Float {
+		var now = Watch.rtc.get_localtime();
+		return Time.mktime(TimeTuple.make(now.yyyy, now.mm, now.dd, now.HH, now.MM, now.SS, 0, 0));
+	}
 }
 
 @:publicFields

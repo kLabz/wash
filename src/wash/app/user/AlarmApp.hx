@@ -399,8 +399,7 @@ class AlarmApp extends BaseApplication {
 	}
 
 	function deactivatePendingAlarms():Void {
-		var now = Watch.rtc.get_localtime();
-		var now = Time.mktime(TimeTuple.make(now.yyyy, now.mm, now.dd, now.HH, now.MM, now.SS, 0, 0));
+		var now = Time.time();
 
 		// Avoid haxe iterator..
 		for (i in 0...Builtins.len(alarms)) {
