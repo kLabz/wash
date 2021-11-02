@@ -10,6 +10,7 @@ import wasp.Watch;
 import wash.app.user.AlarmApp;
 import wash.app.user.Calc;
 import wash.app.user.HeartApp;
+import wash.app.user.StepCounter;
 import wash.app.user.Stopclock;
 import wash.app.user.Timer;
 import wash.event.EventMask;
@@ -67,6 +68,7 @@ class Software extends BaseApplication {
 		db.push(AppEntry.make(AlarmApp, "Alarms", nextY(), Wash.system.hasApplication(AlarmApp)));
 		db.push(AppEntry.make(Calc, "Calc", nextY(), Wash.system.hasApplication(Calc)));
 		db.push(AppEntry.make(HeartApp, "Heart", nextY(), Wash.system.hasApplication(HeartApp)));
+		db.push(AppEntry.make(StepCounter, "Step counter", nextY(), Wash.system.hasApplication(StepCounter)));
 		db.push(AppEntry.make(Stopclock, "Stopwatch", nextY(), Wash.system.hasApplication(Stopclock)));
 		db.push(AppEntry.make(Timer, "Timer", nextY(), Wash.system.hasApplication(Timer)));
 		// TODO: other apps

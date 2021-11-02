@@ -87,4 +87,5 @@ extern class WatchButton {
 // TODO: move to own module, add missing methods
 extern class Accelerometer {
 	var steps:Int;
+	function reset():Void;
 }
