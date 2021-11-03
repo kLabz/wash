@@ -405,6 +405,14 @@ class Manager {
 		Watch.drawable.reset();
 		app.foreground();
 		Watch.display.mute(false);
+
+		#if debug.memory
+		Gc.collect();
+		var free = #if simulator 123456 #else Gc.mem_free() #end;
+		Watch.drawable.set_color(0xffff);
+		Watch.drawable.set_font(wasp.Fonts.sans18);
+		Watch.drawable.string(Builtins.str(free), 50, 220, 140);
+		#end
 	}
 
 	function navigate(direction:EventType):Void {

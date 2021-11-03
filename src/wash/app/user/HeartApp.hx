@@ -11,8 +11,10 @@ import wash.app.user.settings.HeartConfig;
 import wash.event.EventMask;
 import wash.event.TouchEvent;
 import wash.widgets.Button;
-import wasp.Watch;
+import wasp.Fonts;
+import wasp.Gc;
 import wasp.Machine.Timer;
+import wasp.Watch;
 
 using python.NativeStringTools;
 
@@ -54,13 +56,11 @@ class HeartApp extends BaseApplication {
 
 	static var monitoring:Bool;
 	static var lastRate:Int = -1;
-	public static function getRate(preprocess:Bool):Int {
+	public static function getRate():Int {
 		if (hrdata == null || !monitoring) {
 			lastRate = -1;
 			return -1;
 		}
-
-		if (preprocess) hrdata.preprocess(Watch.hrs.read_hrs());
 
 		var hr = hrdata.get_heart_rate();
 		if (hr == null) return lastRate;
@@ -89,7 +89,7 @@ class HeartApp extends BaseApplication {
 		Wash.system.requestTick(125);
 		Wash.system.requestEvent(EventMask.TOUCH | EventMask.BUTTON);
 
-		hrdata = new PPG(Watch.hrs.read_hrs());
+		if (hrdata == null) hrdata = new PPG(Watch.hrs.read_hrs());
 		if (debug) hrdata.enable_debug();
 		x = 0;
 		monitoring = true;
@@ -153,15 +153,18 @@ class HeartApp extends BaseApplication {
 		t.start();
 		subtick(1);
 		Wash.system.keepAwake();
+		Gc.collect();
 
 		while (t.time() < 41666) Lib.pass();
 		subtick(1);
+		Gc.collect();
 
 		while (t.time() < 83332) Lib.pass();
 		subtick(1);
 
 		t.stop();
 		delete(t);
+		Gc.collect();
 	}
 
 	function subtick(ticks:Int):Void {
@@ -169,8 +172,9 @@ class HeartApp extends BaseApplication {
 		var spl = hrdata.preprocess(Watch.hrs.read_hrs());
 
 		if (hrdata.data.length > 240) {
+			draw.set_font(Fonts.sans24);
 			draw.set_color(Wash.system.theme.highlight);
-			draw.string('{} bpm'.format(getRate(false)), 0, 6, 240);
+			draw.string('{} bpm'.format(getRate()), 0, 6, 240);
 		}
 
 		var color = Wash.system.theme.secondary;

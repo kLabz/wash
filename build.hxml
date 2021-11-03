@@ -10,3 +10,5 @@ wash.Wash
 
 -D python.unsafe_array_access
 -D python.no_slots
+
+# -D debug.memory
