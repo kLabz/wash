@@ -39,6 +39,8 @@ using python.NativeArrayTools;
 @:native("Manager")
 // TODO: determine public and private fields
 class Manager {
+	static inline var DOUBLE_TAP_MS = 1000;
+
 	var app:Null<IApplication> = null;
 	var quickRing:Array<IApplication> = [];
 	var launcherRing:Array<IApplication> = [];
@@ -55,10 +57,13 @@ class Manager {
 		'\\xff\\x1c'  // highlight (night mode)
 	));
 
-	var blankAfter:Int = 15;
-	var alarms:Array<Alarm> = [];
+	// System configuration (current values)
 	var brightnessLevel(default, set):BrightnessLevel = Settings.brightnessLevel;
 	var notificationLevel(default, set):NotificationLevel = Settings.notificationLevel;
+	var wakeMode(default, set):WakeMode = Settings.wakeMode;
+
+	var blankAfter:Int = 15;
+	var alarms:Array<Alarm> = [];
 	var nfyLevels:Array<Int> = [0, 40, 80];
 	var nfylev_ms:Int = 40;
 	var charging:Bool = true;
@@ -67,6 +72,7 @@ class Manager {
 	var tickPeriodMs:Int = 0;
 	var tickExpiry:Int = 0;
 	var sleepAt:Int = 0;
+	var doubleTap:Int = 0;
 	var eventMask:Int = 0; // EventMask combination
 	public var nightMode(default, set):Bool = false;
 
@@ -204,7 +210,15 @@ class Manager {
 		}
 
 		Watch.display.poweroff();
-		Watch.touch.sleep();
+
+		switch (wakeMode) {
+			case Button:
+				Watch.touch.sleep();
+
+			case Tap | DoubleTap:
+				// Nothing
+		}
+
 		charging = Watch.battery.charging();
 		sleepAt = -1;
 	}
@@ -297,8 +311,29 @@ class Manager {
 
 			Gc.collect();
 		} else {
-			if (button.get_event() || charging != Watch.battery.charging())
-				wake();
+			if (button.get_event()) wake();
+			else {
+				var event = Watch.touch.get_event();
+				if (event != null) switch [event.type, wakeMode] {
+					case [TOUCH, Tap]:
+						Watch.touch.reset_touch_data();
+						wake();
+
+					case [TOUCH, DoubleTap]:
+						var now = Watch.rtc.get_uptime_ms();
+						var delta = now - doubleTap;
+						Watch.touch.reset_touch_data();
+
+						if (delta < DOUBLE_TAP_MS) {
+							doubleTap = 0;
+							wake();
+						} else {
+							doubleTap = now;
+						}
+
+					case _:
+				}
+			}
 		}
 	}
 
@@ -467,9 +502,11 @@ class Manager {
 		if (nightMode) {
 			brightnessLevel = Low;
 			notificationLevel = Silent;
+			wakeMode = Button;
 		} else {
 			brightnessLevel = Settings.brightnessLevel;
 			notificationLevel = Settings.notificationLevel;
+			wakeMode = Settings.wakeMode;
 		}
 
 		return nightMode;
@@ -485,6 +522,25 @@ class Manager {
 		notificationLevel = level;
 		nfylev_ms = nfyLevels[level - 1];
 		return level;
+	}
+
+	function set_wakeMode(mode:WakeMode):WakeMode {
+		var oldMode = wakeMode;
+		wakeMode = mode;
+
+		if (sleepAt < 0) {
+			switch [oldMode, wakeMode] {
+				case [Button, Tap | DoubleTap]:
+					Watch.touch.wake();
+
+				case [Tap | DoubleTap, Button]:
+					Watch.touch.sleep();
+
+				case _:
+			}
+		}
+
+		return wakeMode;
 	}
 
 	function appSort(app:IApplication):String return app.NAME;

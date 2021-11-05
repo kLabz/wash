@@ -10,6 +10,7 @@ What it currently does:
 * Display notifications
 * Count steps (logging still missing, see [#13](/../../issues/13))
 * Monitor heart rate (background monitoring still WIP, see [#24](/../../issues/24))
+* Wake on button, tap or double tap depending on settings (only button in night mode)
 
 Available apps:
 * Alarms

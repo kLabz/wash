@@ -8,12 +8,13 @@ import wasp.Fonts;
 import wasp.Watch;
 
 class SystemConfig extends BaseApplication implements ISettingsApplication {
-	static inline var NB_PAGES = 2;
+	static inline var NB_PAGES = 3;
 
-	var page:Int;
+	var page:Int; // TODO: enum abstract
 	var scroll:ScrollIndicator;
 	var brightnessSlider:Slider;
 	var notifSlider:Slider;
+	var wakeSlider:Slider;
 
 	public function new(_) {
 		super();
@@ -21,6 +22,7 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 
 		brightnessSlider = new Slider(3, 10, 90);
 		notifSlider = new Slider(3, 10, 90);
+		wakeSlider = new Slider(3, 10, 90);
 
 		page = 0;
 		scroll = new ScrollIndicator(null, 0, NB_PAGES - 1, page);
@@ -41,6 +43,13 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 
 				if (!Wash.system.nightMode)
 					Wash.system.notificationLevel = Settings.notificationLevel;
+
+			case 2:
+				wakeSlider.touch(event);
+				Settings.wakeMode = cast (wakeSlider.value + 1);
+
+				if (!Wash.system.nightMode)
+					Wash.system.wakeMode = Settings.wakeMode;
 
 			case _:
 		}
@@ -82,8 +91,11 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 			case 0:
 				brightnessSlider.value = Settings.brightnessLevel - 1;
 
-			case _:
+			case 1:
 				notifSlider.value = Settings.notificationLevel - 1;
+
+			case _:
+				wakeSlider.value = Settings.wakeMode - 1;
 		}
 
 		update();
@@ -93,7 +105,8 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 	function getTitle():String {
 		return switch (page) {
 			case 0: "Brightness";
-			case _: "Notification level";
+			case 1: "Notification level";
+			case _: "Wake mode";
 		};
 	}
 
@@ -103,9 +116,13 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 				brightnessSlider.update();
 				Watch.drawable.string(Settings.brightnessLevel.toString(), 0, 150, 240);
 
-			case _:
+			case 1:
 				notifSlider.update();
 				Watch.drawable.string(Settings.notificationLevel.toString(), 0, 150, 240);
+
+			case _:
+				wakeSlider.update();
+				Watch.drawable.string(Settings.wakeMode.toString(), 0, 150, 240);
 		}
 
 		scroll.draw();

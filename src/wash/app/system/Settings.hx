@@ -37,6 +37,7 @@ class Settings extends BaseApplication {
 	// System configuration
 	public static var notificationLevel:NotificationLevel = Mid;
 	public static var brightnessLevel:BrightnessLevel = Mid;
+	public static var wakeMode:WakeMode = Button;
 
 	static var settingsListChanged:Bool = false;
 	static var systemSettings:Array<AppConfig> = [
