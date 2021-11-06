@@ -314,24 +314,26 @@ class Manager {
 			if (button.get_event()) wake();
 			else {
 				var event = Watch.touch.get_event();
-				if (event != null) switch [event.type, wakeMode] {
-					case [TOUCH, Tap]:
-						Watch.touch.reset_touch_data();
-						wake();
-
-					case [TOUCH, DoubleTap]:
-						var now = Watch.rtc.get_uptime_ms();
-						var delta = now - doubleTap;
-						Watch.touch.reset_touch_data();
-
-						if (delta < DOUBLE_TAP_MS) {
-							doubleTap = 0;
+				if (event != null) {
+					switch [event.type, wakeMode] {
+						case [TOUCH, Tap]:
 							wake();
-						} else {
-							doubleTap = now;
-						}
 
-					case _:
+						case [TOUCH, DoubleTap]:
+							var now = Watch.rtc.get_uptime_ms();
+							var delta = now - doubleTap;
+
+							if (delta < DOUBLE_TAP_MS) {
+								doubleTap = 0;
+								wake();
+							} else {
+								doubleTap = now;
+							}
+
+						case _:
+					}
+
+					Watch.touch.reset_touch_data();
 				}
 			}
 		}
