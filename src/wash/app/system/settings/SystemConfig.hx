@@ -2,6 +2,7 @@ package wash.app.system.settings;
 
 import wash.app.IApplication.ISettingsApplication;
 import wash.event.TouchEvent;
+import wash.widgets.Checkbox;
 import wash.widgets.ScrollIndicator;
 import wash.widgets.Slider;
 import wasp.Fonts;
@@ -14,7 +15,9 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 	var scroll:ScrollIndicator;
 	var brightnessSlider:Slider;
 	var notifSlider:Slider;
-	var wakeSlider:Slider;
+	var wakeOnButton:Checkbox;
+	var wakeOnTap:Checkbox;
+	var wakeOnDoubleTap:Checkbox;
 
 	public function new(_) {
 		super();
@@ -22,7 +25,10 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 
 		brightnessSlider = new Slider(3, 10, 90);
 		notifSlider = new Slider(3, 10, 90);
-		wakeSlider = new Slider(3, 10, 90);
+		wakeOnButton = new Checkbox(6, 60, "Button");
+		wakeOnTap = new Checkbox(6, 110, "Tap");
+		wakeOnDoubleTap = new Checkbox(6, 160, "Double Tap");
+		wakeOnButton.forcedChecked = true;
 
 		page = 0;
 		scroll = new ScrollIndicator(null, 0, NB_PAGES - 1, page);
@@ -45,10 +51,31 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 					Wash.system.notificationLevel = Settings.notificationLevel;
 
 			case 2:
-				wakeSlider.touch(event);
-				Settings.wakeMode = cast (wakeSlider.value + 1);
+				var hasChanged = false;
 
-				if (!Wash.system.nightMode)
+				if (wakeOnTap.touch(event)) {
+					hasChanged = true;
+
+					if (wakeOnTap.state) {
+						wakeOnDoubleTap.state = false;
+						Settings.wakeMode &= ~WakeMode.DoubleTap;
+						Settings.wakeMode |= WakeMode.Tap;
+					} else {
+						Settings.wakeMode &= ~WakeMode.Tap;
+					}
+				} else if (wakeOnDoubleTap.touch(event)) {
+					hasChanged = true;
+
+					if (wakeOnDoubleTap.state) {
+						wakeOnTap.state = false;
+						Settings.wakeMode &= ~WakeMode.Tap;
+						Settings.wakeMode |= WakeMode.DoubleTap;
+					} else {
+						Settings.wakeMode &= ~WakeMode.DoubleTap;
+					}
+				}
+
+				if (hasChanged && !Wash.system.nightMode)
 					Wash.system.wakeMode = Settings.wakeMode;
 
 			case _:
@@ -95,7 +122,11 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 				notifSlider.value = Settings.notificationLevel - 1;
 
 			case _:
-				wakeSlider.value = Settings.wakeMode - 1;
+				wakeOnTap.state = Settings.wakeMode & WakeMode.Tap > 0;
+				wakeOnDoubleTap.state = Settings.wakeMode & WakeMode.DoubleTap > 0;
+				wakeOnButton.draw();
+				wakeOnTap.draw();
+				wakeOnDoubleTap.draw();
 		}
 
 		update();
@@ -121,8 +152,8 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 				Watch.drawable.string(Settings.notificationLevel.toString(), 0, 150, 240);
 
 			case _:
-				wakeSlider.update();
-				Watch.drawable.string(Settings.wakeMode.toString(), 0, 150, 240);
+				wakeOnTap.update();
+				wakeOnDoubleTap.update();
 		}
 
 		scroll.draw();

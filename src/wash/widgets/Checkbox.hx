@@ -10,12 +10,14 @@ import wash.icon.CheckboxIcon;
 
 class Checkbox implements IWidget {
 	public var state:Bool;
+	public var forcedChecked:Bool;
 	var data:CheckboxData;
 	var smallText:Bool;
 
 	public function new(x:Int, y:Int, ?label:String, ?smallText:Bool = false) {
 		data = CheckboxData.make(x, y, label);
 		state = false;
+		forcedChecked = false;
 		this.smallText = smallText;
 	}
 
@@ -49,7 +51,10 @@ class Checkbox implements IWidget {
 		var c2:Int = 0;
 		var fg:Int = Wash.system.theme.primary;
 
-		if (state) {
+		if (forcedChecked) {
+			c2 = fg;
+			fg = c1 = 0;
+		} else if (state) {
 			c1 = fg;
 			c2 = 0;
 		}

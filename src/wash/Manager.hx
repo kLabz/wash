@@ -60,7 +60,7 @@ class Manager {
 	// System configuration (current values)
 	var brightnessLevel(default, set):BrightnessLevel = Settings.brightnessLevel;
 	var notificationLevel(default, set):NotificationLevel = Settings.notificationLevel;
-	var wakeMode(default, set):WakeMode = Settings.wakeMode;
+	var wakeMode(default, set):Int = Settings.wakeMode;
 
 	var blankAfter:Int = 15;
 	var alarms:Array<Alarm> = [];
@@ -211,13 +211,8 @@ class Manager {
 
 		Watch.display.poweroff();
 
-		switch (wakeMode) {
-			case Button:
-				Watch.touch.sleep();
-
-			case Tap | DoubleTap:
-				// Nothing
-		}
+		var hasTouch = wakeMode & WakeMode.Tap > 0 || wakeMode & WakeMode.DoubleTap > 0;
+		if (!hasTouch) Watch.touch.sleep();
 
 		charging = Watch.battery.charging();
 		sleepAt = -1;
@@ -316,10 +311,10 @@ class Manager {
 				var event = Watch.touch.get_event();
 				if (event != null) {
 					switch [event.type, wakeMode] {
-						case [TOUCH, Tap]:
+						case [TOUCH, w] if (w & WakeMode.Tap > 0):
 							wake();
 
-						case [TOUCH, DoubleTap]:
+						case [TOUCH, w] if (w & WakeMode.DoubleTap > 0):
 							var now = Watch.rtc.get_uptime_ms();
 							var delta = now - doubleTap;
 
@@ -504,7 +499,7 @@ class Manager {
 		if (nightMode) {
 			brightnessLevel = Low;
 			notificationLevel = Silent;
-			wakeMode = Button;
+			wakeMode = WakeMode.Button;
 		} else {
 			brightnessLevel = Settings.brightnessLevel;
 			notificationLevel = Settings.notificationLevel;
@@ -526,19 +521,18 @@ class Manager {
 		return level;
 	}
 
-	function set_wakeMode(mode:WakeMode):WakeMode {
+	function set_wakeMode(mode:Int):Int {
 		var oldMode = wakeMode;
 		wakeMode = mode;
 
 		if (sleepAt < 0) {
-			switch [oldMode, wakeMode] {
-				case [Button, Tap | DoubleTap]:
-					Watch.touch.wake();
+			var hadTouch = oldMode & WakeMode.Tap > 0 || oldMode & WakeMode.DoubleTap > 0;
+			var hasTouch = wakeMode & WakeMode.Tap > 0 || wakeMode & WakeMode.DoubleTap > 0;
 
-				case [Tap | DoubleTap, Button]:
-					Watch.touch.sleep();
-
-				case _:
+			if (hadTouch && !hasTouch) {
+				Watch.touch.sleep();
+			} else if (hasTouch && !hadTouch) {
+				Watch.touch.wake();
 			}
 		}
 
