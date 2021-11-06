@@ -10,7 +10,7 @@ import wash.Wash;
 import wash.app.user.alarm.DayButtons;
 import wash.event.EventMask;
 import wash.event.TouchEvent;
-import wash.util.TimeTuple;
+import wash.util.DateTimeTuple;
 import wash.widgets.Button;
 import wash.widgets.Checkbox;
 import wash.widgets.Spinner;
@@ -346,7 +346,7 @@ class AlarmApp extends BaseApplication {
 
 	function snooze():Void {
 		var now = Watch.rtc.get_localtime();
-		var alarm = TimeTuple.make(now.yyyy, now.mm, now.dd, now.HH, now.MM + 10, now.SS, 0, 0);
+		var alarm = DateTimeTuple.make(now.yyyy, now.mm, now.dd, now.HH, now.MM + 10, now.SS, 0, 0);
 		Wash.system.setAlarm(Time.mktime(alarm), alert);
 	}
 
@@ -372,7 +372,7 @@ class AlarmApp extends BaseApplication {
 				}
 
 				var pendingTime = Time.mktime(
-					TimeTuple.make(now.yyyy, now.mm, dd, alarm.HH, alarm.MM, 0, 0, 0)
+					DateTimeTuple.make(now.yyyy, now.mm, dd, alarm.HH, alarm.MM, 0, 0, 0)
 				);
 
 				// If this is not a one time alarm find the next day of the week
@@ -382,7 +382,7 @@ class AlarmApp extends BaseApplication {
 						if ((1 << Time.localtime(pendingTime).wday) & alarm.mask == 0) {
 							dd++;
 							pendingTime = Time.mktime(
-								TimeTuple.make(now.yyyy, now.mm, dd, alarm.HH, alarm.MM, 0, 0, 0)
+								DateTimeTuple.make(now.yyyy, now.mm, dd, alarm.HH, alarm.MM, 0, 0, 0)
 							);
 						} else {
 							break;

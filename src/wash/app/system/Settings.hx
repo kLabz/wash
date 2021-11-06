@@ -7,6 +7,7 @@ import python.Syntax.construct;
 import wasp.Fonts;
 import wasp.Watch;
 import wash.app.IApplication.ISettingsApplication;
+import wash.app.system.settings.About;
 import wash.app.system.settings.AppConfig;
 import wash.app.system.settings.DateTimeConfig;
 import wash.app.system.settings.SystemConfig;
@@ -43,7 +44,8 @@ class Settings extends BaseApplication {
 	static var systemSettings:Array<AppConfig> = [
 		AppConfig.make("System", SystemConfig),
 		AppConfig.make("Date/Time", DateTimeConfig),
-		AppConfig.make("Theme", ThemeConfig)
+		AppConfig.make("Theme", ThemeConfig),
+		AppConfig.make("About", About)
 	];
 
 	static var applicationSettings:Array<AppConfig> = [];
@@ -122,7 +124,8 @@ class Settings extends BaseApplication {
 
 			switch (settingsPage) {
 				case 0:
-					if (index < 3) setApp(systemSettings[index]);
+					if (index < systemSettings.length)
+						setApp(systemSettings[index]);
 
 				case _:
 					index += (settingsPage - 1) * 5;

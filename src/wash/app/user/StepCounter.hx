@@ -8,7 +8,7 @@ import wash.Wash;
 import wash.event.EventMask;
 import wash.event.TouchEvent;
 import wash.icon.AppIcon;
-import wash.util.TimeTuple;
+import wash.util.DateTimeTuple;
 import wash.widgets.ScrollIndicator;
 import wasp.Fonts;
 import wasp.Time;
@@ -45,7 +45,7 @@ class StepCounter extends BaseApplication {
 
 	override public function background():Void {
 		var now = Watch.rtc.get_localtime();
-		var then = TimeTuple.make(now.yyyy, now.mm, now.dd + 1, 0, 0, 0, 0, 0);
+		var then = DateTimeTuple.make(now.yyyy, now.mm, now.dd + 1, 0, 0, 0, 0, 0);
 		wakeTime = Time.mktime(then);
 		Wash.system.setAlarm(wakeTime, reset);
 	}

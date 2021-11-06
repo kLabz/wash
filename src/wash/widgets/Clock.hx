@@ -4,7 +4,7 @@ import python.Tuple;
 
 import wasp.Fonts;
 import wasp.Watch;
-import wash.util.TimeTuple;
+import wash.util.DateTimeTuple;
 
 using python.NativeStringTools;
 
@@ -22,7 +22,7 @@ class Clock implements IWidget {
 		update();
 	}
 
-	public function update():Null<TimeTuple> {
+	public function update():Null<DateTimeTuple> {
 		var now = Watch.rtc.get_localtime();
 
 		if (

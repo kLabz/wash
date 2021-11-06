@@ -5,32 +5,15 @@ import python.Tuple;
 
 @:native("tuple")
 extern class TimeTuple extends Tuple<Dynamic> {
-	static inline function make(
-		yyyy:Int, mm:Int, dd:Int, HH:Int, MM:Int, SS:Int, wday:Int, yday:Int
-	):TimeTuple
-		return Syntax.tuple(yyyy, mm, dd, HH, MM, SS, wday, yday, 0);
-
-	var yyyy(get, null):Int;
-	inline function get_yyyy():Int return this[0];
-
-	var mm(get, null):Int;
-	inline function get_mm():Int return this[1];
-
-	var dd(get, null):Int;
-	inline function get_dd():Int return this[2];
+	static inline function make(HH:Int, MM:Int, SS:Int):TimeTuple
+		return Syntax.tuple(HH, MM, SS);
 
 	var HH(get, null):Int;
-	inline function get_HH():Int return this[3];
+	inline function get_HH():Int return this[0];
 
 	var MM(get, null):Int;
-	inline function get_MM():Int return this[4];
+	inline function get_MM():Int return this[1];
 
 	var SS(get, null):Int;
-	inline function get_SS():Int return this[5];
-
-	var wday(get, null):Int;
-	inline function get_wday():Int return this[6];
-
-	var yday(get, null):Int;
-	inline function get_yday():Int return this[7];
+	inline function get_SS():Int return this[2];
 }

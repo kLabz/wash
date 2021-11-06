@@ -1,6 +1,6 @@
 package wash.widgets;
 
-import wash.util.TimeTuple;
+import wash.util.DateTimeTuple;
 
 class StatusBar implements IWidget {
 	var clock:Clock;
@@ -23,7 +23,7 @@ class StatusBar implements IWidget {
 		notif.draw();
 	}
 
-	public function update():Null<TimeTuple> {
+	public function update():Null<DateTimeTuple> {
 		var now = clock.update();
 
 		if (now != null) {

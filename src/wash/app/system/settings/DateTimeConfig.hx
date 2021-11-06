@@ -2,7 +2,7 @@ package wash.app.system.settings;
 
 import wash.app.IApplication.ISettingsApplication;
 import wash.event.TouchEvent;
-import wash.util.TimeTuple;
+import wash.util.DateTimeTuple;
 import wash.widgets.ScrollIndicator;
 import wash.widgets.Spinner;
 import wasp.Fonts;
@@ -52,12 +52,12 @@ class DateTimeConfig extends BaseApplication implements ISettingsApplication {
 		if (page == 0) {
 			if (HH.touch(event) || MM.touch(event)) {
 				var now = Watch.rtc.get_localtime();
-				Watch.rtc.set_localtime(TimeTuple.make(now.yyyy, now.mm, now.dd, HH.value, MM.value, 0, now.wday, now.yday));
+				Watch.rtc.set_localtime(DateTimeTuple.make(now.yyyy, now.mm, now.dd, HH.value, MM.value, 0, now.wday, now.yday));
 			}
 		} else {
 			if (dd.touch(event) || mm.touch(event) || yy.touch(event)) {
 				var now = Watch.rtc.get_localtime();
-				Watch.rtc.set_localtime(TimeTuple.make(yy.value + 2000, mm.value, dd.value, now.HH, now.MM, now.SS, now.wday, now.yday));
+				Watch.rtc.set_localtime(DateTimeTuple.make(yy.value + 2000, mm.value, dd.value, now.HH, now.MM, now.SS, now.wday, now.yday));
 			}
 		}
 	}

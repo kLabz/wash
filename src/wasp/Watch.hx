@@ -3,8 +3,9 @@ package wasp;
 import python.Bytearray;
 
 import wash.event.TouchEvent;
-import wash.util.TimeTuple;
+import wasp.driver.Battery;
 import wasp.driver.Draw565;
+import wasp.driver.NRFRTC;
 import wasp.driver.ST7789;
 
 @:pythonImport('watch')
@@ -13,7 +14,7 @@ extern class Watch {
 	static var display:ST7789;
 	static var vibrator:Vibrator;
 	static var hrs:HRS;
-	static var rtc:RTC;
+	static var rtc:NRFRTC;
 	static var battery:Battery;
 	static var backlight:Backlight;
 	static var accel:Accelerometer;
@@ -48,22 +49,6 @@ extern class PPG {
 	function enable_debug():Void;
 	function get_heart_rate():Int;
 	function preprocess(spl:Int):Int;
-}
-
-// TODO: move to own module, add missing methods
-extern class RTC {
-	var uptime:Int;
-	function update():Bool;
-	function time():Int; // Seconds
-	function get_localtime():TimeTuple;
-	function get_uptime_ms():Int;
-	function set_localtime(time:TimeTuple):Void;
-}
-
-// TODO: move to own module, add missing methods
-extern class Battery {
-	function charging():Bool;
-	function level():Int;
 }
 
 // TODO: move to own module, add missing methods

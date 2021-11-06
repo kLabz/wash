@@ -1,8 +1,8 @@
 package wasp;
 
-import wash.util.TimeTuple;
+import wash.util.DateTimeTuple;
 import wash.util.Math.opFloorDiv;
-import wasp.Builtins.divmod;
+import wasp.Builtins;
 
 using python.NativeStringTools;
 
@@ -10,25 +10,45 @@ using python.NativeStringTools;
 extern class Time {
 	static function clock():Float;
 	static function sleep(t:Float):Void;
-	static function mktime(s:TimeTuple):Float;
-	static function localtime(time:Float):TimeTuple;
+	static function mktime(s:DateTimeTuple):Float;
+	static function localtime(time:Float):DateTimeTuple;
 
-	inline static function printHour(time:TimeTuple):String
+	inline static function printHour(time:DateTimeTuple):String
 		return '{:02d}:{:02d}'.format(time.HH, time.MM);
+
+	inline static function printDuration(duration:Float):String
+		return TimeUtils.printDuration(duration);
 
 	inline static function weekNb(year:Int, month:Int, day:Int):Int
 		return TimeUtils.isoWeekNumber(year, month, day);
 
-	inline static function time():Float {
-		var now = Watch.rtc.get_localtime();
-		return Time.mktime(TimeTuple.make(now.yyyy, now.mm, now.dd, now.HH, now.MM, now.SS, 0, 0));
-	}
+	inline static function time():Float
+		return TimeUtils.time();
 }
 
 @:publicFields
 class TimeUtils {
 	static var DAYS_IN_MONTH = [null, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 	static var DAYS_BEFORE_MONTH = [null];
+
+	static function time():Float {
+		var now = Watch.rtc.get_localtime();
+		return Time.mktime(DateTimeTuple.make(now.yyyy, now.mm, now.dd, now.HH, now.MM, now.SS, 0, 0));
+	}
+
+	static function printDuration(duration:Float):String {
+		var days = duration >= 60*60*24 ? opFloorDiv(duration, 60*60*24) : 0;
+		var duration = duration - days;
+		var hours = opFloorDiv(duration, 60*60);
+		duration -= hours;
+		var minutes = opFloorDiv(duration, 60);
+		var seconds = Builtins.int(duration - minutes * 60);
+
+		if (days > 0)
+			return '{}d {:02}:{:02}:{:02}'.format(days, hours, minutes, seconds);
+
+		return '{:02}:{:02}:{:02}'.format(hours, minutes, seconds);
+	}
 
 	static function isoWeek1Monday(year:Int):Int {
 		var firstday = ymd2ord(year, 1, 1);
@@ -41,11 +61,11 @@ class TimeUtils {
 	static function isoWeekNumber(year:Int, month:Int, day:Int):Int {
 		var week1monday = isoWeek1Monday(year);
 		var today = ymd2ord(year, month, day);
-		var week = divmod(today - week1monday, 7)._1;
+		var week = Builtins.divmod(today - week1monday, 7)._1;
 		if (week < 0) {
 			year--;
 			week1monday = isoWeek1Monday(year);
-			week = divmod(today - week1monday, 7)._1;
+			week = Builtins.divmod(today - week1monday, 7)._1;
 		} else if (week >= 52) {
 			if (today >= isoWeek1Monday(year + 1)) {
 				year += 1;
