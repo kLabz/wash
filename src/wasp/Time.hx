@@ -40,7 +40,7 @@ class TimeUtils {
 		var days = duration >= 60*60*24 ? opFloorDiv(duration, 60*60*24) : 0;
 		var duration = duration - days;
 		var hours = opFloorDiv(duration, 60*60);
-		duration -= hours;
+		duration -= hours * 60*60;
 		var minutes = opFloorDiv(duration, 60);
 		var seconds = Builtins.int(duration - minutes * 60);
 
