@@ -72,7 +72,6 @@ class Settings extends BaseApplication {
 		ICON = icon;
 
 		settingsPage = 0;
-		var nbButtons = systemSettings.length + applicationSettings.length;
 		settingsPages = 1 + opCeilDiv(applicationSettings.length, 5);
 		scroll = new ScrollIndicator(42, 0, settingsPages - 1, settingsPage);
 	}

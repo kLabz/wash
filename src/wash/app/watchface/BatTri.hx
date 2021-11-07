@@ -1,5 +1,7 @@
 package wash.app.watchface;
 
+import wash.event.EventMask;
+import wash.event.TouchEvent;
 import python.Bytes;
 import python.Syntax;
 import python.Syntax.bytes;
@@ -7,7 +9,7 @@ import python.Syntax.bytes;
 import wash.Wash;
 import wash.app.user.HeartApp;
 import wash.app.system.Settings;
-import wash.app.watchface.settings.BatTriConfig;
+import wash.app.watchface.settings.WatchfaceConfig;
 import wasp.Builtins;
 import wasp.Fonts;
 import wasp.Time;
@@ -54,11 +56,7 @@ class BatTri extends BaseWatchFace {
 		'\\x04'
 	);
 
-	// Configuration
-	static var hours12:Bool;
-	static var displayWeekNb:Bool;
-	static var displayBatteryPct:Bool;
-
+	var doubleTap:Int = 0;
 	var battery:Int = -1;
 	var bluetooth:Bool = false;
 	var plug:Bool = false;
@@ -77,10 +75,11 @@ class BatTri extends BaseWatchFace {
 	override function foreground():Void {
 		draw(true);
 		Wash.system.requestTick(1000);
+		Wash.system.requestEvent(EventMask.TOUCH);
 	}
 
 	override function registered(quickRing:Bool):Void {
-		Settings.registerApp("Watchface", BatTriConfig);
+		Settings.registerApp("Watchface", WatchfaceConfig);
 	}
 
 	override function unregistered():Void {
@@ -90,6 +89,23 @@ class BatTri extends BaseWatchFace {
 	override function sleep():Bool return true;
 	override function wake():Void draw();
 	override function tick(_):Void draw();
+
+	override public function touch(event:TouchEvent):Void {
+		switch (event.type) {
+			case TOUCH if (BaseWatchFace.dblTapToSleep):
+				var now = Watch.rtc.get_uptime_ms();
+				var delta = now - doubleTap;
+
+				if (delta < Manager.DOUBLE_TAP_MS) {
+					doubleTap = 0;
+					Wash.system.sleep();
+				} else {
+					doubleTap = now;
+				}
+
+			case _:
+		}
+	}
 
 	override function preview():Void {
 		Wash.system.bar.displayClock = false;
@@ -184,7 +200,7 @@ class BatTri extends BaseWatchFace {
 			}
 			display.quick_end();
 
-			if (displayBatteryPct && battery < 192) {
+			if (BaseWatchFace.displayBatteryPct && battery < 192) {
 				draw.set_color(mid, ui);
 				draw.set_font(Fonts.sans18);
 				draw.string('{}%'.format(batteryLevel), 194, 196, 44, true);
@@ -202,7 +218,7 @@ class BatTri extends BaseWatchFace {
 			draw.set_color(mid);
 			draw.string('{}'.format(now.dd), 10 + draw.bounding_box(day).x, 6);
 
-			if (displayWeekNb) {
+			if (BaseWatchFace.displayWeekNb) {
 				draw.set_font(Fonts.sans18);
 
 				var x = 6;
@@ -220,7 +236,7 @@ class BatTri extends BaseWatchFace {
 			draw.set_color(hi);
 			draw.set_font(Fonts.sans36);
 
-			if (hours12) {
+			if (BaseWatchFace.hours12) {
 				var h = now.HH;
 				if (h > 12) h -= 12;
 				else if (h == 0) h = 12;
@@ -263,14 +279,14 @@ class BatTri extends BaseWatchFace {
 		}
 
 		if (this.plug != plug) {
-			var y = displayWeekNb ? 46 : 28;
+			var y = BaseWatchFace.displayWeekNb ? 46 : 28;
 			if (plug) draw.blit(plugIcon, 6, y, mid);
 			// Clear bluetooth icon too if any
 			else draw.fill(0, 6, y, 32, 18);
 		}
 
 		if (this.plug != plug || this.bluetooth != bluetooth) {
-			var y = displayWeekNb ? 46 : 28;
+			var y = BaseWatchFace.displayWeekNb ? 46 : 28;
 			if (bluetooth) draw.blit(bluetoothIcon, plug ? 28 : 6, y, mid);
 			else draw.fill(0, plug ? 28 : 6, y, 10, 18);
 		}
