@@ -1,6 +1,7 @@
 package wash.widgets;
 
 import wash.util.DateTimeTuple;
+import wasp.Watch;
 
 class StatusBar implements IWidget {
 	var clock:Clock;
@@ -14,10 +15,12 @@ class StatusBar implements IWidget {
 	public function new() {
 		clock = new Clock();
 		meter = new BatteryMeter();
-		notif = new NotificationBar();
+		notif = new NotificationBar(2, 2);
 	}
 
 	public function draw():Void {
+		Watch.drawable.fill(Wash.system.theme.primary, 0, 0, 240, 26);
+
 		clock.draw();
 		meter.draw();
 		notif.draw();

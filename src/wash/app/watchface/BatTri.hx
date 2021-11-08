@@ -10,6 +10,8 @@ import wash.Wash;
 import wash.app.user.HeartApp;
 import wash.app.system.Settings;
 import wash.app.watchface.settings.WatchfaceConfig;
+import wash.icon.PlugIcon.icon as PlugIcon;
+import wash.icon.BleStatusIcon.icon as BleStatusIcon;
 import wasp.Builtins;
 import wasp.Fonts;
 import wasp.Time;
@@ -37,23 +39,6 @@ class BatTri extends BaseWatchFace {
 		'\\x01\\xcd\\x06\\xc2\\x01\\xcd\\x0c\\xca\\x0e\\xc69\\xc3\\x10\\xc9\\x0b\\xcc',
 		'\\x04\\xc3\\x01\\xce\\x04\\xc3\\x01\\xce\\x04\\xc3\\x01\\xcd\\x06\\xc2\\x01\\xcc',
 		'\\x0c\\xc9\\x07'
-	);
-
-	static var plugIcon:Bytes = bytes(
-		'\\x02',
-		'\\x12\\x12',
-		'\\x05\\xc2\\x04\\xc2\\n\\xc2\\x04\\xc2\\n\\xc2\\x04\\xc2\\n\\xc2\\x04\\xc2',
-		'\\n\\xc2\\x04\\xc2\\x19\\xce\\x04\\xce\\x06\\xca\\x08\\xca\\x08\\xca\\x08\\xca',
-		'\\t\\xc8\\x0b\\xc6\\r\\xc4\\x0f\\xc2\\x10\\xc2\\x10\\xc2\\x08'
-	);
-
-	static var bluetoothIcon:Bytes = bytes(
-		'\\x02',
-		'\\t\\x11',
-		'\\x04\\xc1\\x08\\xc2\\x07\\xc3\\x06\\xc4\\x01\\xc2\\x02\\xc2\\x01\\xc2\\x01\\xc2',
-		'\\x01\\xc2\\x01\\xc2\\x02\\xc6\\x04\\xc4\\x06\\xc2\\x06\\xc4\\x04\\xc6\\x02\\xc2',
-		'\\x01\\xc2\\x01\\xc4\\x02\\xc2\\x01\\xc2\\x04\\xc4\\x05\\xc3\\x06\\xc2\\x07\\xc1',
-		'\\x04'
 	);
 
 	var doubleTap:Int = 0;
@@ -280,14 +265,14 @@ class BatTri extends BaseWatchFace {
 
 		if (this.plug != plug) {
 			var y = BaseWatchFace.displayWeekNb ? 46 : 28;
-			if (plug) draw.blit(plugIcon, 6, y, mid);
+			if (plug) draw.blit(PlugIcon, 6, y, mid, 0, true);
 			// Clear bluetooth icon too if any
 			else draw.fill(0, 6, y, 32, 18);
 		}
 
 		if (this.plug != plug || this.bluetooth != bluetooth) {
 			var y = BaseWatchFace.displayWeekNb ? 46 : 28;
-			if (bluetooth) draw.blit(bluetoothIcon, plug ? 28 : 6, y, mid);
+			if (bluetooth) draw.blit(BleStatusIcon, plug ? 28 : 6, y, mid, 0, true);
 			else draw.fill(0, plug ? 28 : 6, y, 10, 18);
 		}
 

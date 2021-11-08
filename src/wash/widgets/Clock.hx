@@ -38,9 +38,9 @@ class Clock implements IWidget {
 			|| displayedTime._2 != now.MM
 		)) {
 			var t = '{:02}:{:02}'.format(now.HH, now.MM);
-			Watch.drawable.set_font(Fonts.sans28);
-			Watch.drawable.set_color(Wash.system.theme.highlight);
-			Watch.drawable.string(t, 52, 4, 138);
+			Watch.drawable.set_font(Fonts.sans24);
+			Watch.drawable.set_color(0, Wash.system.theme.primary);
+			Watch.drawable.string(t, 52, 2, 138);
 		}
 
 		displayedTime = Tuple2.make(now.HH, now.MM);

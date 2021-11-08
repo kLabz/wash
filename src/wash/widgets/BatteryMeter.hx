@@ -2,51 +2,73 @@ package wash.widgets;
 
 import wasp.Watch;
 import wash.icon.BatteryIcon.icon as BatteryIcon;
+import wash.icon.PlugIcon.icon as PlugIcon;
 
 class BatteryMeter implements IWidget {
 	var level:Int;
 
 	public function new() {
-		level = -2;
+		level = -1;
 	}
 
 	public function draw():Void {
-		level = -2;
+		Watch.drawable.blit(
+			BatteryIcon,
+			238-BatteryIcon[1],
+			2,
+			Wash.system.theme.primary,
+			true
+		);
+
+		level = -1;
 		update();
 	}
 
 	public function update():Void {
 		var draw = Watch.drawable;
 
-		if (Watch.battery.charging()) {
-			if (this.level != -1) {
-				draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, Wash.system.theme.shadow);
-				level = -1;
-			}
+		if (Watch.battery.charging() || true) {
+			Watch.drawable.blit(
+				PlugIcon,
+				238-BatteryIcon[1]-2-PlugIcon[1],
+				4,
+				0,
+				Wash.system.theme.primary,
+				true
+			);
 		} else {
-			var level = Watch.battery.level();
-			if (level == this.level) return;
-
-			var green = opFloorDiv(level, 3);
-			if (green > 31) green = 31;
-			var red = 31 - green;
-			var rgb = (red << 11) + (green << 6);
-
-			if (this.level < 0 || ((level > 5) != (this.level > 5))) {
-				if (level > 5) {
-					draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, Wash.system.theme.shadow);
-				} else {
-					rgb = 0xf800;
-					draw.blit(BatteryIcon, 239-BatteryIcon[1], 0, rgb);
-				}
-			}
-
-			var w = BatteryIcon[1] - 10;
-			var x = 239 - 5 - w;
-			var h = opFloorDiv(2 * level, 11);
-			if (h > 18) draw.fill(0, x, 9, w, 18 - h);
-			else draw.fill(rgb, x, 27 - h, w, h);
-			this.level = level;
+			draw.fill(
+				Wash.system.theme.primary,
+				238-BatteryIcon[1]-2-PlugIcon[1],
+				4,
+				PlugIcon[1],
+				PlugIcon[2]
+			);
 		}
+
+		var level = Watch.battery.level();
+		if (level == this.level) return;
+
+		draw.fill(
+			Wash.system.theme.primary,
+			238-BatteryIcon[1]+2,
+			2 + 4,
+			BatteryIcon[1]-4,
+			BatteryIcon[2]-6
+		);
+
+		for (i in 0...5) {
+			if (level >= 10 + i*20) {
+				draw.fill(
+					0,
+					238-BatteryIcon[1]+3,
+					2+BatteryIcon[2]-3-3*i-2,
+					BatteryIcon[1]-6,
+					2
+				);
+			}
+		}
+
+		this.level = level;
 	}
 }
