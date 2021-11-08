@@ -27,7 +27,7 @@ class BatteryMeter implements IWidget {
 	public function update():Void {
 		var draw = Watch.drawable;
 
-		if (Watch.battery.charging() || true) {
+		if (Watch.battery.charging()) {
 			Watch.drawable.blit(
 				PlugIcon,
 				238-BatteryIcon[1]-2-PlugIcon[1],
