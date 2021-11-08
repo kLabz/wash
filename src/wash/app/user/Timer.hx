@@ -127,7 +127,9 @@ class Timer extends BaseApplication {
 			if (s < 0) s = 0;
 			var m = opFloorDiv(s, 60);
 			var s = Builtins.int(s) % 60;
+
 			draw.set_font(Fonts.sans28);
+			draw.set_color(Wash.system.theme.highlight);
 			draw.string('{:02}'.format(m), 50, 120-24, 60);
 			draw.string('{:02}'.format(s), 130, 120-24, 60);
 		}
@@ -139,24 +141,22 @@ class Timer extends BaseApplication {
 
 		Wash.system.bar.displayClock = true;
 		Wash.system.bar.draw();
+		draw.set_color(Wash.system.theme.highlight);
 
 		switch (state) {
 			case Ringing:
 				draw.set_font(Fonts.sans24);
-				draw.set_color(Wash.system.theme.highlight);
 				draw.string(NAME, 0, 140, 240);
 				draw.blit(icon, 89, 54, Wash.system.theme.highlight, Wash.system.theme.secondary, Wash.system.theme.primary, true);
 
 			case Running:
 				drawStop(104, BUTTON_Y);
 				draw.set_font(Fonts.sans28);
-				draw.set_color(Wash.system.theme.highlight);
 				draw.string(':', 110, 120-24, 20);
 				update();
 
 			case Stopped:
 				draw.set_font(Fonts.sans28);
-				draw.set_color(Wash.system.theme.highlight);
 				draw.string(':', 110, 120-24, 20);
 				minutes.draw();
 				seconds.draw();
@@ -166,10 +166,10 @@ class Timer extends BaseApplication {
 
 	function drawPlay(x:Int, y:Int):Void {
 		for (i in 0...20)
-			Watch.drawable.fill(0xffff, x+i, y+i, 1, 40-2*i);
+			Watch.drawable.fill(Wash.system.theme.highlight, x+i, y+i, 1, 40-2*i);
 	}
 
 	function drawStop(x:Int, y:Int):Void {
-		Watch.drawable.fill(0xffff, x, y, 40, 40);
+		Watch.drawable.fill(Wash.system.theme.highlight, x, y, 40, 40);
 	}
 }
