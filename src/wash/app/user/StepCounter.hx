@@ -30,7 +30,7 @@ class StepCounter extends BaseApplication {
 		ICON = AppIcon;
 
 		Watch.accel.reset();
-		scroll = new ScrollIndicator(36, 0, 7, 0);
+		scroll = new ScrollIndicator(28, 0, 7, 0);
 		wakeTime = 0;
 	}
 

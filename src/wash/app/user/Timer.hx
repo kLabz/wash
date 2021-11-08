@@ -20,7 +20,7 @@ private enum abstract State(Int) to Int {
 
 @:native('TimerApp')
 class Timer extends BaseApplication {
-	static inline var BUTTON_Y:Int = 200;
+	static inline var BUTTON_Y:Int = 180;
 
 	static var icon:Bytes = bytes(
 		'\\x02',
@@ -53,8 +53,8 @@ class Timer extends BaseApplication {
 		NAME = "Timer";
 		ICON = icon;
 
-		minutes = new Spinner(50, 60, 0, 99, 2);
-		seconds = new Spinner(130, 60, 0, 59, 2);
+		minutes = new Spinner(50, 50, 0, 99, 2);
+		seconds = new Spinner(130, 50, 0, 59, 2);
 		currentAlarm = null;
 		minutes.value = 10;
 		state = Stopped;
@@ -128,14 +128,14 @@ class Timer extends BaseApplication {
 			var m = opFloorDiv(s, 60);
 			var s = Builtins.int(s) % 60;
 			draw.set_font(Fonts.sans28);
-			draw.string('{:02}'.format(m), 50, 120-14, 60);
-			draw.string('{:02}'.format(s), 130, 120-14, 60);
+			draw.string('{:02}'.format(m), 50, 120-24, 60);
+			draw.string('{:02}'.format(s), 130, 120-24, 60);
 		}
 	}
 
 	function draw():Void {
 		var draw = Watch.drawable;
-		draw.fill();
+		draw.fill(0);
 
 		Wash.system.bar.displayClock = true;
 		Wash.system.bar.draw();
@@ -143,17 +143,21 @@ class Timer extends BaseApplication {
 		switch (state) {
 			case Ringing:
 				draw.set_font(Fonts.sans24);
-				draw.string(NAME, 0, 150, 240);
+				draw.set_color(Wash.system.theme.highlight);
+				draw.string(NAME, 0, 140, 240);
 				draw.blit(icon, 89, 54, Wash.system.theme.highlight, Wash.system.theme.secondary, Wash.system.theme.primary, true);
 
 			case Running:
 				drawStop(104, BUTTON_Y);
-				draw.string(':', 110, 120-14, 20);
+				draw.set_font(Fonts.sans28);
+				draw.set_color(Wash.system.theme.highlight);
+				draw.string(':', 110, 120-24, 20);
 				update();
 
 			case Stopped:
 				draw.set_font(Fonts.sans28);
-				draw.string(':', 110, 120-14, 20);
+				draw.set_color(Wash.system.theme.highlight);
+				draw.string(':', 110, 120-24, 20);
 				minutes.draw();
 				seconds.draw();
 				drawPlay(114, BUTTON_Y);
