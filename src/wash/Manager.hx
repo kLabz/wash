@@ -117,7 +117,7 @@ class Manager {
 
 	function registerDefaults():Void {
 		// Quick ring
-		register(BatTri, true, true);
+		register(BatTri, true);
 		register(NightMode, true);
 		register(Torch, true);
 
@@ -129,21 +129,20 @@ class Manager {
 	function register(
 		cls:Class<IApplication>,
 		quickRing:Bool = false,
-		watchFace:Bool = false,
 		noExcept:Bool = true
 	):Void {
 		var app:IApplication = construct(cls);
 
-		// TODO: special step counter handling
+		// TODO: special step counter handling (?)
 
-		if (watchFace) this.quickRing[0] = app;
-		else if (quickRing) this.quickRing.push(app);
+		if (quickRing) this.quickRing.push(app);
 		else {
+			if (hasApplication(cls)) return;
 			launcherRing.push(app);
 			launcherRing.nativeSort(appSort);
 		}
 
-		app.registered(watchFace || quickRing);
+		app.registered(quickRing);
 	}
 
 	function unregister(cls:Class<IApplication>):Void {
