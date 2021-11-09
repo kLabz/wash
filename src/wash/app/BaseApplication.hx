@@ -8,6 +8,7 @@ import wash.event.TouchEvent;
 class BaseApplication implements IApplication {
 	public var NAME(default, null):String;
 	public var ICON(default, null):Bytes;
+	public var ID(default, null):Int;
 
 	public function new() {}
 	public function foreground():Void {}

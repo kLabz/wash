@@ -55,6 +55,8 @@ class BatTri extends BaseWatchFace {
 	public function new() {
 		super();
 		NAME = "BatTri";
+		// TODO: ICON
+		ID = 0xAA; // Watchfaces start at 0xA0, but this probably won't be one of the default ones
 	}
 
 	override function foreground():Void {

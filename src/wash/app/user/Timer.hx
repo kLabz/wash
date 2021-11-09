@@ -52,6 +52,7 @@ class Timer extends BaseApplication {
 		super();
 		NAME = "Timer";
 		ICON = icon;
+		ID = 0x07;
 
 		minutes = new Spinner(50, 50, 0, 99, 2);
 		seconds = new Spinner(130, 50, 0, 59, 2);

@@ -42,6 +42,7 @@ class Torch extends BaseApplication {
 		super();
 		NAME = "Torch";
 		ICON = icon;
+		ID = 0x08;
 		activated = false;
 	}
 

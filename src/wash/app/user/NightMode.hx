@@ -79,6 +79,7 @@ class NightMode extends BaseApplication {
 
 		NAME = "NightMode";
 		ICON = AppIcon;
+		ID = 0x04;
 	}
 
 	override public function foreground():Void {

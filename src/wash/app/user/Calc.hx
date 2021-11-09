@@ -52,6 +52,7 @@ class Calc extends BaseApplication {
 		super();
 		NAME = "Calc";
 		ICON = icon;
+		ID = 0x02;
 
 		output = "";
 	}

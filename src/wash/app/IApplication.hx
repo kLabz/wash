@@ -9,6 +9,7 @@ import wash.event.TouchEvent;
 interface IApplication {
 	public var NAME(default, null):String;
 	public var ICON(default, null):Bytes;
+	public var ID(default, null):Int;
 
 	public function foreground():Void;
 	public function background():Void;

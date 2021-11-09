@@ -46,6 +46,7 @@ class Stopclock extends BaseApplication {
 		super();
 		NAME = "Stopclock";
 		ICON = icon;
+		ID = 0x06;
 
 		timer = new StopWatch(120-36, true);
 		reset();

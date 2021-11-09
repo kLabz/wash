@@ -95,6 +95,7 @@ class AlarmApp extends BaseApplication {
 		super();
 		NAME = "Alarm";
 		ICON = icon;
+		ID = 0x01;
 
 		page = HOME_PAGE;
 		instance = this;

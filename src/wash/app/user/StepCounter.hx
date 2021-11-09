@@ -28,6 +28,7 @@ class StepCounter extends BaseApplication {
 		super();
 		NAME = "Steps";
 		ICON = AppIcon;
+		ID = 0x05;
 
 		Watch.accel.reset();
 		scroll = new ScrollIndicator(28, 0, 7, 0);

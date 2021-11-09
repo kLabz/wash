@@ -76,6 +76,7 @@ class HeartApp extends BaseApplication {
 		super();
 		NAME = "Heart";
 		ICON = icon;
+		ID = 0x03;
 
 		debug = false;
 		hrdata = null;
