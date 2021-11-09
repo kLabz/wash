@@ -123,14 +123,10 @@ class Manager {
 	}
 
 	function registerDefaults():Void {
-		// Quick ring
+		// Default quick ring
 		register(BatTri, true);
 		register(NightMode, true);
 		register(Torch, true);
-
-		// Other apps
-		register(Settings);
-		register(Software);
 	}
 
 	function register(
