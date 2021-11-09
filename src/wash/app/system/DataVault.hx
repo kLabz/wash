@@ -20,8 +20,11 @@ class DataVault {
 
 	public static function save():Void {
 		var f = Builtins.openWrite(CONFIG_FILE);
-		f.write(serialize());
+		var b = serialize();
+		f.write(b);
 		f.close();
+		b = null;
+		Syntax.delete(b);
 	}
 
 	public static function load():Void {
@@ -29,6 +32,9 @@ class DataVault {
 			var f = Builtins.openRead(CONFIG_FILE);
 			var b = f.peek();
 			deserialize(b);
+			f.close();
+			b = null;
+			Syntax.delete(b);
 		} catch (_) {}
 	}
 
