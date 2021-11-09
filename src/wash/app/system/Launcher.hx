@@ -108,7 +108,7 @@ class Launcher extends BaseApplication {
 		var pageNum = page;
 		var page = getPage(pageNum);
 
-		Watch.drawable.fill();
+		Watch.drawable.fill(0);
 		for (i in 0...3)
 			for (j in 0...3)
 				drawApp(page[i*3 + j], j*74, i*74);

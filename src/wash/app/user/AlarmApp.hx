@@ -259,11 +259,12 @@ class AlarmApp extends BaseApplication {
 		var draw = Watch.drawable;
 		var alarm = alarms[page];
 
-		draw.fill();
+		draw.fill(0);
 		drawSystemBar();
 
 		hoursSpinner.value = alarm.HH;
 		minutesSpinner.value = alarm.MM;
+		draw.set_color(Wash.system.theme.highlight);
 		draw.set_font(Fonts.sans28);
 		draw.string(':', 110, 90-14, 20);
 

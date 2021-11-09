@@ -105,7 +105,7 @@ class Calc extends BaseApplication {
 
 	function draw():Void {
 		var draw = Watch.drawable;
-		draw.fill();
+		draw.fill(0);
 
 		var hi = Wash.system.theme.highlight;
 		var mid = Wash.system.theme.secondary;

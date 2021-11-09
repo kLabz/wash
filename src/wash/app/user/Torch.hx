@@ -91,7 +91,7 @@ class Torch extends BaseApplication {
 			drawTorch(0, 0);
 			Wash.system.brightnessLevel = High;
 		} else {
-			Watch.drawable.fill();
+			Watch.drawable.fill(0);
 			drawTorch(Wash.system.theme.secondary, redLight ? 0xf800 : 0xffff);
 			Wash.system.resetBrightnessLevel();
 		}

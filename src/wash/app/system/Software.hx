@@ -122,7 +122,7 @@ class Software extends BaseApplication {
 	}
 
 	function draw():Void {
-		Watch.drawable.fill();
+		Watch.drawable.fill(0);
 		for (p in getPage()) p.checkbox.draw();
 
 		scroll.value = page;

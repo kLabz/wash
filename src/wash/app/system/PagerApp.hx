@@ -72,7 +72,7 @@ class PagerApp extends BaseApplication {
 	function draw():Void {
 		Watch.display.mute(true);
 		Watch.drawable.set_font(Fonts.sans18);
-		Watch.drawable.set_color(0xffff);
+		Watch.drawable.set_color(Wash.system.theme.highlight);
 		Watch.drawable.fill();
 
 		var i = page * 9;

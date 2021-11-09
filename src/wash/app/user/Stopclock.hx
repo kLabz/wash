@@ -102,7 +102,7 @@ class Stopclock extends BaseApplication {
 	}
 
 	function draw():Void {
-		Watch.drawable.fill();
+		Watch.drawable.fill(0);
 		Wash.system.bar.draw();
 		timer.draw();
 		drawSplits();

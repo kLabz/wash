@@ -115,7 +115,7 @@ class BatTri extends BaseWatchFace {
 		var st = try Watch.accel.steps catch (_) -1;
 
 		if (redraw) {
-			draw.fill();
+			draw.fill(0);
 
 			// Prepare heart rate / steps
 			draw.blit(heartIcon, 4, 219, mid);
