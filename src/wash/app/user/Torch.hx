@@ -60,7 +60,13 @@ class Torch extends BaseApplication {
 
 	override function registered(quickRing:Bool):Void {
 		initialState = !quickRing;
-		Settings.registerApp(NAME, TorchConfig);
+		Settings.registerApp(
+			NAME,
+			TorchConfig,
+			ID,
+			TorchConfig.serialize,
+			TorchConfig.deserialize
+		);
 	}
 
 	override function unregistered():Void {

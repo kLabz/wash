@@ -1,5 +1,8 @@
 package wash.app.user.settings;
 
+import python.Bytearray;
+import python.Bytes;
+
 import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
 import wash.widgets.Checkbox;
@@ -38,4 +41,34 @@ class HeartConfig extends BaseApplication implements ISettingsApplication {
 	}
 
 	public function update():Void {}
+
+	public static function serialize(bytes:Bytearray):Void {
+		bytes.append(F_LogData);
+		bytes.append(HeartApp.debug ? 0x01 : 0x00);
+
+		bytes.append(F_RunInBg);
+		bytes.append(HeartApp.runInBackground ? 0x01 : 0x00);
+	}
+
+	public static function deserialize(bytes:Bytes, i:Int):Int {
+		while (i < bytes.length) {
+			switch (bytes.get(i++)) {
+				case F_LogData:
+					HeartApp.debug = bytes.get(i++) == 0x01;
+
+				case F_RunInBg:
+					HeartApp.runInBackground = bytes.get(i++) == 0x01;
+
+				case 0x00:
+					break;
+			}
+		}
+
+		return i;
+	}
+}
+
+private enum abstract Field(Int) to Int {
+	var F_LogData = 0x01;
+	var F_RunInBg = 0x02;
 }

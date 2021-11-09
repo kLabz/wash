@@ -4,14 +4,37 @@ import python.Bytearray;
 import python.Bytes;
 import python.Syntax;
 import python.Syntax.bytes;
+import python.Tuple;
 // import python.Syntax.sub;
 
 import wash.app.user.AlarmApp.AlarmDef;
-import wash.util.Int2;
+import wash.app.system.settings.SystemConfig;
 
 using python.NativeStringTools;
 
+@:native('DataVault')
 class DataVault {
+	static var appConfigSerializers:Array<AppConfigSerializer> = [];
+
+	public static function registerAppConfig(
+		appName:String,
+		appId:Int,
+		serializer:Bytearray->Void,
+		deserializer:(bytes:Bytes, i:Int)->Int
+	):Void {
+		unregisterAppConfig(appName);
+		appConfigSerializers.push(AppConfigSerializer.make(
+			appName,
+			appId,
+			serializer,
+			deserializer
+		));
+	}
+
+	public static function unregisterAppConfig(appName:String):Void {
+		appConfigSerializers = Lambda.filter(appConfigSerializers, a -> a.appName != appName);
+	}
+
 	public static function serialize():Bytearray {
 		var ret = new Bytearray();
 
@@ -52,29 +75,23 @@ class DataVault {
 
 		// System settings
 		ret.append(SettingsCategory.SC_SystemSettings);
-		ret.append(SystemSettings.NotifLevel);
-		ret.append(Settings.notificationLevel);
-		ret.append(SystemSettings.BrightnessLevel);
-		ret.append(Settings.brightnessLevel);
-		ret.append(SystemSettings.WakeMode);
-		ret.append(Settings.wakeMode);
-		ret.append(SystemSettings.Theme);
-		ret.append(Wash.system.theme.primary_theme._1);
-		ret.append(Wash.system.theme.primary_theme._2);
-		ret.append(Wash.system.theme.secondary_theme._1);
-		ret.append(Wash.system.theme.secondary_theme._2);
-		ret.append(Wash.system.theme.highlight_theme._1);
-		ret.append(Wash.system.theme.highlight_theme._2);
+		SystemConfig.serialize(ret);
 		ret.append(0x00);
 
-		// TODO: Apps settings
+		// Apps settings
+		ret.append(SettingsCategory.SC_AppSettings);
+		for (a in appConfigSerializers) {
+			ret.append(a.appId);
+			a.serializer(ret);
+		}
+		ret.append(0x00);
 
 		return ret;
 	}
 
 	// TODO: remove or hide behind a compilation flag
 	public static function testDeserialize():Void {
-		var b = bytes('\\x01\\x01\\xaa\\x04\\x08\\x00\\x02\\x01\\x02\\x03\\x05\\x06\\x07\\x00\\x03\\x06\\x1e\\x9f\\x07-\\xe0\\x08\\x00\\x00\\x08\\x00\\x00\\x00\\x00\\x02\\x01\\x02\\x02\\x02\\x03\\x05\\x04\\xfb\\x80\\xfe \\xff\\xff\\x00');
+		var b = bytes('\\x01\\x01\\xaa\\x04\\x08\\x00\\x02\\x01\\x02\\x03\\x05\\x06\\x07\\x00\\x03\\x06\\x1e\\x9f\\x07-\\xe0\\x08\\x00\\x00\\x08\\x00\\x00\\x00\\x00\\x02\\x01\\x02\\x02\\x02\\x03\\x05\\x04\\xfb\\x80\\xfe \\xff\\xff\\x00\\x03\\xa0\\x01\\x01\\x02\\x01\\x03\\x01\\x04\\x00\\x00');
 		deserialize(b);
 	}
 
@@ -88,11 +105,10 @@ class DataVault {
 					i = deserializeRootSettings(bytes, i);
 
 				case SC_SystemSettings:
-					i = deserializeSystemSettings(bytes, i);
+					i = SystemConfig.deserialize(bytes, i);
 
 				case SC_AppSettings:
-					trace('TODO: App settings');
-					break;
+					i = deserializeAppSettings(bytes, i);
 			}
 		}
 
@@ -151,28 +167,21 @@ class DataVault {
 		return i;
 	}
 
-	static function deserializeSystemSettings(bytes:Bytes, i:Int):Int {
+	static function deserializeAppSettings(bytes:Bytes, i:Int):Int {
 		while (i < bytes.length) {
 			switch (bytes.get(i++)) {
-				case NotifLevel:
-					Settings.notificationLevel = cast bytes.get(i++);
-					if (!Wash.system.nightMode) Wash.system.notificationLevel = Settings.notificationLevel;
-
-				case BrightnessLevel:
-					Settings.brightnessLevel = cast bytes.get(i++);
-					if (!Wash.system.nightMode) Wash.system.brightnessLevel = Settings.brightnessLevel;
-
-				case WakeMode:
-					Settings.wakeMode = bytes.get(i++);
-					if (!Wash.system.nightMode) Wash.system.wakeMode = Settings.wakeMode;
-
-				case Theme:
-					Wash.system.theme.primary = Int2.fromBytes(bytes.get(i++), bytes.get(i++));
-					Wash.system.theme.secondary = Int2.fromBytes(bytes.get(i++), bytes.get(i++));
-					Wash.system.theme.highlight = Int2.fromBytes(bytes.get(i++), bytes.get(i++));
-
 				case 0x00:
 					break;
+
+				case id:
+					var appCS = Lambda.find(appConfigSerializers, a -> a.appId == id);
+					if (appCS == null) {
+						trace('Cannot deserialize app config for id $id');
+						while (bytes.get(i++) != 0x00) continue;
+						break;
+					} else {
+						i = appCS.deserializer(bytes, i);
+					}
 			}
 		}
 
@@ -208,13 +217,6 @@ enum abstract RootSettings(Int) to Int {
 	var Alarms = 0x03;
 }
 
-enum abstract SystemSettings(Int) to Int {
-	var NotifLevel = 0x01;
-	var BrightnessLevel = 0x02;
-	var WakeMode = 0x03;
-	var Theme = 0x04;
-}
-
 class AppIdentifier {
 	// TODO: macro to keep in sync with IApplication.ID
 	public static function toCls(cls:Int):Class<IApplication> {
@@ -237,4 +239,27 @@ class AppIdentifier {
 				wash.app.BaseApplication;
 		}
 	}
+}
+
+@:native("tuple")
+extern class AppConfigSerializer extends Tuple<Dynamic> {
+	static inline function make(
+		appName:String,
+		appId:Int,
+		serializer:Bytearray->Void,
+		deserializer:(bytes:Bytes, i:Int)->Int
+	):AppConfigSerializer
+		return Syntax.tuple(appName, appId, serializer, deserializer);
+
+	var appName(get, null):String;
+	inline function get_appName():String return this[0];
+
+	var appId(get, null):Int;
+	inline function get_appId():Int return this[1];
+
+	var serializer(get, null):Bytearray->Void;
+	inline function get_serializer():Bytearray->Void return this[2];
+
+	var deserializer(get, null):Bytes->Int->Int;
+	inline function get_deserializer():Bytes->Int->Int return this[3];
 }

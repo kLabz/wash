@@ -56,7 +56,10 @@ class BatTri extends BaseWatchFace {
 		super();
 		NAME = "BatTri";
 		// TODO: ICON
-		ID = 0xAA; // Watchfaces start at 0xA0, but this probably won't be one of the default ones
+
+		// Watchfaces start at 0xA1, but this probably won't be one of the default ones
+		// 0xA0 is reserved for BaseWatchface for application settings
+		ID = 0xAA;
 	}
 
 	override function foreground():Void {
@@ -66,7 +69,13 @@ class BatTri extends BaseWatchFace {
 	}
 
 	override function registered(quickRing:Bool):Void {
-		Settings.registerApp("Watchface", WatchfaceConfig);
+		Settings.registerApp(
+			"Watchface",
+			WatchfaceConfig,
+			0xA0,
+			WatchfaceConfig.serialize,
+			WatchfaceConfig.deserialize
+		);
 	}
 
 	override function unregistered():Void {

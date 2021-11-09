@@ -1,5 +1,8 @@
 package wash.app.user.settings;
 
+import python.Bytearray;
+import python.Bytes;
+
 import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
 import wash.widgets.Checkbox;
@@ -38,4 +41,34 @@ class TorchConfig extends BaseApplication implements ISettingsApplication {
 	}
 
 	public function update():Void {}
+
+	public static function serialize(bytes:Bytearray):Void {
+		bytes.append(F_InitState);
+		bytes.append(Torch.initialState ? 0x01 : 0x00);
+
+		bytes.append(F_RedLight);
+		bytes.append(Torch.redLight ? 0x01 : 0x00);
+	}
+
+	public static function deserialize(bytes:Bytes, i:Int):Int {
+		while (i < bytes.length) {
+			switch (bytes.get(i++)) {
+				case F_InitState:
+					Torch.initialState = bytes.get(i++) == 0x01;
+
+				case F_RedLight:
+					Torch.redLight = bytes.get(i++) == 0x01;
+
+				case 0x00:
+					break;
+			}
+		}
+
+		return i;
+	}
+}
+
+private enum abstract Field(Int) to Int {
+	var F_InitState = 0x01;
+	var F_RedLight = 0x02;
 }

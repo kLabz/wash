@@ -1,5 +1,6 @@
 package wash.app.system;
 
+import python.Bytearray;
 import python.Bytes;
 import python.Syntax.bytes;
 import python.Syntax.construct;
@@ -50,16 +51,27 @@ class Settings extends BaseApplication {
 
 	static var applicationSettings:Array<AppConfig> = [];
 
-	public static function registerApp(appName:String, configApp:Class<ISettingsApplication>):Void {
+	public static function registerApp(
+		appName:String,
+		configApp:Class<ISettingsApplication>,
+		?serializeId:Int,
+		?serialize:Bytearray->Void,
+		?deserialize:(bytes:Bytes, i:Int)->Int
+	):Void {
 		for (conf in applicationSettings) if (conf.settingsCls == configApp) return;
 		applicationSettings.push(AppConfig.make(appName, configApp));
 		applicationSettings.nativeSort(appConfigSort);
 		settingsListChanged = true;
+
+		if (serializeId != null && serialize != null && deserialize != null) {
+			DataVault.registerAppConfig(appName, serializeId, serialize, deserialize);
+		}
 	}
 
 	public static function unregisterApp(appName:String):Void {
 		applicationSettings = applicationSettings.filter(a -> a.appName != appName);
 		settingsListChanged = true;
+		DataVault.unregisterAppConfig(appName);
 	}
 
 	var scroll:ScrollIndicator;

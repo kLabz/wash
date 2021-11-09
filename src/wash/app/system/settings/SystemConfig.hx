@@ -1,7 +1,11 @@
 package wash.app.system.settings;
 
+import python.Bytearray;
+import python.Bytes;
+
 import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
+import wash.util.Int16;
 import wash.widgets.Checkbox;
 import wash.widgets.ScrollIndicator;
 import wash.widgets.Slider;
@@ -158,4 +162,58 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 
 		scroll.draw();
 	}
+
+	public static function serialize(bytes:Bytearray):Void {
+		bytes.append(F_NotifLevel);
+		bytes.append(Settings.notificationLevel);
+
+		bytes.append(F_BrightnessLevel);
+		bytes.append(Settings.brightnessLevel);
+
+		bytes.append(F_WakeMode);
+		bytes.append(Settings.wakeMode);
+
+		bytes.append(F_Theme);
+		bytes.append(Wash.system.theme.primary_theme._1);
+		bytes.append(Wash.system.theme.primary_theme._2);
+		bytes.append(Wash.system.theme.secondary_theme._1);
+		bytes.append(Wash.system.theme.secondary_theme._2);
+		bytes.append(Wash.system.theme.highlight_theme._1);
+		bytes.append(Wash.system.theme.highlight_theme._2);
+	}
+
+	public static function deserialize(bytes:Bytes, i:Int):Int {
+		while (i < bytes.length) {
+			switch (bytes.get(i++)) {
+				case F_NotifLevel:
+					Settings.notificationLevel = cast bytes.get(i++);
+					if (!Wash.system.nightMode) Wash.system.notificationLevel = Settings.notificationLevel;
+
+				case F_BrightnessLevel:
+					Settings.brightnessLevel = cast bytes.get(i++);
+					if (!Wash.system.nightMode) Wash.system.brightnessLevel = Settings.brightnessLevel;
+
+				case F_WakeMode:
+					Settings.wakeMode = bytes.get(i++);
+					if (!Wash.system.nightMode) Wash.system.wakeMode = Settings.wakeMode;
+
+				case F_Theme:
+					Wash.system.theme.primary = Int16.fromBytes(bytes.get(i++), bytes.get(i++));
+					Wash.system.theme.secondary = Int16.fromBytes(bytes.get(i++), bytes.get(i++));
+					Wash.system.theme.highlight = Int16.fromBytes(bytes.get(i++), bytes.get(i++));
+
+				case 0x00:
+					break;
+			}
+		}
+
+		return i;
+	}
+}
+
+private enum abstract Field(Int) to Int {
+	var F_NotifLevel = 0x01;
+	var F_BrightnessLevel = 0x02;
+	var F_WakeMode = 0x03;
+	var F_Theme = 0x04;
 }

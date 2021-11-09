@@ -114,7 +114,13 @@ class HeartApp extends BaseApplication {
 	}
 
 	override function registered(_):Void {
-		Settings.registerApp(NAME, HeartConfig);
+		Settings.registerApp(
+			NAME,
+			HeartConfig,
+			ID,
+			HeartConfig.serialize,
+			HeartConfig.deserialize
+		);
 	}
 
 	override function unregistered():Void {
