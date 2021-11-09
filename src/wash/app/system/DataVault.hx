@@ -15,17 +15,18 @@ using python.NativeStringTools;
 
 @:native('DataVault')
 class DataVault {
+	static inline var CONFIG_FILE:String = '.settings';
 	static var appConfigSerializers:Array<AppConfigSerializer> = [];
 
 	public static function save():Void {
-		var f = Builtins.openWrite('.settings');
+		var f = Builtins.openWrite(CONFIG_FILE);
 		f.write(serialize());
 		f.close();
 	}
 
 	public static function load():Void {
 		try {
-			var f = Builtins.openRead('.settings');
+			var f = Builtins.openRead(CONFIG_FILE);
 			var b = f.peek();
 			deserialize(b);
 		} catch (_) {}
