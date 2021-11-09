@@ -135,6 +135,8 @@ class Settings extends BaseApplication {
 			var index = opFloorDiv(event.y - 40, 40);
 
 			switch (settingsPage) {
+				case _ if (index == -1): // Ignore taps on header
+
 				case 0:
 					if (index < systemSettings.length)
 						setApp(systemSettings[index]);
