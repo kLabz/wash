@@ -51,6 +51,7 @@ class Settings extends BaseApplication {
 	static var applicationSettings:Array<AppConfig> = [];
 
 	public static function registerApp(appName:String, configApp:Class<ISettingsApplication>):Void {
+		for (conf in applicationSettings) if (conf.settingsCls == configApp) return;
 		applicationSettings.push(AppConfig.make(appName, configApp));
 		applicationSettings.nativeSort(appConfigSort);
 		settingsListChanged = true;
