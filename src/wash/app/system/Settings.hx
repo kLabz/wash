@@ -6,7 +6,7 @@ import python.Syntax.construct;
 
 import wasp.Fonts;
 import wasp.Watch;
-import wash.app.IApplication.ISettingsApplication;
+import wash.app.ISettingsApplication;
 import wash.app.system.settings.About;
 import wash.app.system.settings.AppConfig;
 import wash.app.system.settings.DateTimeConfig;

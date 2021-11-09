@@ -3,7 +3,7 @@ package wash.app.system.settings;
 import python.Syntax;
 import python.Tuple;
 
-import wash.app.IApplication.ISettingsApplication;
+import wash.app.ISettingsApplication;
 
 @:native("tuple")
 extern class AppConfig extends Tuple<Dynamic> {

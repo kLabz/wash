@@ -22,9 +22,3 @@ interface IApplication {
 	public function swipe(event:TouchEvent):Bool;
 	public function press(eventType:EventType, state:Bool):Bool;
 }
-
-@:dce @:remove
-interface ISettingsApplication extends IApplication {
-	public function draw():Void;
-	public function update():Void;
-}

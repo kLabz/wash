@@ -1,6 +1,6 @@
 package wash.app.system.settings;
 
-import wash.app.IApplication.ISettingsApplication;
+import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
 import wash.util.DateTimeTuple;
 import wash.widgets.ScrollIndicator;

@@ -1,6 +1,6 @@
 package wash.app.user.settings;
 
-import wash.app.IApplication.ISettingsApplication;
+import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
 import wash.widgets.Checkbox;
 import wasp.Fonts;

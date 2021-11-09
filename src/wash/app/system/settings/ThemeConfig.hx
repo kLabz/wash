@@ -1,6 +1,6 @@
 package wash.app.system.settings;
 
-import wash.app.IApplication.ISettingsApplication;
+import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
 import wash.widgets.Button;
 import wash.widgets.ColorPicker;

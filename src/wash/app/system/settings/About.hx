@@ -2,7 +2,7 @@ package wash.app.system.settings;
 
 import python.Syntax;
 
-import wash.app.IApplication.ISettingsApplication;
+import wash.app.ISettingsApplication;
 import wash.util.Version;
 import wasp.Builtins;
 import wasp.BLE;
