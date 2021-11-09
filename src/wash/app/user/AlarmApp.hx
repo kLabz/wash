@@ -78,8 +78,8 @@ class AlarmApp extends BaseApplication {
 	var dayButtons:DayButtons;
 	var alarmChecks:Tuple4<Checkbox, Checkbox, Checkbox, Checkbox>;
 
-	public static function init():Void {
-		alarms = [
+	public static function init(?alarms:Array<AlarmDef>):Void {
+		AlarmApp.alarms = alarms != null ? alarms : [
 			AlarmDef.make(8, 0, WEEKDAYS),
 			AlarmDef.make(8, 0, 0),
 			AlarmDef.make(8, 0, 0),
@@ -87,7 +87,8 @@ class AlarmApp extends BaseApplication {
 		];
 
 		pendingAlarms = [0.0, 0.0, 0.0, 0.0];
-		numAlarms = 1;
+		numAlarms = 0;
+		for (a in AlarmApp.alarms) if ((a.mask:Int) > 0) numAlarms++;
 		setPendingAlarms();
 	}
 
