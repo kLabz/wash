@@ -89,6 +89,10 @@ class Settings extends BaseApplication {
 		scroll = new ScrollIndicator(42, 0, settingsPages - 1, settingsPage);
 	}
 
+	override public function background():Void {
+		DataVault.save();
+	}
+
 	override public function foreground():Void {
 		settingsPage = 0;
 		currentSettingsApp = null;

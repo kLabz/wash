@@ -7,6 +7,7 @@ import python.Syntax.bytes;
 import python.Tuple;
 // import python.Syntax.sub;
 
+import wasp.Builtins;
 import wash.app.user.AlarmApp.AlarmDef;
 import wash.app.system.settings.SystemConfig;
 
@@ -15,6 +16,20 @@ using python.NativeStringTools;
 @:native('DataVault')
 class DataVault {
 	static var appConfigSerializers:Array<AppConfigSerializer> = [];
+
+	public static function save():Void {
+		var f = Builtins.openWrite('.settings');
+		f.write(serialize());
+		f.close();
+	}
+
+	public static function load():Void {
+		try {
+			var f = Builtins.openRead('.settings');
+			var b = f.peek();
+			deserialize(b);
+		} catch (_) {}
+	}
 
 	public static function registerAppConfig(
 		appName:String,
@@ -35,7 +50,7 @@ class DataVault {
 		appConfigSerializers = Lambda.filter(appConfigSerializers, a -> a.appName != appName);
 	}
 
-	public static function serialize():Bytearray {
+	static function serialize():Bytearray {
 		var ret = new Bytearray();
 
 		// Quick Ring
@@ -83,20 +98,14 @@ class DataVault {
 		for (a in appConfigSerializers) {
 			ret.append(a.appId);
 			a.serializer(ret);
+			ret.append(0x00);
 		}
 		ret.append(0x00);
 
 		return ret;
 	}
 
-	// TODO: remove or hide behind a compilation flag
-	public static function testDeserialize():Void {
-		var b = bytes('\\x01\\x01\\xaa\\x04\\x08\\x00\\x02\\x01\\x02\\x03\\x05\\x06\\x07\\x00\\x03\\x06\\x1e\\x9f\\x07-\\xe0\\x08\\x00\\x00\\x08\\x00\\x00\\x00\\x00\\x02\\x01\\x02\\x02\\x02\\x03\\x05\\x04\\xfb\\x80\\xfe \\xff\\xff\\x00\\x03\\xa0\\x01\\x01\\x02\\x01\\x03\\x01\\x04\\x00\\x00');
-		deserialize(b);
-	}
-
-
-	public static function deserialize(bytes:Bytes):Void {
+	static function deserialize(bytes:Bytes):Void {
 		var i = 0;
 
 		while (i < bytes.length) {
@@ -111,8 +120,6 @@ class DataVault {
 					i = deserializeAppSettings(bytes, i);
 			}
 		}
-
-		trace('Done.');
 	}
 
 	static function deserializeRootSettings(bytes:Bytes, i:Int):Int {

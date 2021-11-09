@@ -84,6 +84,8 @@ class Software extends BaseApplication {
 	}
 
 	override public function background():Void {
+		DataVault.save();
+
 		scroll = null;
 		delete(scroll);
 

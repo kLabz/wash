@@ -1,6 +1,7 @@
 package wash;
 
 // import python.Exceptions;
+import wash.app.system.DataVault;
 import python.Bytearray;
 import python.Syntax;
 import python.Syntax.bytes;
@@ -95,7 +96,13 @@ class Manager {
 	function secondaryInit():Void {
 		Syntax.code('global free');
 
+		// Minimal setup
 		AlarmApp.init();
+		register(Settings);
+		register(Software);
+
+		// Load previous config if any
+		DataVault.load();
 
 		if (app == null) {
 			if (quickRing.length == 0) registerDefaults();

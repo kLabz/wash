@@ -7,6 +7,7 @@ import python.Syntax.delete;
 import python.Tuple;
 
 import wash.Wash;
+import wash.app.system.DataVault;
 import wash.app.user.alarm.DayButtons;
 import wash.event.EventMask;
 import wash.event.TouchEvent;
@@ -233,6 +234,7 @@ class AlarmApp extends BaseApplication {
 		page = HOME_PAGE;
 		numAlarms--;
 		draw();
+		DataVault.save();
 	}
 
 	function saveAlarm():Void {
@@ -246,6 +248,7 @@ class AlarmApp extends BaseApplication {
 		}
 
 		page = HOME_PAGE;
+		DataVault.save();
 	}
 
 	function draw(?alarmRow:Int = -1):Void {
