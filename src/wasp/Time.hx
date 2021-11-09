@@ -38,7 +38,7 @@ class TimeUtils {
 
 	static function printDuration(duration:Float):String {
 		var days = duration >= 60*60*24 ? opFloorDiv(duration, 60*60*24) : 0;
-		var duration = duration - days;
+		var duration = duration - days * 60*60*24;
 		var hours = opFloorDiv(duration, 60*60);
 		duration -= hours * 60*60;
 		var minutes = opFloorDiv(duration, 60);
