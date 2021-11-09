@@ -102,7 +102,7 @@ class Manager {
 		register(Software);
 
 		// Load previous config if any
-		// DataVault.load();
+		DataVault.load();
 
 		if (app == null) {
 			if (quickRing.length == 0) registerDefaults();
