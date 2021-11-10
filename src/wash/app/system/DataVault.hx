@@ -61,7 +61,8 @@ class DataVault {
 		f.write1(RootSettings.QuickRing);
 		for (app in Wash.system.quickRing) {
 			if (app.ID == null) {
-				trace('(QuickRing) Null appId for ', app.NAME);
+				trace('(QuickRing) Null appId for:');
+				trace(app.NAME);
 				continue;
 			}
 			f.write1(app.ID);
@@ -72,7 +73,8 @@ class DataVault {
 		f.write1(RootSettings.EnabledApps);
 		for (app in Wash.system.launcherRing) {
 			if (app.ID == null) {
-				trace('Null appId for ', app.NAME);
+				trace('(Launcher) Null appId for:');
+				trace(app.NAME);
 				continue;
 			}
 			f.write1(app.ID);
