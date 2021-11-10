@@ -4,7 +4,7 @@ import python.Bytearray;
 import python.Bytes;
 import python.NativeIterator;
 import python.Tuple;
-import python.lib.io.RawIOBase;
+// import python.lib.io.RawIOBase;
 import python.lib.io.BufferedWriter;
 import python.lib.io.BufferedReader;
 
@@ -31,11 +31,11 @@ extern class Builtins {
 	static function next<T>(it:NativeIterator<T>):T;
 	static function divmod(a:Int, b:Int):Tuple2<Int, Int>;
 
-	static function open(file:String, mode:String):RawIOBase;
+	// static function open(file:String, mode:String):RawIOBase;
 
 	extern inline static function openRead(file:String):BufferedReader
-		return cast open(file, 'rb');
+		return (untyped open)(file, 'rb');
 
 	extern inline static function openWrite(file:String):BufferedWriter
-		return cast open(file, 'wb');
+		return (untyped open)(file, 'wb');
 }

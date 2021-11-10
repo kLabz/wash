@@ -91,7 +91,7 @@ class Settings extends BaseApplication {
 	}
 
 	override public function background():Void {
-		DataVault.save();
+		// DataVault.save();
 	}
 
 	override public function foreground():Void {

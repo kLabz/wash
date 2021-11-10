@@ -15,9 +15,11 @@ using wash.app.system.DataVault;
 
 @:native('DataVault')
 class DataVault {
-	static inline var CONFIG_FILE:String = 'haxetime.conf';
+	// Not inline to allow debug via micropython console
+	static var CONFIG_FILE:String = 'haxetime.conf';
 	static var appConfigSerializers:Array<AppConfigSerializer> = [];
 
+	@:keep
 	public static function save():Void {
 		var f = Builtins.openWrite(CONFIG_FILE);
 		serialize(f);
@@ -26,14 +28,23 @@ class DataVault {
 		Syntax.delete(f);
 	}
 
+	@:keep
 	public static function load():Void {
+		var f:BufferedReader = null;
+
 		try {
-			var f = Builtins.openRead(CONFIG_FILE);
+			f = Builtins.openRead(CONFIG_FILE);
 			deserialize(f);
 			f.close();
 			f = null;
 			Syntax.delete(f);
-		} catch (_) {}
+		} catch (_) {
+			if (f != null) {
+				f.close();
+				f = null;
+				Syntax.delete(f);
+			}
+		}
 	}
 
 	public static function registerAppConfig(
@@ -128,7 +139,7 @@ class DataVault {
 
 	public static function write1(f:BufferedWriter, b:Int):Void {
 		var bytes = new Bytearray(1);
-		bytes.set(0, b);
+		bytes[0] = b;
 		f.write(bytes);
 		bytes = null;
 		Syntax.delete(bytes);

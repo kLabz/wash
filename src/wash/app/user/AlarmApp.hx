@@ -186,6 +186,7 @@ class AlarmApp extends BaseApplication {
 						}
 
 						draw(i);
+						DataVault.save();
 						return;
 					}
 				}
