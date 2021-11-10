@@ -57,17 +57,17 @@ class WatchfaceConfig extends BaseApplication implements ISettingsApplication {
 		var bytes = new Bytearray(8);
 		var i = 0;
 
-		bytes.set(i++, F_12H);
-		bytes.set(i++, BaseWatchFace.hours12 ? 0x01 : 0x00);
+		bytes[i++] = F_12H;
+		bytes[i++] = BaseWatchFace.hours12 ? 0x01 : 0x00;
 
-		bytes.set(i++, F_WeekNb);
-		bytes.set(i++, BaseWatchFace.displayWeekNb ? 0x01 : 0x00);
+		bytes[i++] = F_WeekNb;
+		bytes[i++] = BaseWatchFace.displayWeekNb ? 0x01 : 0x00;
 
-		bytes.set(i++, F_BatteryPct);
-		bytes.set(i++, BaseWatchFace.displayBatteryPct ? 0x01 : 0x00);
+		bytes[i++] = F_BatteryPct;
+		bytes[i++] = BaseWatchFace.displayBatteryPct ? 0x01 : 0x00;
 
-		bytes.set(i++, F_DblTapToSleep);
-		bytes.set(i++, BaseWatchFace.dblTapToSleep ? 0x01 : 0x00);
+		bytes[i++] = F_DblTapToSleep;
+		bytes[i++] = BaseWatchFace.dblTapToSleep ? 0x01 : 0x00;
 
 		f.write(bytes);
 		bytes = null;

@@ -168,22 +168,22 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 	public static function serialize(f:BufferedWriter):Void {
 		var bytes = new Bytearray(13);
 		var i = 0;
-		bytes.set(i++, F_NotifLevel);
-		bytes.set(i++, Settings.notificationLevel);
+		bytes[i++] = F_NotifLevel;
+		bytes[i++] = Settings.notificationLevel;
 
-		bytes.set(i++, F_BrightnessLevel);
-		bytes.set(i++, Settings.brightnessLevel);
+		bytes[i++] = F_BrightnessLevel;
+		bytes[i++] = Settings.brightnessLevel;
 
-		bytes.set(i++, F_WakeMode);
-		bytes.set(i++, Settings.wakeMode);
+		bytes[i++] = F_WakeMode;
+		bytes[i++] = Settings.wakeMode;
 
-		bytes.set(i++, F_Theme);
-		bytes.set(i++, Wash.system.theme.primary_theme._1);
-		bytes.set(i++, Wash.system.theme.primary_theme._2);
-		bytes.set(i++, Wash.system.theme.secondary_theme._1);
-		bytes.set(i++, Wash.system.theme.secondary_theme._2);
-		bytes.set(i++, Wash.system.theme.highlight_theme._1);
-		bytes.set(i++, Wash.system.theme.highlight_theme._2);
+		bytes[i++] = F_Theme;
+		bytes[i++] = Wash.system.theme.primary_theme._1;
+		bytes[i++] = Wash.system.theme.primary_theme._2;
+		bytes[i++] = Wash.system.theme.secondary_theme._1;
+		bytes[i++] = Wash.system.theme.secondary_theme._2;
+		bytes[i++] = Wash.system.theme.highlight_theme._1;
+		bytes[i++] = Wash.system.theme.highlight_theme._2;
 
 		f.write(bytes);
 		bytes = null;

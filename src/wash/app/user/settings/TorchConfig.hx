@@ -48,11 +48,11 @@ class TorchConfig extends BaseApplication implements ISettingsApplication {
 		var bytes = new Bytearray(4);
 		var i = 0;
 
-		bytes.set(i++, F_InitState);
-		bytes.set(i++, Torch.initialState ? 0x01 : 0x00);
+		bytes[i++] = F_InitState;
+		bytes[i++] = Torch.initialState ? 0x01 : 0x00;
 
-		bytes.set(i++, F_RedLight);
-		bytes.set(i++, Torch.redLight ? 0x01 : 0x00);
+		bytes[i++] = F_RedLight;
+		bytes[i++] = Torch.redLight ? 0x01 : 0x00;
 
 		f.write(bytes);
 		bytes = null;

@@ -48,11 +48,11 @@ class HeartConfig extends BaseApplication implements ISettingsApplication {
 		var bytes = new Bytearray(4);
 		var i = 0;
 
-		bytes.set(i++, F_LogData);
-		bytes.set(i++, HeartApp.debug ? 0x01 : 0x00);
+		bytes[i++] = F_LogData;
+		bytes[i++] = HeartApp.debug ? 0x01 : 0x00;
 
-		bytes.set(i++, F_RunInBg);
-		bytes.set(i++, HeartApp.runInBackground ? 0x01 : 0x00);
+		bytes[i++] = F_RunInBg;
+		bytes[i++] = HeartApp.runInBackground ? 0x01 : 0x00;
 
 		f.write(bytes);
 		bytes = null;
