@@ -3,6 +3,7 @@ package wash.app.system.settings;
 import python.Bytearray;
 import python.Syntax;
 import python.lib.io.BufferedReader;
+import python.lib.io.BufferedWriter;
 
 import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
@@ -164,23 +165,29 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 		scroll.draw();
 	}
 
-	public static function serialize(bytes:Bytearray):Void {
-		bytes.append(F_NotifLevel);
-		bytes.append(Settings.notificationLevel);
+	public static function serialize(f:BufferedWriter):Void {
+		var bytes = new Bytearray(13);
+		var i = 0;
+		bytes.set(i++, F_NotifLevel);
+		bytes.set(i++, Settings.notificationLevel);
 
-		bytes.append(F_BrightnessLevel);
-		bytes.append(Settings.brightnessLevel);
+		bytes.set(i++, F_BrightnessLevel);
+		bytes.set(i++, Settings.brightnessLevel);
 
-		bytes.append(F_WakeMode);
-		bytes.append(Settings.wakeMode);
+		bytes.set(i++, F_WakeMode);
+		bytes.set(i++, Settings.wakeMode);
 
-		bytes.append(F_Theme);
-		bytes.append(Wash.system.theme.primary_theme._1);
-		bytes.append(Wash.system.theme.primary_theme._2);
-		bytes.append(Wash.system.theme.secondary_theme._1);
-		bytes.append(Wash.system.theme.secondary_theme._2);
-		bytes.append(Wash.system.theme.highlight_theme._1);
-		bytes.append(Wash.system.theme.highlight_theme._2);
+		bytes.set(i++, F_Theme);
+		bytes.set(i++, Wash.system.theme.primary_theme._1);
+		bytes.set(i++, Wash.system.theme.primary_theme._2);
+		bytes.set(i++, Wash.system.theme.secondary_theme._1);
+		bytes.set(i++, Wash.system.theme.secondary_theme._2);
+		bytes.set(i++, Wash.system.theme.highlight_theme._1);
+		bytes.set(i++, Wash.system.theme.highlight_theme._2);
+
+		f.write(bytes);
+		bytes = null;
+		Syntax.delete(bytes);
 	}
 
 	public static function deserialize(f:BufferedReader):Void {

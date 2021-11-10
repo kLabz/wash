@@ -1,7 +1,9 @@
 package wash.app.watchface.settings;
 
 import python.Bytearray;
+import python.Syntax;
 import python.lib.io.BufferedReader;
+import python.lib.io.BufferedWriter;
 
 import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
@@ -51,18 +53,25 @@ class WatchfaceConfig extends BaseApplication implements ISettingsApplication {
 
 	public function update():Void {}
 
-	public static function serialize(bytes:Bytearray):Void {
-		bytes.append(F_12H);
-		bytes.append(BaseWatchFace.hours12 ? 0x01 : 0x00);
+	public static function serialize(f:BufferedWriter):Void {
+		var bytes = new Bytearray(8);
+		var i = 0;
 
-		bytes.append(F_WeekNb);
-		bytes.append(BaseWatchFace.displayWeekNb ? 0x01 : 0x00);
+		bytes.set(i++, F_12H);
+		bytes.set(i++, BaseWatchFace.hours12 ? 0x01 : 0x00);
 
-		bytes.append(F_BatteryPct);
-		bytes.append(BaseWatchFace.displayBatteryPct ? 0x01 : 0x00);
+		bytes.set(i++, F_WeekNb);
+		bytes.set(i++, BaseWatchFace.displayWeekNb ? 0x01 : 0x00);
 
-		bytes.append(F_DblTapToSleep);
-		bytes.append(BaseWatchFace.dblTapToSleep ? 0x01 : 0x00);
+		bytes.set(i++, F_BatteryPct);
+		bytes.set(i++, BaseWatchFace.displayBatteryPct ? 0x01 : 0x00);
+
+		bytes.set(i++, F_DblTapToSleep);
+		bytes.set(i++, BaseWatchFace.dblTapToSleep ? 0x01 : 0x00);
+
+		f.write(bytes);
+		bytes = null;
+		Syntax.delete(bytes);
 	}
 
 	public static function deserialize(f:BufferedReader):Void {

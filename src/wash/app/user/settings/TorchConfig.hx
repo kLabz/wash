@@ -1,7 +1,9 @@
 package wash.app.user.settings;
 
 import python.Bytearray;
+import python.Syntax;
 import python.lib.io.BufferedReader;
+import python.lib.io.BufferedWriter;
 
 import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
@@ -42,12 +44,19 @@ class TorchConfig extends BaseApplication implements ISettingsApplication {
 
 	public function update():Void {}
 
-	public static function serialize(bytes:Bytearray):Void {
-		bytes.append(F_InitState);
-		bytes.append(Torch.initialState ? 0x01 : 0x00);
+	public static function serialize(f:BufferedWriter):Void {
+		var bytes = new Bytearray(4);
+		var i = 0;
 
-		bytes.append(F_RedLight);
-		bytes.append(Torch.redLight ? 0x01 : 0x00);
+		bytes.set(i++, F_InitState);
+		bytes.set(i++, Torch.initialState ? 0x01 : 0x00);
+
+		bytes.set(i++, F_RedLight);
+		bytes.set(i++, Torch.redLight ? 0x01 : 0x00);
+
+		f.write(bytes);
+		bytes = null;
+		Syntax.delete(bytes);
 	}
 
 	public static function deserialize(f:BufferedReader):Void {

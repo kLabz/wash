@@ -1,10 +1,10 @@
 package wash.app.system;
 
-import python.Bytearray;
 import python.Bytes;
 import python.Syntax.bytes;
 import python.Syntax.construct;
 import python.lib.io.BufferedReader;
+import python.lib.io.BufferedWriter;
 
 import wasp.Fonts;
 import wasp.Watch;
@@ -56,7 +56,7 @@ class Settings extends BaseApplication {
 		appName:String,
 		configApp:Class<ISettingsApplication>,
 		?serializeId:Int,
-		?serialize:Bytearray->Void,
+		?serialize:BufferedWriter->Void,
 		?deserialize:BufferedReader->Void
 	):Void {
 		for (conf in applicationSettings) if (conf.settingsCls == configApp) return;

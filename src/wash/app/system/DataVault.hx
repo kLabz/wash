@@ -4,12 +4,14 @@ import python.Bytearray;
 import python.Syntax;
 import python.Tuple;
 import python.lib.io.BufferedReader;
+import python.lib.io.BufferedWriter;
 
 import wasp.Builtins;
 import wash.app.user.AlarmApp.AlarmDef;
 import wash.app.system.settings.SystemConfig;
 
 using python.NativeStringTools;
+using wash.app.system.DataVault;
 
 @:native('DataVault')
 class DataVault {
@@ -18,11 +20,8 @@ class DataVault {
 
 	public static function save():Void {
 		var f = Builtins.openWrite(CONFIG_FILE);
-		var b = serialize();
-		f.write(b);
+		serialize(f);
 		f.close();
-		b = null;
-		Syntax.delete(b);
 		f = null;
 		Syntax.delete(f);
 	}
@@ -40,7 +39,7 @@ class DataVault {
 	public static function registerAppConfig(
 		appName:String,
 		appId:Int,
-		serializer:Bytearray->Void,
+		serializer:BufferedWriter->Void,
 		deserializer:BufferedReader->Void
 	):Void {
 		unregisterAppConfig(appName);
@@ -56,59 +55,55 @@ class DataVault {
 		appConfigSerializers = Lambda.filter(appConfigSerializers, a -> a.appName != appName);
 	}
 
-	static function serialize():Bytearray {
-		var ret = new Bytearray();
-
+	static function serialize(f:BufferedWriter):Void {
 		// Quick Ring
-		ret.append(SettingsCategory.SC_RootSettings);
-		ret.append(RootSettings.QuickRing);
+		f.write1(SettingsCategory.SC_RootSettings);
+		f.write1(RootSettings.QuickRing);
 		for (app in Wash.system.quickRing) {
 			if (app.ID == null) {
-				trace(app.NAME);
+				trace('(QuickRing) Null appId for ', app.NAME);
 				continue;
 			}
-			ret.append(app.ID);
+			f.write1(app.ID);
 		}
-		ret.append(0x00);
+		f.write1(0x00);
 
 		// Enabled apps
-		ret.append(RootSettings.EnabledApps);
+		f.write1(RootSettings.EnabledApps);
 		for (app in Wash.system.launcherRing) {
 			if (app.ID == null) {
-				trace(app.NAME);
+				trace('Null appId for ', app.NAME);
 				continue;
 			}
-			ret.append(app.ID);
+			f.write1(app.ID);
 		}
-		ret.append(0x00);
+		f.write1(0x00);
 
 		// Alarms
 		var alarms = @:privateAccess wash.app.user.AlarmApp.alarms;
 		if (alarms != null) {
-			ret.append(RootSettings.Alarms);
-			for (a in alarms) ret.extend(a);
-			ret.append(0x00);
+			f.write1(RootSettings.Alarms);
+			for (a in alarms) f.write(a);
+			f.write1(0x00);
 
 			alarms = null;
 			Syntax.delete(alarms);
 		}
-		ret.append(0x00);
+		f.write1(0x00);
 
 		// System settings
-		ret.append(SettingsCategory.SC_SystemSettings);
-		SystemConfig.serialize(ret);
-		ret.append(0x00);
+		f.write1(SettingsCategory.SC_SystemSettings);
+		SystemConfig.serialize(f);
+		f.write1(0x00);
 
 		// Apps settings
-		ret.append(SettingsCategory.SC_AppSettings);
+		f.write1(SettingsCategory.SC_AppSettings);
 		for (a in appConfigSerializers) {
-			ret.append(a.appId);
-			a.serializer(ret);
-			ret.append(0x00);
+			f.write1(a.appId);
+			a.serializer(f);
+			f.write1(0x00);
 		}
-		ret.append(0x00);
-
-		return ret;
+		f.write1(0x00);
 	}
 
 	static function deserialize(f:BufferedReader):Void {
@@ -127,6 +122,14 @@ class DataVault {
 					deserializeAppSettings(f);
 			}
 		}
+	}
+
+	public static function write1(f:BufferedWriter, b:Int):Void {
+		var bytes = new Bytearray(1);
+		bytes.set(0, b);
+		f.write(bytes);
+		bytes = null;
+		Syntax.delete(bytes);
 	}
 
 	static function deserializeRootSettings(f:BufferedReader):Void {
@@ -263,7 +266,7 @@ extern class AppConfigSerializer extends Tuple<Dynamic> {
 	static inline function make(
 		appName:String,
 		appId:Int,
-		serializer:Bytearray->Void,
+		serializer:BufferedWriter->Void,
 		deserializer:BufferedReader->Void
 	):AppConfigSerializer
 		return Syntax.tuple(appName, appId, serializer, deserializer);
@@ -274,8 +277,8 @@ extern class AppConfigSerializer extends Tuple<Dynamic> {
 	var appId(get, null):Int;
 	inline function get_appId():Int return this[1];
 
-	var serializer(get, null):Bytearray->Void;
-	inline function get_serializer():Bytearray->Void return this[2];
+	var serializer(get, null):BufferedWriter->Void;
+	inline function get_serializer():BufferedWriter->Void return this[2];
 
 	var deserializer(get, null):BufferedReader->Void;
 	inline function get_deserializer():BufferedReader->Void return this[3];

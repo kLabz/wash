@@ -1,7 +1,9 @@
 package wash.app.user.settings;
 
 import python.Bytearray;
+import python.Syntax;
 import python.lib.io.BufferedReader;
+import python.lib.io.BufferedWriter;
 
 import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
@@ -42,12 +44,19 @@ class HeartConfig extends BaseApplication implements ISettingsApplication {
 
 	public function update():Void {}
 
-	public static function serialize(bytes:Bytearray):Void {
-		bytes.append(F_LogData);
-		bytes.append(HeartApp.debug ? 0x01 : 0x00);
+	public static function serialize(f:BufferedWriter):Void {
+		var bytes = new Bytearray(4);
+		var i = 0;
 
-		bytes.append(F_RunInBg);
-		bytes.append(HeartApp.runInBackground ? 0x01 : 0x00);
+		bytes.set(i++, F_LogData);
+		bytes.set(i++, HeartApp.debug ? 0x01 : 0x00);
+
+		bytes.set(i++, F_RunInBg);
+		bytes.set(i++, HeartApp.runInBackground ? 0x01 : 0x00);
+
+		f.write(bytes);
+		bytes = null;
+		Syntax.delete(bytes);
 	}
 
 	public static function deserialize(f:BufferedReader):Void {
