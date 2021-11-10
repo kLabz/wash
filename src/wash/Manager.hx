@@ -96,15 +96,15 @@ class Manager {
 	function secondaryInit():Void {
 		Syntax.code('global free');
 
-		// Minimal setup
-		AlarmApp.init();
-		register(Settings);
-		register(Software);
-
-		// Load previous config if any
-		// DataVault.load();
-
 		if (app == null) {
+			// Minimal setup
+			AlarmApp.init();
+			register(Settings);
+			register(Software);
+
+			// Load previous config if any
+			DataVault.load();
+
 			if (quickRing.length == 0) registerDefaults();
 
 			Watch.display.poweron();
@@ -134,18 +134,20 @@ class Manager {
 		quickRing:Bool = false,
 		noExcept:Bool = true
 	):Void {
-		var app:IApplication = construct(cls);
+		if (quickRing) {
+			if (hasQuickRingApplication(cls)) return;
 
-		// TODO: special step counter handling (?)
-
-		if (quickRing) this.quickRing.push(app);
-		else {
+			var app:IApplication = construct(cls);
+			this.quickRing.push(app);
+			app.registered(quickRing);
+		} else {
 			if (hasApplication(cls)) return;
+
+			var app:IApplication = construct(cls);
 			launcherRing.push(app);
 			launcherRing.nativeSort(appSort);
+			app.registered(quickRing);
 		}
-
-		app.registered(quickRing);
 	}
 
 	function unregister(cls:Class<IApplication>):Void {
@@ -156,6 +158,13 @@ class Manager {
 				break;
 			}
 		}
+	}
+
+	function hasQuickRingApplication(cls:Class<IApplication>):Bool {
+		for (app in quickRing)
+			if (Builtins.type(app) == cls) return true;
+
+		return false;
 	}
 
 	function hasApplication(cls:Class<IApplication>):Bool {
