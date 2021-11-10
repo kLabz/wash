@@ -1,7 +1,7 @@
 package wash.app.user.settings;
 
 import python.Bytearray;
-import python.Bytes;
+import python.lib.io.BufferedReader;
 
 import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
@@ -50,21 +50,22 @@ class HeartConfig extends BaseApplication implements ISettingsApplication {
 		bytes.append(HeartApp.runInBackground ? 0x01 : 0x00);
 	}
 
-	public static function deserialize(bytes:Bytes, i:Int):Int {
-		while (i < bytes.length) {
-			switch (bytes.get(i++)) {
+	public static function deserialize(f:BufferedReader):Void {
+		while (true) {
+			var next = f.read(1);
+			if (next == null) break;
+
+			switch (next.get(0)) {
 				case F_LogData:
-					HeartApp.debug = bytes.get(i++) == 0x01;
+					HeartApp.debug = f.read(1).get(0) == 0x01;
 
 				case F_RunInBg:
-					HeartApp.runInBackground = bytes.get(i++) == 0x01;
+					HeartApp.runInBackground = f.read(1).get(0) == 0x01;
 
 				case 0x00:
 					break;
 			}
 		}
-
-		return i;
 	}
 }
 

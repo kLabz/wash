@@ -1,7 +1,8 @@
 package wash.app.system.settings;
 
 import python.Bytearray;
-import python.Bytes;
+import python.Syntax;
+import python.lib.io.BufferedReader;
 
 import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
@@ -182,32 +183,36 @@ class SystemConfig extends BaseApplication implements ISettingsApplication {
 		bytes.append(Wash.system.theme.highlight_theme._2);
 	}
 
-	public static function deserialize(bytes:Bytes, i:Int):Int {
-		while (i < bytes.length) {
-			switch (bytes.get(i++)) {
+	public static function deserialize(f:BufferedReader):Void {
+		while (true) {
+			var next = f.read(1);
+			if (next == null) break;
+
+			switch (next.get(0)) {
 				case F_NotifLevel:
-					Settings.notificationLevel = cast bytes.get(i++);
+					Settings.notificationLevel = cast f.read(1).get(0);
 					if (!Wash.system.nightMode) Wash.system.notificationLevel = Settings.notificationLevel;
 
 				case F_BrightnessLevel:
-					Settings.brightnessLevel = cast bytes.get(i++);
+					Settings.brightnessLevel = cast f.read(1).get(0);
 					if (!Wash.system.nightMode) Wash.system.brightnessLevel = Settings.brightnessLevel;
 
 				case F_WakeMode:
-					Settings.wakeMode = bytes.get(i++);
+					Settings.wakeMode = f.read(1).get(0);
 					if (!Wash.system.nightMode) Wash.system.wakeMode = Settings.wakeMode;
 
 				case F_Theme:
-					Wash.system.theme.primary = Int16.fromBytes(bytes.get(i++), bytes.get(i++));
-					Wash.system.theme.secondary = Int16.fromBytes(bytes.get(i++), bytes.get(i++));
-					Wash.system.theme.highlight = Int16.fromBytes(bytes.get(i++), bytes.get(i++));
+					var data = f.read(6);
+					Wash.system.theme.primary = Int16.fromBytes(data.get(0), data.get(1));
+					Wash.system.theme.secondary = Int16.fromBytes(data.get(2), data.get(3));
+					Wash.system.theme.highlight = Int16.fromBytes(data.get(4), data.get(5));
+					data = null;
+					Syntax.delete(data);
 
 				case 0x00:
 					break;
 			}
 		}
-
-		return i;
 	}
 }
 

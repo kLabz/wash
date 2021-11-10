@@ -1,11 +1,9 @@
 package wash.app.system;
 
 import python.Bytearray;
-import python.Bytes;
 import python.Syntax;
-import python.Syntax.bytes;
 import python.Tuple;
-// import python.Syntax.sub;
+import python.lib.io.BufferedReader;
 
 import wasp.Builtins;
 import wash.app.user.AlarmApp.AlarmDef;
@@ -15,7 +13,7 @@ using python.NativeStringTools;
 
 @:native('DataVault')
 class DataVault {
-	static inline var CONFIG_FILE:String = '.settings';
+	static inline var CONFIG_FILE:String = 'haxetime.conf';
 	static var appConfigSerializers:Array<AppConfigSerializer> = [];
 
 	public static function save():Void {
@@ -25,16 +23,17 @@ class DataVault {
 		f.close();
 		b = null;
 		Syntax.delete(b);
+		f = null;
+		Syntax.delete(f);
 	}
 
 	public static function load():Void {
 		try {
 			var f = Builtins.openRead(CONFIG_FILE);
-			var b = f.peek();
-			deserialize(b);
+			deserialize(f);
 			f.close();
-			b = null;
-			Syntax.delete(b);
+			f = null;
+			Syntax.delete(f);
 		} catch (_) {}
 	}
 
@@ -42,7 +41,7 @@ class DataVault {
 		appName:String,
 		appId:Int,
 		serializer:Bytearray->Void,
-		deserializer:(bytes:Bytes, i:Int)->Int
+		deserializer:BufferedReader->Void
 	):Void {
 		unregisterAppConfig(appName);
 		appConfigSerializers.push(AppConfigSerializer.make(
@@ -112,29 +111,33 @@ class DataVault {
 		return ret;
 	}
 
-	static function deserialize(bytes:Bytes):Void {
-		var i = 0;
+	static function deserialize(f:BufferedReader):Void {
+		while (true) {
+			var next = f.read(1);
+			if (next == null) break;
 
-		while (i < bytes.length) {
-			switch (bytes.get(i++)) {
+			switch (next.get(0)) {
 				case SC_RootSettings:
-					i = deserializeRootSettings(bytes, i);
+					deserializeRootSettings(f);
 
 				case SC_SystemSettings:
-					i = SystemConfig.deserialize(bytes, i);
+					SystemConfig.deserialize(f);
 
 				case SC_AppSettings:
-					i = deserializeAppSettings(bytes, i);
+					deserializeAppSettings(f);
 			}
 		}
 	}
 
-	static function deserializeRootSettings(bytes:Bytes, i:Int):Int {
-		while (i < bytes.length) {
-			switch (bytes.get(i++)) {
+	static function deserializeRootSettings(f:BufferedReader):Void {
+		while (true) {
+			var next = f.read(1);
+			if (next == null) break;
+
+			switch (next.get(0)) {
 				case QuickRing:
 					var apps:Array<Class<IApplication>> = [];
-					i = getApps(bytes, i, apps);
+					getApps(f, apps);
 
 					if (apps.length > 0) {
 						@:privateAccess Wash.system.quickRing = [];
@@ -146,7 +149,7 @@ class DataVault {
 
 				case EnabledApps:
 					var apps:Array<Class<IApplication>> = [];
-					i = getApps(bytes, i, apps);
+					getApps(f, apps);
 
 					if (apps.length > 0) {
 						for (a in apps) Wash.system.register(a, false);
@@ -157,15 +160,17 @@ class DataVault {
 
 				case Alarms:
 					var alarms:Array<AlarmDef> = [];
-					while (i < bytes.length) {
-						switch (bytes.get(i)) {
+
+					while (true) {
+						switch (f.read(1).get(0)) {
 							case 0x00:
-								i++;
 								break;
 
-							case _:
-								alarms.push(AlarmDef.make(bytes[i], bytes[i+1], bytes[i+2]));
-								i += 3;
+							case v:
+								var alarmData = f.read(2);
+								alarms.push(AlarmDef.make(v, alarmData.get(0), alarmData.get(1)));
+								alarmData = null;
+								Syntax.delete(alarmData);
 						}
 					}
 
@@ -177,13 +182,14 @@ class DataVault {
 					break;
 			}
 		}
-
-		return i;
 	}
 
-	static function deserializeAppSettings(bytes:Bytes, i:Int):Int {
-		while (i < bytes.length) {
-			switch (bytes.get(i++)) {
+	static function deserializeAppSettings(f:BufferedReader):Void {
+		while (true) {
+			var next = f.read(1);
+			if (next == null) break;
+
+			switch (next.get(0)) {
 				case 0x00:
 					break;
 
@@ -191,31 +197,28 @@ class DataVault {
 					var appCS = Lambda.find(appConfigSerializers, a -> a.appId == id);
 					if (appCS == null) {
 						trace('Cannot deserialize app config for id $id');
-						while (bytes.get(i++) != 0x00) continue;
+						while (f.read(1).get(0) != 0x00) continue;
 						break;
 					} else {
-						i = appCS.deserializer(bytes, i);
+						appCS.deserializer(f);
 					}
 			}
 		}
-
-		return i;
 	}
 
-	static function getApps(bytes:Bytes, i:Int, apps:Array<Class<IApplication>>):Int {
-		while (i < bytes.length) {
-			switch (bytes.get(i)) {
+	static function getApps(f:BufferedReader, apps:Array<Class<IApplication>>):Void {
+		while (true) {
+			var next = f.read(1);
+			if (next == null) break;
+
+			switch (next.get(0)) {
 				case 0x00:
-					i++;
 					break;
 
 				case cls:
 					apps.push(AppIdentifier.toCls(cls));
-					i++;
 			}
 		}
-
-		return i;
 	}
 }
 
@@ -261,7 +264,7 @@ extern class AppConfigSerializer extends Tuple<Dynamic> {
 		appName:String,
 		appId:Int,
 		serializer:Bytearray->Void,
-		deserializer:(bytes:Bytes, i:Int)->Int
+		deserializer:BufferedReader->Void
 	):AppConfigSerializer
 		return Syntax.tuple(appName, appId, serializer, deserializer);
 
@@ -274,6 +277,6 @@ extern class AppConfigSerializer extends Tuple<Dynamic> {
 	var serializer(get, null):Bytearray->Void;
 	inline function get_serializer():Bytearray->Void return this[2];
 
-	var deserializer(get, null):Bytes->Int->Int;
-	inline function get_deserializer():Bytes->Int->Int return this[3];
+	var deserializer(get, null):BufferedReader->Void;
+	inline function get_deserializer():BufferedReader->Void return this[3];
 }

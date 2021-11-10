@@ -1,7 +1,7 @@
 package wash.app.watchface.settings;
 
 import python.Bytearray;
-import python.Bytes;
+import python.lib.io.BufferedReader;
 
 import wash.app.ISettingsApplication;
 import wash.event.TouchEvent;
@@ -65,27 +65,28 @@ class WatchfaceConfig extends BaseApplication implements ISettingsApplication {
 		bytes.append(BaseWatchFace.dblTapToSleep ? 0x01 : 0x00);
 	}
 
-	public static function deserialize(bytes:Bytes, i:Int):Int {
-		while (i < bytes.length) {
-			switch (bytes.get(i++)) {
+	public static function deserialize(f:BufferedReader):Void {
+		while (true) {
+			var next = f.read(1);
+			if (next == null) break;
+
+			switch (next.get(0)) {
 				case F_12H:
-					BaseWatchFace.hours12 = bytes.get(i++) == 0x01;
+					BaseWatchFace.hours12 = f.read(1).get(0) == 0x01;
 
 				case F_WeekNb:
-					BaseWatchFace.displayWeekNb = bytes.get(i++) == 0x01;
+					BaseWatchFace.displayWeekNb = f.read(1).get(0) == 0x01;
 
 				case F_BatteryPct:
-					BaseWatchFace.displayBatteryPct = bytes.get(i++) == 0x01;
+					BaseWatchFace.displayBatteryPct = f.read(1).get(0) == 0x01;
 
 				case F_DblTapToSleep:
-					BaseWatchFace.dblTapToSleep = bytes.get(i++) == 0x01;
+					BaseWatchFace.dblTapToSleep = f.read(1).get(0) == 0x01;
 
 				case 0x00:
 					break;
 			}
 		}
-
-		return i;
 	}
 }
 

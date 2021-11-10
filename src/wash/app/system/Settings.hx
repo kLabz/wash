@@ -4,6 +4,7 @@ import python.Bytearray;
 import python.Bytes;
 import python.Syntax.bytes;
 import python.Syntax.construct;
+import python.lib.io.BufferedReader;
 
 import wasp.Fonts;
 import wasp.Watch;
@@ -56,7 +57,7 @@ class Settings extends BaseApplication {
 		configApp:Class<ISettingsApplication>,
 		?serializeId:Int,
 		?serialize:Bytearray->Void,
-		?deserialize:(bytes:Bytes, i:Int)->Int
+		?deserialize:BufferedReader->Void
 	):Void {
 		for (conf in applicationSettings) if (conf.settingsCls == configApp) return;
 		applicationSettings.push(AppConfig.make(appName, configApp));
