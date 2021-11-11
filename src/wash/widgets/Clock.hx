@@ -17,6 +17,8 @@ class Clock implements IWidget {
 		displayedTime = null;
 	}
 
+	public function dispose():Void {}
+
 	public function draw():Void {
 		displayedTime = null;
 		update();

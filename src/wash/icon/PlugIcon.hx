@@ -1,9 +1,8 @@
 package wash.icon;
 
-@:native('Icons')
+@:native('PlugIcon')
 class PlugIcon {
-	@:native('PlugIcon')
-	public static var icon = bytes(
+	public static function getIcon() return bytes(
 		'\\x02',
 		'\\x12\\x12',
 		'@\\x81E\\xc2D\\xc2J\\xc2D\\xc2J\\xc2D\\xc2J\\xc2',

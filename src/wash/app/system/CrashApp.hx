@@ -16,7 +16,7 @@ class CrashApp extends BaseApplication {
 	public function new(e:BaseException) {
 		super();
 		NAME = "Crash";
-		ICON = BombIcon;
+		ICON = BombIcon.getIcon();
 
 		var msg = new StringIO();
 		Sys.print_exception(e, msg);
@@ -26,8 +26,8 @@ class CrashApp extends BaseApplication {
 
 	override public function foreground():Void {
 		Watch.display.invert(false);
-		Watch.drawable.blit(BombIcon, 0, 104);
-		Watch.drawable.blit(BombIcon, 32, 104);
+		Watch.drawable.blit(ICON, 0, 104);
+		Watch.drawable.blit(ICON, 32, 104);
 		Wash.system.requestEvent(EventMask.SWIPE_UPDOWN | EventMask.SWIPE_LEFTRIGHT);
 	}
 

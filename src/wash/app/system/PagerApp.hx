@@ -21,8 +21,9 @@ class PagerApp extends BaseApplication {
 
 	public function new(msg:String) {
 		super();
+
 		NAME = "Pager";
-		ICON = AppIcon;
+		ICON = AppIcon.getIcon();
 
 		this.msg = msg;
 		scroll = new ScrollIndicator();

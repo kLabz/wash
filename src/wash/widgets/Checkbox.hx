@@ -1,5 +1,6 @@
 package wash.widgets;
 
+import python.Bytes;
 import python.Syntax;
 import python.Tuple;
 
@@ -13,12 +14,21 @@ class Checkbox implements IWidget {
 	public var forcedChecked:Bool;
 	var data:CheckboxData;
 	var smallText:Bool;
+	var icon:Bytes;
 
 	public function new(x:Int, y:Int, ?label:String, ?smallText:Bool = false) {
 		data = CheckboxData.make(x, y, label);
 		state = false;
 		forcedChecked = false;
 		this.smallText = smallText;
+		icon = CheckboxIcon.getIcon();
+	}
+
+	public function dispose():Void {
+		data = null;
+		icon = null;
+		Syntax.delete(data);
+		Syntax.delete(icon);
 	}
 
 	public function draw():Void {
@@ -59,7 +69,7 @@ class Checkbox implements IWidget {
 			c2 = 0;
 		}
 
-		draw.blit(CheckboxIcon, data.x, data.y, fg, c1, c2);
+		draw.blit(icon, data.x, data.y, fg, c1, c2);
 	}
 }
 

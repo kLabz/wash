@@ -18,11 +18,16 @@ class Spinner implements IWidget {
 		value = mn;
 	}
 
+	public function dispose():Void {
+		data = null;
+		Syntax.delete(data);
+	}
+
 	public function draw():Void {
 		var draw = Watch.drawable;
 		var fg = Wash.system.theme.secondary;
-		draw.blit(UpArrow, data.x+30-8, data.y+20, fg);
-		draw.blit(DownArrow, data.x+30-8, data.y+120-20-9, fg);
+		draw.blit(UpArrow.getIcon(), data.x+30-8, data.y+20, fg);
+		draw.blit(DownArrow.getIcon(), data.x+30-8, data.y+120-20-9, fg);
 		update();
 	}
 

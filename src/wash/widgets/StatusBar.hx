@@ -1,5 +1,7 @@
 package wash.widgets;
 
+import python.Syntax;
+
 import wash.util.DateTimeTuple;
 import wasp.Watch;
 
@@ -16,6 +18,20 @@ class StatusBar implements IWidget {
 		clock = new Clock();
 		meter = new BatteryMeter();
 		notif = new NotificationBar(2, 2);
+	}
+
+	public function dispose():Void {
+		clock.dispose();
+		meter.dispose();
+		notif.dispose();
+
+		clock = null;
+		meter = null;
+		notif = null;
+
+		Syntax.delete(clock);
+		Syntax.delete(meter);
+		Syntax.delete(notif);
 	}
 
 	public function draw():Void {

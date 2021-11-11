@@ -18,17 +18,16 @@ using python.NativeStringTools;
 
 @:native('StepCounter')
 class StepCounter extends BaseApplication {
-	// static var icon:Bytes = bytes(); // TODO
-
 	var scroll:ScrollIndicator;
 	var wakeTime:Float;
 	var page:Int;
 
 	public function new() {
 		super();
-		NAME = "Steps";
-		ICON = AppIcon;
+
 		ID = 0x05;
+		NAME = "Steps";
+		ICON = AppIcon.getIcon();
 
 		Watch.accel.reset();
 		scroll = new ScrollIndicator(28, 0, 7, 0);

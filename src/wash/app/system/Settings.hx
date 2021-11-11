@@ -22,21 +22,6 @@ using python.NativeArrayTools;
 
 @:native('SettingsApp')
 class Settings extends BaseApplication {
-	static var icon:Bytes = bytes(
-		'\\x02',
-		'@@',
-		'?\\xff\\xffQ@\\xacD:H7J5D\\x04D4',
-		'C\\x06C3C\\x08C2C\\x08C\\x9f\\x13C\\x08C',
-		'\\x9f\\x13C\\x08C3C\\x06C4D\\x04D5J7',
-		'H:D?\\\\\\xc4:\\xc87\\xca5\\xc4\\x04\\xc44\\xc3',
-		'\\x06\\xc33\\xc3\\x08\\xc3\\x13\\x9f\\xc3\\x08\\xc3\\x13\\x9f\\xc3\\x08\\xc3',
-		'2\\xc3\\x08\\xc33\\xc3\\x06\\xc34\\xc4\\x04\\xc45\\xca7\\xc8',
-		':\\xc4?\\x1eD:H7J5D\\x04D4C\\x06',
-		'C3C\\x08C2C\\x08C\\x9f\\x13C\\x08C\\x9f\\x13',
-		'C\\x08C3C\\x06C4D\\x04D5J7H:',
-		'D?\\xff\\xffq'
-	);
-
 	// System configuration
 	public static var notificationLevel:NotificationLevel = Mid;
 	public static var brightnessLevel:BrightnessLevel = Mid;
@@ -82,8 +67,22 @@ class Settings extends BaseApplication {
 
 	public function new() {
 		super();
+
 		NAME = "Settings";
-		ICON = icon;
+		ICON = bytes(
+			'\\x02',
+			'@@',
+			'?\\xff\\xffQ@\\xacD:H7J5D\\x04D4',
+			'C\\x06C3C\\x08C2C\\x08C\\x9f\\x13C\\x08C',
+			'\\x9f\\x13C\\x08C3C\\x06C4D\\x04D5J7',
+			'H:D?\\\\\\xc4:\\xc87\\xca5\\xc4\\x04\\xc44\\xc3',
+			'\\x06\\xc33\\xc3\\x08\\xc3\\x13\\x9f\\xc3\\x08\\xc3\\x13\\x9f\\xc3\\x08\\xc3',
+			'2\\xc3\\x08\\xc33\\xc3\\x06\\xc34\\xc4\\x04\\xc45\\xca7\\xc8',
+			':\\xc4?\\x1eD:H7J5D\\x04D4C\\x06',
+			'C3C\\x08C2C\\x08C\\x9f\\x13C\\x08C\\x9f\\x13',
+			'C\\x08C3C\\x06C4D\\x04D5J7H:',
+			'D?\\xff\\xffq'
+		);
 
 		settingsPage = 0;
 		settingsPages = 1 + opCeilDiv(applicationSettings.length, 5);

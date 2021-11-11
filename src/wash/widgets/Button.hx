@@ -14,6 +14,11 @@ class Button implements IWidget {
 		data = ButtonData.make(x, y, w, h, label);
 	}
 
+	public function dispose():Void {
+		data = null;
+		Syntax.delete(data);
+	}
+
 	public function draw():Void {
 		update(Wash.system.theme.primary, 0);
 	}

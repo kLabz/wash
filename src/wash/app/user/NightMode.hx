@@ -14,7 +14,7 @@ import wasp.Watch;
 
 @:native('NightModeApp')
 class NightMode extends BaseApplication {
-	static var dayBg:Bytes = bytes(
+	var dayBg:Bytes = bytes(
 		'\\x02',
 		'dS',
 		'@\\xacv\\xcc\\x7f\\x15\\xd4\\x7f\\x0f\\xd8\\x7f\\x0b\\xdc\\x7f\\x07\\xe0',
@@ -35,7 +35,7 @@ class NightMode extends BaseApplication {
 		'\\xa7\\x7f\\x02\\x9f\\x7f\\r\\x91e'
 	);
 
-	static var nightBg:Bytes = bytes(
+	var nightBg:Bytes = bytes(
 		'\\x02',
 		'\\xf0h',
 		'?\\xff\\xff\\x12\\xc1?b\\xc1?\\r\\xc3?`\\xc3?\\r',
@@ -77,9 +77,9 @@ class NightMode extends BaseApplication {
 	public function new() {
 		super();
 
-		NAME = "NightMode";
-		ICON = AppIcon;
 		ID = 0x04;
+		NAME = "NightMode";
+		ICON = AppIcon.getIcon();
 	}
 
 	override public function foreground():Void {

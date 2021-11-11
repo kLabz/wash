@@ -22,6 +22,8 @@ class StopWatch implements IWidget {
 		reset();
 	}
 
+	public function dispose():Void {}
+
 	public function start():Void {
 		var uptime = opFloorDiv(Watch.rtc.get_uptime_ms(), 10);
 		startedAt = uptime - count;

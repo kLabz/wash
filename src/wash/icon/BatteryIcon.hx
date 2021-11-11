@@ -1,9 +1,8 @@
 package wash.icon;
 
-@:native('Icons')
+@:native('BatteryIcon')
 class BatteryIcon {
-	@:native('BatteryIcon')
-	public static var icon = bytes(
+	public static function getIcon() return bytes(
 		'\\x02',
 		'\\x0f\\x16',
 		'\\xc4\\x07\\xc8\\x07\\xc4 \\xcb\\x04\\xcb\\x04\\xcb\\x04\\xcb\\x04\\xcb\\x04',

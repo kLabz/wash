@@ -1,5 +1,8 @@
 package wash.widgets;
 
+import python.Bytes;
+import python.Syntax;
+
 import wasp.Watch;
 import wash.event.TouchEvent;
 import wash.icon.Knob;
@@ -19,6 +22,7 @@ class Slider implements IWidget {
 	var x:Int;
 	var y:Int;
 	var color:Null<Int>;
+	var knob:Bytes;
 
 	public function new(steps:Int, ?x:Int = 10, y:Int = 90, ?color:Int) {
 		value = 0;
@@ -29,13 +33,19 @@ class Slider implements IWidget {
 
 		if (color == null) color = Wash.system.theme.primary;
 		this.color = color;
+		knob = Knob.getIcon();
+	}
+
+	public function dispose():Void {
+		knob = null;
+		Syntax.delete(knob);
 	}
 
 	public function draw():Void {
 		var draw = Watch.drawable;
 
 		var knobX:Int = x + opFloorDiv(TRACK * value, steps - 1);
-		draw.blit(Knob, knobX, this.y, color);
+		draw.blit(knob, knobX, this.y, color);
 
 		var w = knobX - x;
 		if (w > 0) {

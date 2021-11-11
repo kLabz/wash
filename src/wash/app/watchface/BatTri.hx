@@ -10,8 +10,8 @@ import wash.Wash;
 import wash.app.user.HeartApp;
 import wash.app.system.Settings;
 import wash.app.watchface.settings.WatchfaceConfig;
-import wash.icon.PlugIcon.icon as PlugIcon;
-import wash.icon.BleStatusIcon.icon as BleStatusIcon;
+import wash.icon.PlugIcon;
+import wash.icon.BleStatusIcon;
 import wasp.Builtins;
 import wasp.Fonts;
 import wasp.Time;
@@ -23,23 +23,10 @@ using python.NativeStringTools;
 class BatTri extends BaseWatchFace {
 	static var days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 
-	static var heartIcon:Bytes = bytes(
-		'\\x02',
-		'\\x12\\x0f',
-		'\\x02\\xc5\\x04\\xc5\\x03\\xc7\\x02\\xc7\\x01\\xd8\\x02\\xd0\\x02\\xd0\\x02\\xc3',
-		'\\x01\\xcc\\x03\\xc2\\x02\\xc5\\x01\\xc4\\x02\\xc1\\x01\\xc1\\x03\\xc4\\x07\\xc2',
-		'\\x01\\xc1\\x01\\xc1\\t\\xc5\\x03\\xc4\\x07\\xc4\\x03\\xc3\\t\\xc4\\x02\\xc2',
-		'\\x0b\\xc3\\x01\\xc2\\r\\xc4\\x0f\\xc2\\x08'
-	);
-
-	static var stepsIcon:Bytes = bytes(
-		'\\x02',
-		'\\x16\\x12',
-		'\\x0c\\xc5\\x0b\\xc2\\x01\\xcb\\x07\\xc3\\x01\\xcc\\x06\\xc3\\x01\\xcd\\x05\\xc3',
-		'\\x01\\xcd\\x06\\xc2\\x01\\xcd\\x0c\\xca\\x0e\\xc69\\xc3\\x10\\xc9\\x0b\\xcc',
-		'\\x04\\xc3\\x01\\xce\\x04\\xc3\\x01\\xce\\x04\\xc3\\x01\\xcd\\x06\\xc2\\x01\\xcc',
-		'\\x0c\\xc9\\x07'
-	);
+	var heartIcon:Bytes;
+	var stepsIcon:Bytes;
+	var plugIcon:Bytes;
+	var bleIcon:Bytes;
 
 	var doubleTap:Int = 0;
 	var battery:Int = -1;
@@ -60,6 +47,27 @@ class BatTri extends BaseWatchFace {
 		// Watchfaces start at 0xA1, but this probably won't be one of the default ones
 		// 0xA0 is reserved for BaseWatchface for application settings
 		ID = 0xAA;
+
+		heartIcon = bytes(
+			'\\x02',
+			'\\x12\\x0f',
+			'\\x02\\xc5\\x04\\xc5\\x03\\xc7\\x02\\xc7\\x01\\xd8\\x02\\xd0\\x02\\xd0\\x02\\xc3',
+			'\\x01\\xcc\\x03\\xc2\\x02\\xc5\\x01\\xc4\\x02\\xc1\\x01\\xc1\\x03\\xc4\\x07\\xc2',
+			'\\x01\\xc1\\x01\\xc1\\t\\xc5\\x03\\xc4\\x07\\xc4\\x03\\xc3\\t\\xc4\\x02\\xc2',
+			'\\x0b\\xc3\\x01\\xc2\\r\\xc4\\x0f\\xc2\\x08'
+		);
+
+		stepsIcon = bytes(
+			'\\x02',
+			'\\x16\\x12',
+			'\\x0c\\xc5\\x0b\\xc2\\x01\\xcb\\x07\\xc3\\x01\\xcc\\x06\\xc3\\x01\\xcd\\x05\\xc3',
+			'\\x01\\xcd\\x06\\xc2\\x01\\xcd\\x0c\\xca\\x0e\\xc69\\xc3\\x10\\xc9\\x0b\\xcc',
+			'\\x04\\xc3\\x01\\xce\\x04\\xc3\\x01\\xce\\x04\\xc3\\x01\\xcd\\x06\\xc2\\x01\\xcc',
+			'\\x0c\\xc9\\x07'
+		);
+
+		plugIcon = PlugIcon.getIcon();
+		bleIcon = BleStatusIcon.getIcon();
 	}
 
 	override function foreground():Void {
@@ -276,14 +284,14 @@ class BatTri extends BaseWatchFace {
 
 		if (this.plug != plug) {
 			var y = BaseWatchFace.displayWeekNb ? 46 : 28;
-			if (plug) draw.blit(PlugIcon, 6, y, mid, 0, true);
+			if (plug) draw.blit(plugIcon, 6, y, mid, 0, true);
 			// Clear bluetooth icon too if any
 			else draw.fill(0, 6, y, 32, 18);
 		}
 
 		if (this.plug != plug || this.bluetooth != bluetooth) {
 			var y = BaseWatchFace.displayWeekNb ? 46 : 28;
-			if (bluetooth) draw.blit(BleStatusIcon, plug ? 28 : 6, y, mid, 0, true);
+			if (bluetooth) draw.blit(bleIcon, plug ? 28 : 6, y, mid, 0, true);
 			else draw.fill(0, plug ? 28 : 6, y, 10, 18);
 		}
 

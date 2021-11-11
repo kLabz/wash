@@ -1,5 +1,7 @@
 package wash.widgets;
 
+import python.Syntax;
+
 import wasp.Watch;
 import wash.event.TouchEvent;
 
@@ -23,6 +25,20 @@ class ColorPicker implements IWidget {
 			sliderG.value = (color - (sliderR.value << 11)) >> 5;
 			sliderB.value = color - (sliderR.value << 11) - (sliderG.value << 5);
 		}
+	}
+
+	public function dispose():Void {
+		sliderR.dispose();
+		sliderG.dispose();
+		sliderB.dispose();
+
+		sliderR = null;
+		sliderG = null;
+		sliderB = null;
+
+		Syntax.delete(sliderR);
+		Syntax.delete(sliderG);
+		Syntax.delete(sliderB);
 	}
 
 	public function touch(event:TouchEvent):Void {
