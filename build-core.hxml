@@ -1,11 +1,17 @@
+-cp common/src
 -cp src
 
 --python wasp-os/wasp/wasp.py
 wash.Wash
 
+# TODO: build widgets separately
+wash.widgets.ScrollIndicator
+wash.widgets.ToggleButton
+
 -D analyzer-optimize
 -D source-header=
--D dce=full
+-D dce=std
+# -D dce=full
 # -D loop-unroll-max-cost=100
 
 -D python.unsafe_array_access

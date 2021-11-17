@@ -1,0 +1,6 @@
+../common.hxml
+
+--python ../../wasp-os/wasp/app/software/app.py
+--cmd cp manifest.py ../../wasp-os/wasp/app/software/manifest.py
+
+Software

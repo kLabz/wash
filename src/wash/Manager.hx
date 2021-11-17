@@ -1,7 +1,8 @@
 package wash;
 
 // import python.Exceptions;
-import wash.app.system.DataVault;
+// import wash.app.system.DataVault;
+import wash.util.Loader;
 import python.Bytearray;
 import python.Syntax;
 import python.Syntax.bytes;
@@ -22,8 +23,6 @@ import wash.app.system.Launcher;
 import wash.app.system.NotificationApp;
 import wash.app.system.PagerApp;
 import wash.app.system.Settings;
-import wash.app.system.Software;
-import wash.app.user.AlarmApp;
 import wash.app.user.NightMode;
 import wash.app.user.Torch;
 import wash.app.watchface.BatTri;
@@ -36,15 +35,16 @@ import wash.widgets.StatusBar;
 
 using python.NativeArrayTools;
 
+@:keep
 @:publicFields
 @:native("Manager")
 // TODO: determine public and private fields
 class Manager {
-	static inline var DOUBLE_TAP_MS = 1000;
+	static var DOUBLE_TAP_MS = 1000;
 
 	var app:Null<IApplication> = null;
 	var quickRing:Array<IApplication> = [];
-	var launcherRing:Array<IApplication> = [];
+	var launcherRing:Array<String> = [];
 	var notifications:Array<Notification> = [];
 	// var musicState:MusicState; // TODO
 	// var weatherInfo:WeatherInfo; // TODO
@@ -98,12 +98,13 @@ class Manager {
 
 		if (app == null) {
 			// Minimal setup
-			AlarmApp.init();
-			register(Settings);
-			register(Software);
+			// AlarmApp.init();
+			// TODO: compile separately, with manifest
+			// registerApp(Settings);
+			registerApp("app.software");
 
 			// Load previous config if any
-			DataVault.load();
+			// DataVault.load();
 
 			if (quickRing.length == 0) registerDefaults();
 
@@ -124,40 +125,30 @@ class Manager {
 
 	function registerDefaults():Void {
 		// Default quick ring
-		register(BatTri, true);
-		register(NightMode, true);
-		register(Torch, true);
+		registerQuickRing(BatTri);
+		registerQuickRing(NightMode);
+		registerQuickRing(Torch);
 	}
 
-	function register(
-		cls:Class<IApplication>,
-		quickRing:Bool = false,
-		noExcept:Bool = true
-	):Void {
-		if (quickRing) {
-			if (hasQuickRingApplication(cls)) return;
+	// TODO: split quick ring vs "normal" apps
+	function registerQuickRing(cls:Class<IApplication>):Void {
+		if (hasQuickRingApplication(cls)) return;
 
-			var app:IApplication = construct(cls);
-			this.quickRing.push(app);
-			app.registered(quickRing);
-		} else {
-			if (hasApplication(cls)) return;
-
-			var app:IApplication = construct(cls);
-			launcherRing.push(app);
-			launcherRing.nativeSort(appSort);
-			app.registered(quickRing);
-		}
+		var app:IApplication = construct(cls);
+		this.quickRing.push(app);
+		app.registered(true);
 	}
 
-	function unregister(cls:Class<IApplication>):Void {
-		for (app in launcherRing) {
-			if (Builtins.type(app) == cls) {
-				launcherRing.remove(app);
-				app.unregistered();
-				break;
-			}
-		}
+	function registerApp(path:String):Void {
+		if (hasApplication(path)) return;
+
+		launcherRing.push(path);
+		launcherRing.nativeSort(appSort);
+		// app.registered(quickRing);
+	}
+
+	function unregisterApp(path:String):Void {
+		launcherRing.remove(path);
 	}
 
 	function hasQuickRingApplication(cls:Class<IApplication>):Bool {
@@ -167,11 +158,8 @@ class Manager {
 		return false;
 	}
 
-	function hasApplication(cls:Class<IApplication>):Bool {
-		for (app in launcherRing)
-			if (Builtins.type(app) == cls) return true;
-
-		return false;
+	function hasApplication(path:String):Bool {
+		return Lambda.has(launcherRing, path);
 	}
 
 	function requestTick(periodMs:Int):Void {
@@ -427,6 +415,11 @@ class Manager {
 
 	function isActive(app:IApplication):Bool return app == this.app;
 
+	function loadApp(path:String):Void {
+		var app = Loader.loadApp(path);
+		switchApp(app);
+	}
+
 	function switchApp(app:IApplication):Void {
 		if (isActive(app)) return;
 
@@ -550,7 +543,7 @@ class Manager {
 		return wakeMode;
 	}
 
-	function appSort(app:IApplication):String return app.NAME;
+	function appSort(app:String):String return app;
 	function notifSort(notif:Notification):Int return notif.id;
 	function alarmSort(alarm:Alarm):Float return alarm.time;
 }

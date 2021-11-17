@@ -9,7 +9,7 @@ import python.Syntax.bytes;
 import wash.Wash;
 import wash.app.user.HeartApp;
 import wash.app.system.Settings;
-import wash.app.watchface.settings.WatchfaceConfig;
+// import wash.app.watchface.settings.WatchfaceConfig;
 import wash.icon.PlugIcon;
 import wash.icon.BleStatusIcon;
 import wasp.Builtins;
@@ -77,13 +77,13 @@ class BatTri extends BaseWatchFace {
 	}
 
 	override function registered(quickRing:Bool):Void {
-		Settings.registerApp(
-			"Watchface",
-			WatchfaceConfig,
-			0xA0,
-			WatchfaceConfig.serialize,
-			WatchfaceConfig.deserialize
-		);
+		// Settings.registerApp(
+		// 	"Watchface",
+		// 	WatchfaceConfig,
+		// 	0xA0,
+		// 	WatchfaceConfig.serialize,
+		// 	WatchfaceConfig.deserialize
+		// );
 	}
 
 	override function unregistered():Void {

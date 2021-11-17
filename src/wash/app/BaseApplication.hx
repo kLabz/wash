@@ -5,6 +5,7 @@ import python.Bytes;
 import wash.event.EventType;
 import wash.event.TouchEvent;
 
+@:native('BaseApplication')
 class BaseApplication implements IApplication {
 	public var NAME(default, null):String;
 	public var ICON(default, null):Bytes;

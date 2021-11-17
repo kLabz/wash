@@ -1,0 +1,9 @@
+-cp ../../common/src
+-cp ../../sdk/src
+
+-D analyzer-optimize
+-D source-header=
+-D dce=full
+
+-D python.unsafe_array_access
+-D python.no_slots

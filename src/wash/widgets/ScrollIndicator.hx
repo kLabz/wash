@@ -3,6 +3,8 @@ package wash.widgets;
 import wasp.Builtins;
 import wasp.Watch;
 
+@:keep
+@:native('ScrollIndicator')
 class ScrollIndicator {
 	var y:Int;
 	public var value:Int;

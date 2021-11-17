@@ -4,6 +4,7 @@ import python.Bytearray;
 
 import wash.util.Int16;
 
+@:native('Theme')
 abstract Theme(Bytearray) from Bytearray {
 	public var primary(get, set):Int16;
 	inline function get_primary():Int16 return Wash.system.nightMode ? primary_night : get(0);

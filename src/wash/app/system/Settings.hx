@@ -49,15 +49,15 @@ class Settings extends BaseApplication {
 		applicationSettings.nativeSort(appConfigSort);
 		settingsListChanged = true;
 
-		if (serializeId != null && serialize != null && deserialize != null) {
-			DataVault.registerAppConfig(appName, serializeId, serialize, deserialize);
-		}
+		// if (serializeId != null && serialize != null && deserialize != null) {
+		// 	DataVault.registerAppConfig(appName, serializeId, serialize, deserialize);
+		// }
 	}
 
 	public static function unregisterApp(appName:String):Void {
 		applicationSettings = applicationSettings.filter(a -> a.appName != appName);
 		settingsListChanged = true;
-		DataVault.unregisterAppConfig(appName);
+		// DataVault.unregisterAppConfig(appName);
 	}
 
 	var scroll:ScrollIndicator;
@@ -90,7 +90,7 @@ class Settings extends BaseApplication {
 	}
 
 	override public function background():Void {
-		DataVault.save();
+		// DataVault.save();
 	}
 
 	override public function foreground():Void {

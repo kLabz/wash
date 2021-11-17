@@ -101,7 +101,7 @@ class NightMode extends BaseApplication {
 		}
 
 		if (alarmsButton.touch(event)) {
-			Wash.system.switchApp(AlarmApp.getInstance());
+			Wash.system.loadApp('app.alarm');
 		}
 	}
 
@@ -127,7 +127,7 @@ class NightMode extends BaseApplication {
 		draw.string('Next alarm:', 0, 130, 240);
 
 		draw.set_color(Wash.system.theme.highlight);
-		var next = AlarmApp.nextAlarm();
+		var next = null; // TODO AlarmApp.nextAlarm();
 
 		var txt = "None";
 		if (next != null) {

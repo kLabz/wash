@@ -9,6 +9,8 @@ import wasp.Watch;
 import wash.event.TouchEvent;
 import wash.icon.CheckboxIcon;
 
+@:keep
+@:native('Checkbox')
 class Checkbox implements IWidget {
 	public var state:Bool;
 	public var forcedChecked:Bool;

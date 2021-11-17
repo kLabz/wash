@@ -7,6 +7,7 @@ import wasp.Watch;
 import wash.event.EventMask;
 import wash.event.TouchEvent;
 import wash.icon.AppIcon;
+import wash.util.Loader;
 import wash.widgets.ScrollIndicator;
 
 @:native('LauncherApp')
@@ -96,14 +97,19 @@ class Launcher extends BaseApplication {
 		if (y > 2) y = 2;
 
 		var app = page[3*y + x];
-		if (app != null) Wash.system.switchApp(app);
+		if (app != null) Wash.system.loadApp(app.path);
 		else Watch.vibrator.pulse();
 	}
 
-	function getPage(i:Int):Array<IApplication> {
+	function getPage(i:Int):Array<ManifestData> {
 		var ret = Wash.system.launcherRing.slice(9*i, 9*(i+1));
 		while (ret.length < 9) ret.push(null);
-		return ret;
+
+		return ret.map(path -> if (path == null) null else {
+			var manifest:ManifestData = Loader.loadModule('$path.manifest');
+			manifest.path = path;
+			manifest;
+		});
 	}
 
 	function draw():Void {
@@ -119,8 +125,15 @@ class Launcher extends BaseApplication {
 		scroll.draw();
 	}
 
-	function drawApp(app:IApplication, x:Int, y:Int):Void {
+	function drawApp(app:ManifestData, x:Int, y:Int):Void {
 		if (app == null) return;
 		Watch.drawable.recolor(app.ICON == null ? appIcon : app.ICON, x+14, y+14);
 	}
+}
+
+// TODO: move to own module
+typedef ManifestData = {
+	var path:String;
+	var NAME(default, null):String;
+	var ICON(default, null):Bytes;
 }

@@ -1,0 +1,6 @@
+../common.hxml
+
+--python ../../wasp-os/wasp/app/alarm/app.py
+--cmd cp manifest.py ../../wasp-os/wasp/app/alarm/manifest.py
+
+AlarmApp

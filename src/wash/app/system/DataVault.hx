@@ -16,36 +16,11 @@ using wash.app.system.DataVault;
 @:native('DataVault')
 class DataVault {
 	// Not inline to allow debug via micropython console
-	static var CONFIG_FILE:String = 'haxetime.conf';
-	static var appConfigSerializers:Array<AppConfigSerializer> = [];
+	public static var CONFIG_FILE:String = 'haxetime.conf';
+	public static var appConfigSerializers(default, null):Array<AppConfigSerializer> = [];
 
-	@:keep
-	public static function save():Void {
-		var f = Builtins.openWrite(CONFIG_FILE);
-		serialize(f);
-		f.close();
-		f = null;
-		Syntax.delete(f);
-	}
-
-	@:keep
-	public static function load():Void {
-		var f:BufferedReader = null;
-
-		try {
-			f = Builtins.openRead(CONFIG_FILE);
-			deserialize(f);
-			f.close();
-			f = null;
-			Syntax.delete(f);
-		} catch (_) {
-			if (f != null) {
-				f.close();
-				f = null;
-				Syntax.delete(f);
-			}
-		}
-	}
+	public static function save():Void new _DataVault()._save();
+	public static function load():Void new _DataVault()._load();
 
 	public static function registerAppConfig(
 		appName:String,
@@ -66,7 +41,46 @@ class DataVault {
 		appConfigSerializers = Lambda.filter(appConfigSerializers, a -> a.appName != appName);
 	}
 
-	static function serialize(f:BufferedWriter):Void {
+	public static function write1(f:BufferedWriter, b:Int):Void {
+		var bytes = new Bytearray(1);
+		bytes[0] = b;
+		f.write(bytes);
+		bytes = null;
+		Syntax.delete(bytes);
+	}
+}
+
+@:publicFields
+private class _DataVault {
+	function new() {}
+
+	function _save():Void {
+		var f = Builtins.openWrite(DataVault.CONFIG_FILE);
+		serialize(f);
+		f.close();
+		f = null;
+		Syntax.delete(f);
+	}
+
+	function _load():Void {
+		var f:BufferedReader = null;
+
+		try {
+			f = Builtins.openRead(DataVault.CONFIG_FILE);
+			deserialize(f);
+			f.close();
+			f = null;
+			Syntax.delete(f);
+		} catch (_) {
+			if (f != null) {
+				f.close();
+				f = null;
+				Syntax.delete(f);
+			}
+		}
+	}
+
+	function serialize(f:BufferedWriter):Void {
 		// Quick Ring
 		f.write1(SettingsCategory.SC_RootSettings);
 		f.write1(RootSettings.QuickRing);
@@ -111,7 +125,7 @@ class DataVault {
 
 		// Apps settings
 		f.write1(SettingsCategory.SC_AppSettings);
-		for (a in appConfigSerializers) {
+		for (a in DataVault.appConfigSerializers) {
 			f.write1(a.appId);
 			a.serializer(f);
 			f.write1(0x00);
@@ -119,7 +133,7 @@ class DataVault {
 		f.write1(0x00);
 	}
 
-	static function deserialize(f:BufferedReader):Void {
+	function deserialize(f:BufferedReader):Void {
 		while (true) {
 			var next = f.read(1);
 			if (next == null) break;
@@ -137,38 +151,32 @@ class DataVault {
 		}
 	}
 
-	public static function write1(f:BufferedWriter, b:Int):Void {
-		var bytes = new Bytearray(1);
-		bytes[0] = b;
-		f.write(bytes);
-		bytes = null;
-		Syntax.delete(bytes);
-	}
-
-	static function deserializeRootSettings(f:BufferedReader):Void {
+	function deserializeRootSettings(f:BufferedReader):Void {
 		while (true) {
 			var next = f.read(1);
 			if (next == null) break;
 
 			switch (next.get(0)) {
 				case QuickRing:
-					var apps:Array<Class<IApplication>> = [];
+					var apps:Array<String> = [];
 					getApps(f, apps);
 
 					if (apps.length > 0) {
 						@:privateAccess Wash.system.quickRing = [];
-						for (a in apps) Wash.system.register(a, true);
+						// TODO: update
+						// for (a in apps) Wash.system.register(a, true);
 					}
 
 					apps = null;
 					Syntax.delete(apps);
 
 				case EnabledApps:
-					var apps:Array<Class<IApplication>> = [];
+					var apps:Array<String> = [];
 					getApps(f, apps);
 
 					if (apps.length > 0) {
-						for (a in apps) Wash.system.register(a, false);
+						// TODO: update
+						// for (a in apps) Wash.system.register(a, false);
 					}
 
 					apps = null;
@@ -200,7 +208,7 @@ class DataVault {
 		}
 	}
 
-	static function deserializeAppSettings(f:BufferedReader):Void {
+	function deserializeAppSettings(f:BufferedReader):Void {
 		while (true) {
 			var next = f.read(1);
 			if (next == null) break;
@@ -210,7 +218,7 @@ class DataVault {
 					break;
 
 				case id:
-					var appCS = Lambda.find(appConfigSerializers, a -> a.appId == id);
+					var appCS = Lambda.find(DataVault.appConfigSerializers, a -> a.appId == id);
 					if (appCS == null) {
 						trace('Cannot deserialize app config for id $id');
 						while (f.read(1).get(0) != 0x00) continue;
@@ -222,7 +230,7 @@ class DataVault {
 		}
 	}
 
-	static function getApps(f:BufferedReader, apps:Array<Class<IApplication>>):Void {
+	function getApps(f:BufferedReader, apps:Array<String>):Void {
 		while (true) {
 			var next = f.read(1);
 			if (next == null) break;
@@ -252,24 +260,24 @@ enum abstract RootSettings(Int) to Int {
 
 class AppIdentifier {
 	// TODO: macro to keep in sync with IApplication.ID
-	public static function toCls(cls:Int):Class<IApplication> {
+	public static function toCls(cls:Int):String {
 		return switch (cls) {
-			case 0x01: wash.app.user.AlarmApp;
-			case 0x02: wash.app.user.Calc;
-			case 0x03: wash.app.user.HeartApp;
-			case 0x04: wash.app.user.NightMode;
-			case 0x05: wash.app.user.StepCounter;
-			case 0x06: wash.app.user.Stopclock;
-			case 0x07: wash.app.user.Timer;
-			case 0x08: wash.app.user.Torch;
+			case 0x01: "app.AlarmApp";
+			case 0x02: "app.Calc";
+			case 0x03: "app.HeartApp";
+			case 0x04: "app.NightMode";
+			case 0x05: "app.StepCounter";
+			case 0x06: "app.StopClock";
+			case 0x07: "app.Timer";
+			case 0x08: "app.Torch";
 
 			// Watchfaces
-			case 0xAA: wash.app.watchface.BatTri;
+			case 0xAA: "watchface.BatTri";
 
 			case _:
 				trace('Unknown app');
 				trace(cls);
-				wash.app.BaseApplication;
+				"app.BaseApplication";
 		}
 	}
 }

@@ -9,6 +9,8 @@ import wash.event.TouchEvent;
 import wash.icon.DownArrow;
 import wash.icon.UpArrow;
 
+@:keep
+@:native('Spinner')
 class Spinner implements IWidget {
 	public var value:Int;
 	var data:SpinnerData;

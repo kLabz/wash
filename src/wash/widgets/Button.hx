@@ -7,6 +7,8 @@ import wasp.Fonts;
 import wasp.Watch;
 import wash.event.TouchEvent;
 
+@:keep
+@:native('Button')
 class Button implements IWidget {
 	var data:ButtonData;
 

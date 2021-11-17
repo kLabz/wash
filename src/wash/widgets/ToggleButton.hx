@@ -2,6 +2,8 @@ package wash.widgets;
 
 import wash.event.TouchEvent;
 
+@:keep
+@:native('ToggleButton')
 class ToggleButton extends Button {
 	public var state:Bool;
 

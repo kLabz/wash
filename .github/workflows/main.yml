@@ -74,7 +74,7 @@ jobs:
         ldd -v ./haxelib
 
     - name: Build HxWasp
-      run: ./haxe/haxe build.hxml
+      run: make all
 
     - name: Check the cached arm-none-eabi-gcc compiler
       id:   cache-toolchain
