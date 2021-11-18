@@ -6,6 +6,8 @@ wash.Wash
 
 # TODO: build widgets separately
 wash.widgets.ScrollIndicator
+wash.widgets.Checkbox
+wash.widgets.Spinner
 wash.widgets.ToggleButton
 
 -D analyzer-optimize
