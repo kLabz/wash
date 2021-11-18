@@ -48,24 +48,40 @@ class Software extends BaseApplication {
 
 		db = [];
 
-		// TODO: set ROOT somewhere to work on both simulator, watch and watch in safe mode
-		var appsDir = #if simulator 'wasp/app' #else 'app' #end;
-		var apps = Os.listdir(appsDir);
-		for (a in apps) {
-			var appDir = '$appsDir/$a';
-			if (Path.isdir(appDir)) {
-				// TODO: also check for application file (app.py)
-				if (Path.exists('$appDir/manifest.py')) {
-					var manifest:ManifestData = Loader.loadModule('app.$a.manifest');
-					if (manifest.NAME != "Apps") {
-						db.push(AppEntry.make(
-							manifest.NAME,
-							'app.$a',
-							nextY(),
-							Wash.system.hasApplication('app.$a')
-						));
+		for (a in [
+			// TODO: other apps
+			'alarm'
+		]) {
+			var manifest:ManifestData = Loader.loadModule('app.$a.manifest');
+			db.push(AppEntry.make(
+				manifest.NAME,
+				'app.$a',
+				nextY(),
+				Wash.system.hasApplication('app.$a')
+			));
+			delete(manifest);
+		}
+
+		// TODO: user apps
+		var appsDir = 'app';
+		if (Path.exists(appsDir) && Path.isdir(appsDir)) {
+			var apps = Os.listdir(appsDir);
+			for (a in apps) {
+				var appDir = '$appsDir/$a';
+				if (Path.isdir(appDir)) {
+					// TODO: also check for application file (app.py)
+					if (Path.exists('$appDir/manifest.py')) {
+						var manifest:ManifestData = Loader.loadModule('app.$a.manifest');
+						if (manifest.NAME != "Apps") {
+							db.push(AppEntry.make(
+								manifest.NAME,
+								'app.$a',
+								nextY(),
+								Wash.system.hasApplication('app.$a')
+							));
+						}
+						delete(manifest);
 					}
-					delete(manifest);
 				}
 			}
 		}
