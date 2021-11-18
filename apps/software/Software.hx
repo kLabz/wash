@@ -63,28 +63,28 @@ class Software extends BaseApplication {
 		}
 
 		// TODO: user apps
-		var appsDir = 'app';
-		if (Path.exists(appsDir) && Path.isdir(appsDir)) {
-			var apps = Os.listdir(appsDir);
-			for (a in apps) {
-				var appDir = '$appsDir/$a';
-				if (Path.isdir(appDir)) {
-					// TODO: also check for application file (app.py)
-					if (Path.exists('$appDir/manifest.py')) {
-						var manifest:ManifestData = Loader.loadModule('app.$a.manifest');
-						if (manifest.NAME != "Apps") {
-							db.push(AppEntry.make(
-								manifest.NAME,
-								'app.$a',
-								nextY(),
-								Wash.system.hasApplication('app.$a')
-							));
-						}
-						delete(manifest);
-					}
-				}
-			}
-		}
+		// var appsDir = 'app';
+		// if (Path.exists(appsDir) && Path.isdir(appsDir)) {
+		// 	var apps = Os.listdir(appsDir);
+		// 	for (a in apps) {
+		// 		var appDir = '$appsDir/$a';
+		// 		if (Path.isdir(appDir)) {
+		// 			// TODO: also check for application file (app.py)
+		// 			if (Path.exists('$appDir/manifest.py')) {
+		// 				var manifest:ManifestData = Loader.loadModule('app.$a.manifest');
+		// 				if (manifest.NAME != "Apps") {
+		// 					db.push(AppEntry.make(
+		// 						manifest.NAME,
+		// 						'app.$a',
+		// 						nextY(),
+		// 						Wash.system.hasApplication('app.$a')
+		// 					));
+		// 				}
+		// 				delete(manifest);
+		// 			}
+		// 		}
+		// 	}
+		// }
 
 		var pages = opCeilDiv(db.length, PAGE_LEN) - 1;
 		if (pages < 0) pages = 0;
