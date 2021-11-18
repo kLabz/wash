@@ -3,10 +3,7 @@ package wash.widgets;
 import wash.event.TouchEvent;
 import wash.widgets.IWidget;
 
-// TODO: remove wasp. once widgets are built separately
-@:native('Wasp.Checkbox')
-// @:native('wasp.Checkbox')
-// @:pythonImport('wasp', 'Checkbox')
+@:pythonImport('wasp', 'Checkbox')
 // @:pythonImport('widgets.checkbox', 'Checkbox')
 extern class Checkbox implements IWidget {
 	var state:Bool;
