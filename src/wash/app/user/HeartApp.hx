@@ -7,7 +7,7 @@ import python.Syntax.delete;
 import python.Syntax.positional;
 
 import wash.app.system.Settings;
-import wash.app.user.settings.HeartConfig;
+// import wash.app.user.settings.HeartConfig;
 import wash.event.EventMask;
 import wash.event.TouchEvent;
 import wash.widgets.Button;
@@ -113,17 +113,17 @@ class HeartApp extends BaseApplication {
 	}
 
 	override function registered(_):Void {
-		Settings.registerApp(
-			NAME,
-			HeartConfig,
-			ID,
-			HeartConfig.serialize,
-			HeartConfig.deserialize
-		);
+		// Settings.registerApp(
+		// 	NAME,
+		// 	HeartConfig,
+		// 	ID,
+		// 	HeartConfig.serialize,
+		// 	HeartConfig.deserialize
+		// );
 	}
 
 	override function unregistered():Void {
-		Settings.unregisterApp(NAME);
+		// Settings.unregisterApp(NAME);
 	}
 
 	override public function press(_, state:Bool):Bool {

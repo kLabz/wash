@@ -87,7 +87,7 @@ class BatTri extends BaseWatchFace {
 	}
 
 	override function unregistered():Void {
-		Settings.unregisterApp(NAME);
+		// Settings.unregisterApp(NAME);
 	}
 
 	override function sleep():Bool return true;

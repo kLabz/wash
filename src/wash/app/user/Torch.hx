@@ -4,7 +4,7 @@ import python.Syntax.bytes;
 
 import wash.Wash;
 import wash.app.system.Settings;
-import wash.app.user.settings.TorchConfig;
+// import wash.app.user.settings.TorchConfig;
 import wash.event.EventMask;
 import wasp.Watch;
 
@@ -59,17 +59,17 @@ class Torch extends BaseApplication {
 
 	override function registered(quickRing:Bool):Void {
 		initialState = !quickRing;
-		Settings.registerApp(
-			NAME,
-			TorchConfig,
-			ID,
-			TorchConfig.serialize,
-			TorchConfig.deserialize
-		);
+		// Settings.registerApp(
+		// 	NAME,
+		// 	TorchConfig,
+		// 	ID,
+		// 	TorchConfig.serialize,
+		// 	TorchConfig.deserialize
+		// );
 	}
 
 	override function unregistered():Void {
-		Settings.unregisterApp(NAME);
+		// Settings.unregisterApp(NAME);
 	}
 
 	override public function tick(ticks:Int):Void {
