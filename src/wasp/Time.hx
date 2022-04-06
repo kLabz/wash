@@ -26,6 +26,7 @@ extern class Time {
 		return TimeUtils.time();
 }
 
+@:native('wash_util_TimeUtils')
 @:publicFields
 class TimeUtils {
 	static var DAYS_IN_MONTH = [null, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
