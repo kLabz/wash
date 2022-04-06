@@ -1,6 +1,6 @@
 -cp src
 
---python wasp-os/wasp/wasp.py
+--python .tmp/wasp.py
 wash.Wash
 
 -D analyzer-optimize
@@ -12,3 +12,5 @@ wash.Wash
 -D python.no_slots
 
 # -D debug.memory
+
+--cmd './scripts/postprocess.py'
