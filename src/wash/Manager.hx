@@ -37,7 +37,6 @@ import wash.widgets.StatusBar;
 using python.NativeArrayTools;
 
 @:publicFields
-@:native("Manager")
 // TODO: determine public and private fields
 class Manager {
 	static inline var DOUBLE_TAP_MS = 1000;

@@ -18,7 +18,9 @@ import wasp.Watch;
 
 using python.NativeStringTools;
 
-@:native('HeartApp')
+@:python('noImportFrom')
+@:python('dotpath(wash.app.heartapp.HeartApp)')
+@:native('wash.app.heartapp.HeartApp')
 class HeartApp extends BaseApplication {
 	// Configuration
 	static var debug(default, set):Bool = false;

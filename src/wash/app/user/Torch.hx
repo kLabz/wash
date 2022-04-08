@@ -8,7 +8,9 @@ import wash.app.user.settings.TorchConfig;
 import wash.event.EventMask;
 import wasp.Watch;
 
-@:native('TorchApp')
+@:python('noImportFrom')
+@:python('dotpath(wash.app.torchapp.TorchApp)')
+@:native('wash.app.torchapp.TorchApp')
 class Torch extends BaseApplication {
 	// Configuration
 	static var initialState:Bool = true;

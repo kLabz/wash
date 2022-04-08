@@ -14,19 +14,32 @@ import shutil
 from pathlib import Path
 
 classes = {}
+dotpath = {}
 imports = {}
 assignments = {}
 
-def split_pack(class_name):
+def extract_dotpath(node):
+    if isinstance(node, ast.Attribute):
+        return extract_dotpath(node.value) + "." + node.attr
+    elif isinstance(node, ast.Name):
+        return node.id
+    else:
+        return 'TODO'
+
+def split_pack(class_name, cls):
     pack = []
     module = ""
     alias = class_name
 
+    for d in cls.decorator_list:
+        if isinstance(d, ast.Call) and d.func.id == "dotpath":
+            alias = extract_dotpath(d.args[0]).replace(".", "_")
+
     i = 0
-    parts = class_name.split('_')
+    parts = alias.split('_')
     for p in parts:
         if p == "" or not p.islower():
-            module = class_name[i:]
+            module = alias[i:]
             break
 
         pack.append(p)
@@ -36,6 +49,13 @@ def split_pack(class_name):
     if module.startswith("_") and module.endswith("_Impl_"):
         module = module[(module.find("_", 1)+1):-len("_Impl_")]
 
+    for d in cls.decorator_list:
+        if isinstance(d, ast.Name) and d.id == "noImportFrom":
+            path = '.'.join(pack) + '.' + module
+            i = ast.Import([ast.alias('.'.join(pack))])
+            dotpath[path] = i
+            return i
+
     pack.append(module.lower())
     return ast.ImportFrom('.'.join(pack), [ast.alias(alias)], 0)
 
@@ -43,19 +63,20 @@ def resolve_import(class_name, cls):
     if len(cls.bases) == 1:
         base = cls.bases[0].id
         if base == "wash_app_BaseApplication" or base == "wash_app_BaseWatchFace":
-            i = split_pack(class_name)
-            if len(i.module.split('.')) == 1:
+            i = split_pack(class_name, cls)
+            if isinstance(i, ast.ImportFrom) and len(i.module.split('.')) == 1:
                 i.module = 'wash.app.' + i.module
             return i
 
     if class_name.startswith("wash_"):
-        return split_pack(class_name)
+        return split_pack(class_name, cls)
 
-    if class_name == "DataVault":
-        return ast.ImportFrom('wash.datavault', [ast.alias(class_name)], 0)
+    if class_name == "system":
+        return ast.Import([ast.alias("wasp")])
 
-    if class_name == "Manager" or class_name == "Wasp" or class_name == "system":
-        return ast.ImportFrom('wasp', [ast.alias(class_name)], 0)
+    for d in cls.decorator_list:
+        if isinstance(d, ast.Call) and d.func.id == "dotpath":
+            return split_pack(class_name, cls)
 
     if class_name == "Lambda" or class_name == "HxOverrides":
         return ast.ImportFrom('wash.haxe', [ast.alias(class_name)], 0)
@@ -68,6 +89,13 @@ def resolve_import(class_name, cls):
 
     raise Exception("Cannot identify class " + class_name)
 
+def resolve_module(i):
+    if isinstance(i, ast.ImportFrom):
+        return i.module
+    elif isinstance(i, ast.Import):
+        return i.names[0].name
+    else:
+        raise Exception('Expected an Import or ImportFrom instance')
 
 path = Path(__file__).parent / '../.tmp/wasp.py'
 wasp_py = open(path, 'r')
@@ -95,9 +123,15 @@ for node in wasp_ast.body:
     # retrieve its statics
     elif isinstance(node, ast.Assign):
         for target in node.targets:
-            if not target.value.id in assignments:
-                assignments[target.value.id] = []
-            assignments[target.value.id].append(node)
+            if isinstance(target.value, ast.Name):
+                if not target.value.id in assignments:
+                    assignments[target.value.id] = []
+                assignments[target.value.id].append(node)
+            else:
+                alias = ".".join(extract_dotpath(target).split('.')[:-1])
+                if not alias in assignments:
+                    assignments[alias] = []
+                assignments[alias].append(node)
 
     # This is not happening atm, but maybe haxe will generate other top level
     # statements in some cases?
@@ -118,6 +152,16 @@ class ModuleData:
 
     def process(self):
         for cls in self.classes:
+            for d in cls.decorator_list:
+                if isinstance(d, ast.Call) and d.func.id == "dotpath":
+                    alias = extract_dotpath(d.args[0]) #.replace(".", "_")
+                    if alias in assignments:
+                        for assign in assignments[alias]:
+                            for t in assign.targets:
+                                t.value = ast.Name(alias.split('.')[-1], ast.Store())
+                            self.walk(assign.value)
+                            self.local_assigns.append(assign)
+
             self.walk(cls)
 
         for cls in self.class_names:
@@ -135,30 +179,81 @@ class ModuleData:
                     if not i in self.local_imports:
                         self.local_imports.append(i)
 
+            if isinstance(node, ast.Attribute):
+                dp = extract_dotpath(node)
+                if dp in dotpath:
+                    i = dotpath[dp]
+                    if not i in self.local_imports:
+                        self.local_imports.append(i)
+
     def write(self, output):
-        mod = self.importdata.module.split('.')
+        mod = resolve_module(self.importdata).split('.')
         path = output / "/".join(mod[0:-1])
         try:
             os.makedirs(path)
         except:
             pass
 
-        module = ast.Module(self.local_imports + self.classes + self.local_assigns)
+        imports = []
+        imports_hack = []
+
+        for i in self.local_imports:
+            imports.append(i)
+
+            # if isinstance(i, ast.ImportFrom):
+            #     imports.append(ast.Import([ast.alias(i.module)]))
+
+            #     name = i.names[0].name
+            #     module_name = i.module.split('.')[-1]
+
+            #     imports_hack.append(
+            #         ast.Assign(
+            #             [ast.Name(name, ast.Store())],
+            #             ast.Attribute(ast.Name(module_name, ast.Load()), name, ast.Load())
+            #         )
+            #     )
+            # else:
+            #     imports.append(i)
+
+
+            # try:
+            #     if i.module == "wasp" or i.module == "wash.datavault":
+            #         imports.append(ast.Import([ast.alias(i.module)]))
+            #     else:
+            #         imports.append(i)
+            # except:
+            #     imports.append(i)
+
+        for cls in self.classes:
+            for d in cls.decorator_list:
+                if isinstance(d, ast.Call) and d.func.id == "dotpath":
+                    cls.decorator_list.remove(d)
+            for d in cls.decorator_list:
+                if isinstance(d, ast.Name) and d.id == "noImportFrom":
+                    cls.decorator_list.remove(d)
+
+
+        module = ast.Module(imports + imports_hack + self.classes + self.local_assigns)
         f = open(path / (mod[-1] + ".py"), "w")
         f.write(astunparse.unparse(module))
         f.close()
+
+        # print(path / (mod[-1] + ".py"))
+        # print(astunparse.unparse(module))
+        # print("\n\n\n")
 
 
 modules = {}
 for class_name in classes:
     cls = classes[class_name]
     importdata = resolve_import(class_name, cls)
+    module = resolve_module(importdata)
 
     try:
-        moddata = modules[importdata.module]
+        moddata = modules[module]
     except:
         moddata = ModuleData(importdata)
-        modules[importdata.module] = moddata
+        modules[module] = moddata
 
     moddata.add_class(class_name, cls)
 

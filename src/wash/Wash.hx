@@ -2,7 +2,9 @@ package wash;
 
 import wash.Notification;
 
-@:native('Wasp')
+@:python('noImportFrom')
+@:python('dotpath(wasp.Wasp)')
+@:native('wasp.Wasp')
 class Wash {
 	@:keep
 	public static var system(default, null):Manager;
@@ -10,6 +12,7 @@ class Wash {
 	@:keep
 	public static function init():Void {
 		if (system == null) {
+			MacroUtils.localImport(Manager);
 			system = new Manager();
 			system.init();
 		}
@@ -17,7 +20,7 @@ class Wash {
 }
 
 @:native('system')
-class System {
+private class System {
 	@:keep
 	public static function schedule():Void {
 		Wash.init();

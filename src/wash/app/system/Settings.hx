@@ -20,7 +20,9 @@ import wash.widgets.ScrollIndicator;
 
 using python.NativeArrayTools;
 
-@:native('SettingsApp')
+@:python('noImportFrom')
+@:python('dotpath(wash.app.settingsapp.SettingsApp)')
+@:native('wash.app.settingsapp.SettingsApp')
 class Settings extends BaseApplication {
 	// System configuration
 	public static var notificationLevel:NotificationLevel = Mid;

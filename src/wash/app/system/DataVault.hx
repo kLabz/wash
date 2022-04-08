@@ -13,7 +13,9 @@ import wash.app.system.settings.SystemConfig;
 using python.NativeStringTools;
 using wash.app.system.DataVault;
 
-@:native('DataVault')
+@:python('noImportFrom')
+@:python('dotpath(wash.datavault.DataVault)')
+@:native('wash.datavault.DataVault')
 class DataVault {
 	// Not inline to allow debug via micropython console
 	static var CONFIG_FILE:String = 'haxetime.conf';
