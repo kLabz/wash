@@ -12,5 +12,3 @@ wash.Wash
 -D python.no_slots
 
 # -D debug.memory
-
-# --cmd './scripts/postprocess.py'

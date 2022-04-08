@@ -257,12 +257,12 @@ class AppIdentifier {
 	public static function toCls(cls:Int):Class<IApplication> {
 		return switch (cls) {
 			case 0x01: wash.app.user.AlarmApp;
-			case 0x02: wash.app.user.Calc;
+			// case 0x02: wash.app.user.Calc;
 			case 0x03: wash.app.user.HeartApp;
 			case 0x04: wash.app.user.NightMode;
-			case 0x05: wash.app.user.StepCounter;
-			case 0x06: wash.app.user.Stopclock;
-			case 0x07: wash.app.user.Timer;
+			// case 0x05: wash.app.user.StepCounter;
+			// case 0x06: wash.app.user.Stopclock;
+			// case 0x07: wash.app.user.Timer;
 			case 0x08: wash.app.user.Torch;
 
 			// Watchfaces
