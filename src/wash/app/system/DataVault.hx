@@ -256,17 +256,17 @@ class AppIdentifier {
 	// TODO: macro to keep in sync with IApplication.ID
 	public static function toCls(cls:Int):Class<IApplication> {
 		return switch (cls) {
-			case 0x01: wash.app.user.AlarmApp;
-			// case 0x02: wash.app.user.Calc;
-			case 0x03: wash.app.user.HeartApp;
-			case 0x04: wash.app.user.NightMode;
-			// case 0x05: wash.app.user.StepCounter;
-			// case 0x06: wash.app.user.Stopclock;
-			// case 0x07: wash.app.user.Timer;
-			case 0x08: wash.app.user.Torch;
+			case 0x01: MacroUtils.lazyLoad(wash.app.user.AlarmApp);
+			// case 0x02: MacroUtils.lazyLoad(wash.app.user.Calc);
+			case 0x03: MacroUtils.lazyLoad(wash.app.user.HeartApp);
+			case 0x04: MacroUtils.lazyLoad(wash.app.user.NightMode);
+			// case 0x05: MacroUtils.lazyLoad(wash.app.user.StepCounter);
+			// case 0x06: MacroUtils.lazyLoad(wash.app.user.Stopclock);
+			// case 0x07: MacroUtils.lazyLoad(wash.app.user.Timer);
+			case 0x08: MacroUtils.lazyLoad(wash.app.user.Torch);
 
 			// Watchfaces
-			case 0xAA: wash.app.watchface.BatTri;
+			case 0xAA: MacroUtils.lazyLoad(wash.app.watchface.BatTri);
 
 			case _:
 				trace('Unknown app');

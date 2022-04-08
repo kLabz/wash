@@ -18,9 +18,26 @@ class MacroUtils {
 						// TODO: can't get comments in generated ast, need to
 						// find another way to skip auto import on
 						// postprocessing...
-						+ ' # Skip import ' + mangled
+						// + ' # Skip import ' + mangled
 					}
 				);
+
+			case _: throw 'Invalid use of localImport()';
+		}
+	}
+
+	public static macro function lazyLoad(e:Expr) {
+		switch (Context.typeof(e)) {
+			case TType(_.get() => cls, []):
+				var lower = cls.module.toLowerCase();
+				var mangled = mangle(cls.module);
+
+				return macro {
+					python.Syntax.code(
+						$v{'from ' + lower + ' import ' + mangled + ' as _tmp'}
+					);
+					untyped _tmp;
+				};
 
 			case _: throw 'Invalid use of localImport()';
 		}
