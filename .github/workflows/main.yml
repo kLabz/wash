@@ -20,7 +20,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: /home/runner/.opam/
-        key: ${{ runner.os }}-${{ hashFiles('./haxe/opam') }}-01
+        key: ${{ runner.os }}-${{ hashFiles('./haxe/opam') }}
 
     - name: Install Neko using snapshot from S3
       run: |
@@ -48,7 +48,6 @@ jobs:
         sudo add-apt-repository ppa:deadsnakes/ppa -y # provides newer version of python 3
         sudo apt-get update -qqy
         sudo apt-get install -qqy ocaml-nox camlp5 opam libpcre3-dev zlib1g-dev libgtk2.0-dev libmbedtls-dev ninja-build libstring-shellquote-perl python3.10
-        sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.10 10
 
     - name: Install OCaml libraries
       if: steps.cache-opam.outputs.cache-hit != 'true'

@@ -4,15 +4,13 @@
 
 python --version
 
-pip install astunparse
+# pip install astunparse
+# python -m astunparse
+# python ./scripts/postprocess.py
 
-pip3 install astunparse
+# pip3 install astunparse
+# python3.10 -m astunparse
+# python3.10 ./scripts/postprocess.py
 
-python3 -m astunparse
-
-python -m astunparse
-
-python ./scripts/postprocess.py
-
-python3 ./scripts/postprocess.py
+echo "build cache plz"
 
