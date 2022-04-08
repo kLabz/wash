@@ -266,6 +266,8 @@ try:
 except:
     pass
 
+# TODO: update manifest (boards/manifest_240x240.py)
+
 for mod in modules:
     module = modules[mod]
     module.process()
