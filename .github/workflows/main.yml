@@ -45,8 +45,10 @@ jobs:
         set -ex
         sudo add-apt-repository ppa:avsm/ppa -y # provides OPAM 2
         sudo add-apt-repository ppa:haxe/ocaml -y # provides newer version of mbedtls
+        sudo add-apt-repository ppa:deadsnakes/ppa -y # provides newer version of python 3
         sudo apt-get update -qqy
-        sudo apt-get install -qqy ocaml-nox camlp5 opam libpcre3-dev zlib1g-dev libgtk2.0-dev libmbedtls-dev ninja-build libstring-shellquote-perl
+        sudo apt-get install -qqy ocaml-nox camlp5 opam libpcre3-dev zlib1g-dev libgtk2.0-dev libmbedtls-dev ninja-build libstring-shellquote-perl python3.10
+        sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.10 10
 
     - name: Install OCaml libraries
       if: steps.cache-opam.outputs.cache-hit != 'true'
@@ -74,7 +76,7 @@ jobs:
         ldd -v ./haxelib
 
     - name: Build HxWasp
-      run: ./haxe/haxe build.hxml
+      run: ./scripts/build.sh
 
     - name: Check the cached arm-none-eabi-gcc compiler
       id:   cache-toolchain

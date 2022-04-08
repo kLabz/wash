@@ -13,4 +13,4 @@ wash.Wash
 
 # -D debug.memory
 
---cmd './scripts/postprocess.py'
+# --cmd './scripts/postprocess.py'
