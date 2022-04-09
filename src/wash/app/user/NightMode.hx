@@ -14,6 +14,9 @@ import wasp.Watch;
 
 @:native('NightModeApp')
 class NightMode extends BaseApplication {
+	public static inline var _ID = 0x04;
+	public static inline var _NAME = "NightMode";
+
 	var dayBg:Bytes = bytes(
 		'\\x02',
 		'dS',
@@ -77,8 +80,8 @@ class NightMode extends BaseApplication {
 	public function new() {
 		super();
 
-		ID = 0x04;
-		NAME = "NightMode";
+		ID = _ID;
+		NAME = _NAME;
 		ICON = AppIcon.getIcon();
 	}
 

@@ -11,7 +11,10 @@ import wash.widgets.Checkbox;
 import wasp.Fonts;
 import wasp.Watch;
 
+@:keep
 @:access(wash.app.user.Torch)
+@:python('dotpath(wash.app.user.settings.TorchConfig)')
+@:native('wash.app.user.settings.torchconfig.TorchConfig')
 class TorchConfig extends BaseApplication implements ISettingsApplication {
 	var initialState:Checkbox;
 	var redLight:Checkbox;

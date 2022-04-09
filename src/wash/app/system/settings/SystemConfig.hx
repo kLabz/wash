@@ -14,6 +14,8 @@ import wash.widgets.Slider;
 import wasp.Fonts;
 import wasp.Watch;
 
+@:python('dotpath(wash.app.system.settings.SystemConfig)')
+@:native('wash.app.system.settings.systemconfig.SystemConfig')
 class SystemConfig extends BaseApplication implements ISettingsApplication {
 	static inline var NB_PAGES = 3;
 

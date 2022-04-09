@@ -1,6 +1,7 @@
 package wash.app.system;
 
 import python.Bytes;
+import python.Syntax;
 import python.Syntax.bytes;
 import python.Syntax.construct;
 import python.lib.io.BufferedReader;
@@ -24,6 +25,9 @@ using python.NativeArrayTools;
 @:python('dotpath(wash.app.settingsapp.SettingsApp)')
 @:native('wash.app.settingsapp.SettingsApp')
 class Settings extends BaseApplication {
+	public static inline var _ID = 0xF2;
+	public static inline var _NAME = "Settings";
+
 	// System configuration
 	public static var notificationLevel:NotificationLevel = Mid;
 	public static var brightnessLevel:BrightnessLevel = Mid;
@@ -31,23 +35,25 @@ class Settings extends BaseApplication {
 
 	static var settingsListChanged:Bool = false;
 	static var systemSettings:Array<AppConfig> = [
-		AppConfig.make("System", SystemConfig),
-		AppConfig.make("Date/Time", DateTimeConfig),
-		AppConfig.make("Theme", ThemeConfig),
-		AppConfig.make("About", About)
+		AppConfig.make("System", "SystemConfig", MacroUtils.importString(SystemConfig)),
+		AppConfig.make("Date/Time", "DateTimeConfig", MacroUtils.importString(DateTimeConfig)),
+		AppConfig.make("Theme", "ThemeConfig", MacroUtils.importString(ThemeConfig)),
+		AppConfig.make("About", "About", MacroUtils.importString(About))
 	];
 
 	static var applicationSettings:Array<AppConfig> = [];
 
 	public static function registerApp(
 		appName:String,
-		configApp:Class<ISettingsApplication>,
+		configModule:String,
+		configApp:String,
 		?serializeId:Int,
+		// TODO: resolve directly from datavault when needed
 		?serialize:BufferedWriter->Void,
 		?deserialize:BufferedReader->Void
 	):Void {
 		for (conf in applicationSettings) if (conf.settingsCls == configApp) return;
-		applicationSettings.push(AppConfig.make(appName, configApp));
+		applicationSettings.push(AppConfig.make(appName, configModule, configApp));
 		applicationSettings.nativeSort(appConfigSort);
 		settingsListChanged = true;
 
@@ -70,7 +76,7 @@ class Settings extends BaseApplication {
 	public function new() {
 		super();
 
-		NAME = "Settings";
+		NAME = _NAME;
 		ICON = bytes(
 			'\\x02',
 			'@@',
@@ -159,7 +165,12 @@ class Settings extends BaseApplication {
 	}
 
 	function setApp(app:AppConfig):Void {
-		currentSettingsApp = construct(app.settingsCls, this);
+		Syntax.exec('import ' + app.settingsModule);
+		currentSettingsApp = Syntax.eval(app.settingsModule + '.' + app.settingsCls + '(self)');
+		Syntax.exec('del ' + app.settingsModule);
+		Syntax.exec('import sys');
+		Syntax.exec('del sys.modules["' + app.settingsModule + '"]');
+
 		draw();
 	}
 

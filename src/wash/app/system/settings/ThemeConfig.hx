@@ -7,6 +7,9 @@ import wash.widgets.ColorPicker;
 import wasp.Fonts;
 import wasp.Watch;
 
+@:keep
+@:python('dotpath(wash.app.system.settings.ThemeConfig)')
+@:native('wash.app.system.settings.themeconfig.ThemeConfig')
 class ThemeConfig extends BaseApplication implements ISettingsApplication {
 	var settings:Settings;
 

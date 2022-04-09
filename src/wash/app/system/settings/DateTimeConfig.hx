@@ -8,6 +8,9 @@ import wash.widgets.Spinner;
 import wasp.Fonts;
 import wasp.Watch;
 
+@:keep
+@:python('dotpath(wash.app.system.settings.DateTimeConfig)')
+@:native('wash.app.system.settings.datetimeconfig.DateTimeConfig')
 class DateTimeConfig extends BaseApplication implements ISettingsApplication {
 	var HH:Spinner;
 	var MM:Spinner;

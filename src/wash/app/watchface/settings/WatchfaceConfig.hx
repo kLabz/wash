@@ -11,6 +11,9 @@ import wash.widgets.Checkbox;
 import wasp.Fonts;
 import wasp.Watch;
 
+@:keep
+@:python('dotpath(wash.app.watchface.settings.WatchfaceConfig)')
+@:native('wash.app.watchface.settings.watchfaceconfig.WatchfaceConfig')
 class WatchfaceConfig extends BaseApplication implements ISettingsApplication {
 	var hours12:Checkbox;
 	var weekNb:Checkbox;

@@ -6,6 +6,16 @@ import haxe.macro.Expr;
 #end
 
 class MacroUtils {
+	public static macro function importString(e:Expr) {
+		switch (Context.typeof(e)) {
+			case TType(_.get() => cls, []):
+				var lower = cls.module.toLowerCase();
+				return macro $v{lower};
+
+			case _: throw 'Invalid use of localImport()';
+		}
+	}
+
 	public static macro function localImport(e:Expr) {
 		switch (Context.typeof(e)) {
 			case TType(_.get() => cls, []):

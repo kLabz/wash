@@ -11,6 +11,9 @@ import wash.widgets.ScrollIndicator;
 
 @:native('LauncherApp')
 class Launcher extends BaseApplication {
+	public static inline var _ID = 0xF0;
+	public static inline var _NAME = "Launcher";
+
 	var appIcon:Bytes;
 	var page:Int;
 	var numPages(get, null):Int;
@@ -20,7 +23,9 @@ class Launcher extends BaseApplication {
 	public function new() {
 		super();
 
-		NAME = "Launcher";
+		ID = _ID;
+		NAME = _NAME;
+
 		ICON = bytes(
 			'\\x02',
 			'@@',

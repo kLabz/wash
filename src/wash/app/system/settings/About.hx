@@ -13,6 +13,9 @@ import wasp.Watch;
 
 using python.NativeStringTools;
 
+@:keep
+@:python('dotpath(wash.app.system.settings.About)')
+@:native('wash.app.system.settings.about.About')
 class About extends BaseApplication implements ISettingsApplication {
 	public function new(_) {
 		super();

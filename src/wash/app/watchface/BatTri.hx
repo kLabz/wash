@@ -21,6 +21,10 @@ import wasp.driver.Draw565.Fill.fill;
 using python.NativeStringTools;
 
 class BatTri extends BaseWatchFace {
+	// Watchfaces start at 0xA1, but this probably won't be one of the default ones
+	// 0xA0 is reserved for BaseWatchface for application settings
+	public static inline var _ID = 0xAA;
+	public static inline var _NAME = "BatTri";
 	static var days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 
 	var heartIcon:Bytes;
@@ -41,12 +45,10 @@ class BatTri extends BaseWatchFace {
 
 	public function new() {
 		super();
-		NAME = "BatTri";
-		// TODO: ICON
 
-		// Watchfaces start at 0xA1, but this probably won't be one of the default ones
-		// 0xA0 is reserved for BaseWatchface for application settings
-		ID = 0xAA;
+		ID = _ID;
+		NAME = _NAME;
+		// TODO: ICON
 
 		heartIcon = bytes(
 			'\\x02',
@@ -79,10 +81,11 @@ class BatTri extends BaseWatchFace {
 	override function registered(quickRing:Bool):Void {
 		Settings.registerApp(
 			"Watchface",
-			WatchfaceConfig,
-			0xA0,
-			WatchfaceConfig.serialize,
-			WatchfaceConfig.deserialize
+			"WatchfaceConfig",
+			MacroUtils.importString(WatchfaceConfig),
+			0xA0
+			// WatchfaceConfig.serialize,
+			// WatchfaceConfig.deserialize
 		);
 	}
 

@@ -11,7 +11,10 @@ import wash.widgets.Checkbox;
 import wasp.Fonts;
 import wasp.Watch;
 
+@:keep
 @:access(wash.app.user.HeartApp)
+@:python('dotpath(wash.app.user.settings.HeartConfig)')
+@:native('wash.app.user.settings.heartconfig.HeartConfig')
 class HeartConfig extends BaseApplication implements ISettingsApplication {
 	var debug:Checkbox;
 	var runInBackground:Checkbox;

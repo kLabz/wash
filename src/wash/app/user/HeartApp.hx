@@ -22,6 +22,9 @@ using python.NativeStringTools;
 @:python('dotpath(wash.app.heartapp.HeartApp)')
 @:native('wash.app.heartapp.HeartApp')
 class HeartApp extends BaseApplication {
+	public static inline var _ID = 0x03;
+	public static inline var _NAME = "Heart";
+
 	// Configuration
 	static var debug(default, set):Bool = false;
 	static var runInBackground(default, set):Bool = false;
@@ -47,8 +50,8 @@ class HeartApp extends BaseApplication {
 	public function new() {
 		super();
 
-		ID = 0x03;
-		NAME = "Heart";
+		ID = _ID;
+		NAME = _NAME;
 		ICON = bytes(
 			'\\x02',
 			'@@',
@@ -117,10 +120,11 @@ class HeartApp extends BaseApplication {
 	override function registered(_):Void {
 		Settings.registerApp(
 			NAME,
-			HeartConfig,
-			ID,
-			HeartConfig.serialize,
-			HeartConfig.deserialize
+			"HeartConfig",
+			MacroUtils.importString(HeartConfig),
+			ID
+			// HeartConfig.serialize,
+			// HeartConfig.deserialize
 		);
 	}
 

@@ -19,6 +19,8 @@ import wash.widgets.ScrollIndicator;
 
 @:native('SoftwareApp')
 class Software extends BaseApplication {
+	public static inline var _ID = 0xF1;
+	public static inline var _NAME = "Apps";
 	static inline var PAGE_LEN:Int = 6;
 
 	var db:Array<AppEntry>;
@@ -28,7 +30,9 @@ class Software extends BaseApplication {
 	public function new() {
 		super();
 
-		NAME = "Apps";
+		ID = _ID;
+		NAME = _NAME;
+
 		ICON = bytes(
 			'\\x02',
 			'@@',

@@ -44,6 +44,9 @@ enum abstract Page(Int) from Int to Int {
 
 @:native('AlarmApp')
 class AlarmApp extends BaseApplication {
+	public static inline var _ID = 0x01;
+	public static inline var _NAME = "Alarm";
+
 	static var instance:AlarmApp;
 	static var alarms:Array<AlarmDef>;
 	static var pendingAlarms:Array<Float>;
@@ -73,8 +76,8 @@ class AlarmApp extends BaseApplication {
 	public function new() {
 		super();
 
-		ID = 0x01;
-		NAME = "Alarm";
+		ID = _ID;
+		NAME = _NAME;
 		ICON = bytes(
 			'\\x02',
 			'@@',

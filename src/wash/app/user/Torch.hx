@@ -12,6 +12,9 @@ import wasp.Watch;
 @:python('dotpath(wash.app.torchapp.TorchApp)')
 @:native('wash.app.torchapp.TorchApp')
 class Torch extends BaseApplication {
+	public static inline var _ID = 0x08;
+	public static inline var _NAME = "Torch";
+
 	// Configuration
 	static var initialState:Bool = true;
 	static var redLight:Bool = false;
@@ -21,8 +24,8 @@ class Torch extends BaseApplication {
 	public function new() {
 		super();
 
-		ID = 0x08;
-		NAME = "Torch";
+		ID = _ID;
+		NAME = _NAME;
 		ICON = bytes(
 			'\\x02',
 			'`@',
@@ -63,10 +66,12 @@ class Torch extends BaseApplication {
 		initialState = !quickRing;
 		Settings.registerApp(
 			NAME,
-			TorchConfig,
-			ID,
-			TorchConfig.serialize,
-			TorchConfig.deserialize
+			"TorchConfig",
+			MacroUtils.importString(TorchConfig),
+			ID
+			// TODO: resolve directly from datavault when needed
+			// TorchConfig.serialize,
+			// TorchConfig.deserialize
 		);
 	}
 
