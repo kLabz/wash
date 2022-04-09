@@ -143,6 +143,7 @@ class ModuleData:
         self.importdata = importdata
         self.local_imports = []
         self.local_assigns = []
+        self.local_classes = []
         self.classes = []
         self.class_names = []
 
@@ -150,11 +151,16 @@ class ModuleData:
         self.class_names.append(class_name)
         self.classes.append(cls)
 
+        for d in cls.decorator_list:
+            if isinstance(d, ast.Call) and d.func.id == "dotpath":
+                alias = extract_dotpath(d.args[0])
+                self.local_classes.append(alias)
+
     def process(self):
         for cls in self.classes:
             for d in cls.decorator_list:
                 if isinstance(d, ast.Call) and d.func.id == "dotpath":
-                    alias = extract_dotpath(d.args[0]) #.replace(".", "_")
+                    alias = extract_dotpath(d.args[0])
                     if alias in assignments:
                         for assign in assignments[alias]:
                             for t in assign.targets:
@@ -185,6 +191,10 @@ class ModuleData:
                     i = dotpath[dp]
                     if not i in self.local_imports:
                         self.local_imports.append(i)
+                elif isinstance(node.value, ast.Attribute):
+                    dp = extract_dotpath(node.value)
+                    if dp in self.local_classes:
+                        node.value = ast.Name(dp.split('.')[-1], ast.Load())
 
     def write(self, output):
         mod = resolve_module(self.importdata).split('.')
